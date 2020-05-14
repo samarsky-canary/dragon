@@ -20,10 +20,13 @@
     "build": "webpack"
   },
   "devDependencies": {
+    "css-loader": "^3.5.3",
+    "style-loader": "^1.2.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
+    "file-loader": "^6.0.0",
     "konva": "^6.0.0",
     "lodash": "^4.17.15"
   }
