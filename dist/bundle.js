@@ -815,18 +815,6 @@ eval("var g;\n\n// This works in non-strict mode\ng = (function() {\n\treturn th
 
 /***/ }),
 
-/***/ "./src/favicon.png":
-/*!*************************!*\
-  !*** ./src/favicon.png ***!
-  \*************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (__webpack_require__.p + \"a27b1bf36cad3bd31ffd82c529a1e320.png\");\n\n//# sourceURL=webpack:///./src/favicon.png?");
-
-/***/ }),
-
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -835,7 +823,19 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ 
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var konva__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! konva */ \"./node_modules/konva/lib/index.js\");\n/* harmony import */ var konva__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(konva__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_style_css__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _favicon_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./favicon.png */ \"./src/favicon.png\");\n\r\n\r\n\r\n\r\n\r\nvar stage = new konva__WEBPACK_IMPORTED_MODULE_0___default.a.Stage({\r\n    container: 'drawer',\r\n    width: innerWidth,\r\n    height: innerHeight\r\n});\r\n\r\nvar layer = new konva__WEBPACK_IMPORTED_MODULE_0___default.a.Layer();\r\n\r\n\r\n\r\nstage.add(layer);\r\n\r\n\r\nconst input = document.querySelector('input');\r\ninput.addEventListener('click', createNewRect);\r\n\r\nfunction createNewRect(e) {\r\n\r\n    var rectangle = new konva__WEBPACK_IMPORTED_MODULE_0___default.a.Rect({\r\n        x: 100,\r\n        y: 100,\r\n        width: 100,\r\n        height: 50,\r\n        fill: 'red',\r\n        stroke: 'black',\r\n        strokeWidth: 4,\r\n        shadowOffsetX: 20,\r\n        shadowOffsetY: 25,\r\n        shadowBlur: 40,\r\n        opacity: 0.5\r\n    });\r\n    \r\n    rectangle.draggable('true');\r\n    layer.add(rectangle);\r\n    stage.add(layer);\r\n}\r\n\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var konva__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! konva */ \"./node_modules/konva/lib/index.js\");\n/* harmony import */ var konva__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(konva__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_style_css__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _rectInit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./rectInit */ \"./src/rectInit.js\");\n\r\n\r\n\r\n\r\n\r\nvar stage = new konva__WEBPACK_IMPORTED_MODULE_0___default.a.Stage({\r\n    container: 'drawer',\r\n    width: innerWidth,\r\n    height: innerHeight\r\n});\r\n\r\nvar layer = new konva__WEBPACK_IMPORTED_MODULE_0___default.a.Layer();\r\n\r\n\r\n\r\nconst input = document.querySelector('input');\r\ninput.addEventListener('click', ()=> {\r\n    var rect = Object(_rectInit__WEBPACK_IMPORTED_MODULE_2__[\"default\"])();\r\n    layer.add(rect);\r\n    stage.add(layer);\r\n});\r\n\n\n//# sourceURL=webpack:///./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/rectInit.js":
+/*!*************************!*\
+  !*** ./src/rectInit.js ***!
+  \*************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return createRect; });\n/* harmony import */ var konva__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! konva */ \"./node_modules/konva/lib/index.js\");\n/* harmony import */ var konva__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(konva__WEBPACK_IMPORTED_MODULE_0__);\n\r\n\r\nfunction createRect() {\r\n    var rectangle = new konva__WEBPACK_IMPORTED_MODULE_0___default.a.Rect({\r\n        x: 100,\r\n        y: 100,\r\n        width: 100,\r\n        height: 50,\r\n        fill: 'red',\r\n        stroke: 'black',\r\n        strokeWidth: 4,\r\n        shadowOffsetX: 20,\r\n        shadowOffsetY: 25,\r\n        shadowBlur: 40,\r\n        opacity: 0.5\r\n    });\r\n    \r\n    rectangle.draggable('true');\r\n    return rectangle;\r\n}\r\n\n\n//# sourceURL=webpack:///./src/rectInit.js?");
 
 /***/ }),
 

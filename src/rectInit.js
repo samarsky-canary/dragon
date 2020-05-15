@@ -1,6 +1,6 @@
 import Konva from 'konva';
 
-module.exports.createRect = function() {
+export default function createRect() {
     var rectangle = new Konva.Rect({
         x: 100,
         y: 100,
