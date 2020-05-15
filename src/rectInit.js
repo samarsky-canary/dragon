@@ -14,7 +14,7 @@ export default function createRect() {
         shadowBlur: 40,
         opacity: 0.5
     });
-    
+    console.log('hello')
     rectangle.draggable('true');
     return rectangle;
 }

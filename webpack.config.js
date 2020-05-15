@@ -1,9 +1,24 @@
 const path = require('path');
-
+const htmlWebpackPlugin = require('html-webpack-plugin');
+const cleaner = require('clean-webpack-plugin');
 module.exports = {
-  entry: './src/index.js',
+    // optimization: {
+    //     splitChunks: {
+    //         chunks: 'all',
+    //     },
+    // },
+  entry: { 
+      index : './src/index.js',
+      rect: './src/rectInit.js',
+    },
+    devtool: 'inline-source-map',
+    devServer: {
+        contentBase: './dist',
+    },
+    plugins: [
+    ],
   output: {
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
   mode: 'development',

@@ -18,4 +18,4 @@ input.addEventListener('click', ()=> {
     var rect = rectInit();
     layer.add(rect);
     stage.add(layer);
-});
+}, true);
