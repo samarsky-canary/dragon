@@ -1,5 +1,5 @@
 import Konva from 'konva';
-import './css/style.css';
+import '../css/style.css';
 import rectInit from './rectInit'
 
 

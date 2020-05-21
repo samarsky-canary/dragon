@@ -3,8 +3,17 @@ body {
 }
 
 #graph-container {
-    background-image: url("grid.gif");
+    background-image: url("../images/grid.gif");
     width: 1000px;
     height: 600px;
     overflow: scroll;
+}
+
+.hwrap {
+    display: flex;
+    flex-direction: row;
+}
+
+.head-buttons {
+    margin: 1rem;
 }

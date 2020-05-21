@@ -1,6 +1,7 @@
 const path = require('path');
-const htmlWebpackPlugin = require('html-webpack-plugin');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
 const cleaner = require('clean-webpack-plugin');
+
 module.exports = {
     // optimization: {
     //     splitChunks: {
@@ -8,14 +9,18 @@ module.exports = {
     //     },
     // },
   entry: { 
-      index : './src/index.js',
-      rect: './src/rectInit.js',
+      graph: './src/js/graph.js',
     },
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
     },
     plugins: [
+        //will automatically inject bundle js into ./dist/index.html
+        new HTMLWebpackPlugin({
+            template: './src/index.html', //source
+            filename: 'index.html'  //destination
+        })
     ],
   output: {
     filename: '[name].bundle.js',
