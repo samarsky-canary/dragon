@@ -1,0 +1,10 @@
+body {
+    background-color: white;
+}
+
+#graph-container {
+    background-image: url("grid.gif");
+    width: 1000px;
+    height: 600px;
+    overflow: scroll;
+}
