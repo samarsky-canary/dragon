@@ -1,8 +1,11 @@
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const cleaner = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
+    mode: 'development',
     // optimization: {
     //     splitChunks: {
     //         chunks: 'all',
@@ -16,32 +19,43 @@ module.exports = {
         contentBase: './dist',
     },
     plugins: [
+        new CleanWebpackPlugin(),
+        new MiniCssExtractPlugin(),
         //will automatically inject bundle js into ./dist/index.html
         new HTMLWebpackPlugin({
-            template: './src/index.html', //source
-            filename: 'index.html'  //destination
-        })
+            template: './src/templates/index.pug', //source
+            minify: false,
+            inject: false,
+        }),
+        new CopyPlugin({
+            patterns: [
+                { from: 'src/resources', to: 'resources' },
+            ],
+        }),
     ],
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
-  mode: 'development',
   module: {
       rules: [
+          // process .pug template's files
           {
-            test: /\.css$/,
-            use: [
-                'style-loader',
-                'css-loader',
-            ],
+              test: /\.pug/,
+              use: 'pug-loader'
+          },
+          {
+              test: /\.s[ac]ss$/i,
+              use: [MiniCssExtractPlugin.loader,'css-loader', 'sass-loader'],
           },
           {
               test: /\.(png|svg|jpg|gif)$/,
-              use: [
-                  'file-loader',
-              ],
+              loader: 'file-loader',
+              options: {
+                  name: '[path][name].[ext]',
+              },
           },
+
       ],
   },
 };

@@ -1,95 +1,146 @@
-import '../css/style.css';
-import diagram from './dsLoader'
-import loadDiagram from "./dsLoader";
+import '../css/style.sass';
+import {mxCell, mxGraph,mxClient,mxConstants,mxRubberband,mxXmlRequest, defineCellStyles} from "./mxGraphDeclaration";
+import {Icon, IconIf} from "./Icon";
 
-var mxgraph = require("mxgraph")({
-    mxImageBasePath: "./src/images",
-    mxBasePath: "./src"
-})
+// инстанцируем область для рисования
+const graph = new mxGraph(document.getElementById('graph-container'));
+new mxRubberband(graph);
+// определяем стиль икон
+defineCellStyles(graph);
+// базовый родитель
+const parent = graph.getDefaultParent();
 
-var mxClient = mxgraph.mxClient;
-var mxGraph = mxgraph.mxGraph;
-var mxRubberband = mxgraph.mxRubberband;
-var mxConstants = mxgraph.mxConstants;
-var mxXmlRequest = mxgraph.mxXmlRequest;
-
-// set style of question (if) icon (rhombus)
-function defineIfCellShape(graph) {
-    var style = new Object();
-    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RHOMBUS;
-    graph.getStylesheet().putCellStyle('IF', style);
-}
-
-// set style of action icon (simple rectangle)
-function defineActionCellShape(graph) {
-    var style = new Object();
-    // set rounded rectangle style
-    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RECTANGLE;
-    // start has the same style as end
-    graph.getStylesheet().putCellStyle('ACTION', style);
-    graph.getStylesheet().putCellStyle('EMPTY', style);
-}
-
-// set style of start and end icon (rounded square)
-function defineStartEndCellShape(graph) {
-    var style = new Object();
-    // set rounded rectangle style
-    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RECTANGLE;
-    style[mxConstants.STYLE_ROUNDED] = true;
-    style[mxConstants.STYLE_ARCSIZE] = 50;
-    // start has the same style as end
-    graph.getStylesheet().putCellStyle('START', style);
-    graph.getStylesheet().putCellStyle('END', style);
-}
-
-
-function defineCellStyles(graph) {
-    defineStartEndCellShape(graph);
-    defineIfCellShape(graph);
-    defineActionCellShape(graph);
-}
-
-function main(container) {
+function main() {
     if (!mxClient.isBrowserSupported) {
-        console.log('no');
-    }
-    else {
-        var graph = new mxGraph(container);
-        defineCellStyles(graph);
-        new mxRubberband(graph);
-        var parent = graph.getDefaultParent();
-
-        graph.getModel().beginUpdate();
-        try
-        {
-            var styles = ['IF', 'ACTION'];
-            var y = 0;
-            var offset = 50;
-            var v1 = graph.insertVertex(parent, null, 'enter', 20, y+=offset, 80, 30, 'START');
-            for (var i = 0; i <3; i++)
-            {
-                var v2 = graph.insertVertex(parent, null, 'action ' + i, 20, y+=offset, 80, 30, styles[i % 2]);
-                var e1 = graph.insertEdge(parent, null, '', v1, v2);
-                v1 = v2;
-            }
-            var v1 = graph.insertVertex(parent, null, 'exit', 20, y+=offset, 80, 30, 'END');
-            var e1 = graph.insertEdge(parent, null, '', v2, v1);
-        }
-        finally
-        {
-            graph.getModel().endUpdate();
-        }
+        alert('mxGraph library not supported by this browser');
+    } else {
+        //TODO: ДЕБАЖНЫЙ ЗАГРУЗЧИК
+        // Production: убрать
+        debugHandleFile();
     }
 };
+main()
 
+/**
+ * Настраиваем input-file элемент и привязываем его к кнопке
+ * это позволит в будущем кастомизировать кнопку
+ */
+const loadInput = document.getElementById('hOpenInput');
+    loadInput.addEventListener('input',handleFiles,false);
+document.getElementById('hOpen')
+    .addEventListener('click', () => loadInput.click());
 
-function emit()
-{
-    var tag = document.getElementById('graph-container');
-    main(tag);
+/**
+ *  Функция обработчик загрузки xml файла
+ */
+function handleFiles(file ='') {
+    const files = this.files;
+    if(files.length != 1)
+    {
+        console.log('User sent more that 1 file or none')
+        return;
+    }
+    files[0].text().then(text => FileParser(text));
 }
 
-emit();
+function debugHandleFile() {
+    var source = '<?xml version="1.0" encoding="utf-8"?>\n' +
+        '<Icons>\n' +
+        '  <icon id="1" previous="" next="3">\n' +
+        '    <type>BEGIN</type>\n' +
+        '    <text />\n' +
+        '  </icon>\n' +
+        '  <icon id="3" previous="1" next="4">\n' +
+        '    <type>EMPTY</type>\n' +
+        '    <text />\n' +
+        '  </icon>\n' +
+        '  <icon id="4" previous="3" next="5">\n' +
+        '    <type>ACTION</type>\n' +
+        '    <text />\n' +
+        '  </icon>\n' +
+        '  <icon id="5" previous="4" next="6">\n' +
+        '    <type>EMPTY</type>\n' +
+        '    <text />\n' +
+        '  </icon>\n' +
+        '  <icon id="6" previous="5" next="7" alter="10" limit="8">\n' +
+        '    <type>IF_ELSE</type>\n' +
+        '    <text />\n' +
+        '  </icon>\n' +
+        '  <icon id="7" previous="6" next="8">\n' +
+        '    <type>EMPTY</type>\n' +
+        '    <text />\n' +
+        '  </icon>\n' +
+        '  <icon id="8" previous="7" next="9">\n' +
+        '    <type>IF_ELSE_LIMIT</type>\n' +
+        '    <text />\n' +
+        '  </icon>\n' +
+        '  <icon id="9" previous="8" next="2">\n' +
+        '    <type>EMPTY</type>\n' +
+        '    <text />\n' +
+        '  </icon>\n' +
+        '  <icon id="2" previous="9" next="">\n' +
+        '    <type>END</type>\n' +
+        '    <text />\n' +
+        '  </icon>\n' +
+        '  <icon id="10" previous="6" next="8">\n' +
+        '    <type>EMPTY</type>\n' +
+        '    <text />\n' +
+        '  </icon>\n' +
+        '</Icons>';
+    FileParser(source);
+    let filename = 'dragon1.xml';
+    document.getElementById('openedFilename').textContent = `Opened: ${filename}`;
+}
 
-var loadSchemeFromFile = document.getElementById('file-selector');
-loadSchemeFromFile.addEventListener('close', loadDiagram(loadSchemeFromFile));
+function fetchIcons(text) {
+    var xDoc = new DOMParser();
+    const doc = xDoc.parseFromString(text,'text/xml');
+    return doc.querySelectorAll('icon');
+}
+
+// Parse specific XML file with dragon scheme
+function FileParser(text) {
+
+    const iconsDOM = fetchIcons(text);
+    let icons = new Map();
+
+    function ExtractIconData() {
+        for (let i = 0; i < iconsDOM.length; i++) {
+            let tmplIcon = new Icon(iconsDOM[i]);
+            if (tmplIcon.type === 'IF_ELSE') {
+                tmplIcon = new IconIf(iconsDOM[i])
+            }
+            icons.set(tmplIcon.id, tmplIcon);
+        }
+    }
+    ExtractIconData();
+
+
+    graph.getModel().beginUpdate();
+    const startX = 60, startY = 50;
+    for (const [key, icon] of icons)
+    {
+        if (icon.previous) {
+            icon.y = icons.get(icon.previous).y + startY;
+        }
+        if (icon.type === 'IF_ELSE') {
+            icons.get(icon.alternative).x += startX * 3;
+        }
+        graph.insertVertex(parent,icon.id,icon.type,icon.x,icon.y,80,30,icon.type);
+    }
+
+    for (const [key, icon] of icons) {
+        const dad = graph.getModel().getCell(icon.id);
+        let child = graph.getModel().getCell(icon.next);
+        if (child) {
+            graph.insertEdge(parent,'','',dad, child,'endArrow=null');
+        }
+        if (icon.type === 'IF_ELSE') {
+            child = graph.getModel().getCell(icon.alternative);
+            graph.insertEdge(parent,'','',dad, child, 'endArrow=null');
+        }
+    }
+    graph.getModel().endUpdate();
+
+
+}

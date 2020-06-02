@@ -1,0 +1,45 @@
+@font-face
+  font-family: 'Raleway'
+  src: url('/resources/fonts/Raleway-Regular.ttf')
+
+$font-style :  Raleway
+body
+  font-family: $font-style
+  background-color: white
+  button
+    font-family: $font-style
+  ul
+    list-style-type: none
+    padding: 0
+
+
+  .nav-wrap
+    display: flex
+    h1
+      margin: 5px
+      padding: 0.5rem
+    ul
+      display: flex
+      li
+        #hOpenInput
+          display: none
+
+  #workplaceWrap
+    display: flex
+
+    .VerticalSectionWrap
+      #insertSectionLabel
+        text-align: center
+      flex-direction: row
+      border-style: ridge
+      ul
+        button
+          width: 5rem
+          margin: 2px
+
+
+    #graph-container
+      background-image: url(../images/grid.gif)
+      width: 1200px
+      height: 600px
+      overflow: scroll
