@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-SERVER="my_database_server";
+SERVER="drakon_database_server";
 PW="223322";
 DB="drakon_db";
 
