@@ -1,0 +1,10 @@
+doctype html
+
+head
+    include particles/head.pug
+
+each css in htmlWebpackPlugin.files.css
+    link(href=css, rel='stylesheet')
+body
+    block content
+foot
