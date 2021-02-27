@@ -2,14 +2,13 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {TypeOrmModule} from '@nestjs/typeorm'
-import {User} from './users/user.entity';
-import { UserModule } from './users/users.module';
-import { UserController } from './users/users.controller';
-import { UsersService } from './users/users.service';
+import {User} from './users/db/user.entity';
+import { UsersModule } from './users/users.module';
 
 
 @Module({
   imports: [
+    UsersModule,
     TypeOrmModule.forRoot({
       name: 'drakon',
       type:'postgres',
@@ -23,7 +22,7 @@ import { UsersService } from './users/users.service';
       logging: false,
     }),
   ],
-  controllers: [AppController, UserController],
-  providers: [AppService, UsersService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
