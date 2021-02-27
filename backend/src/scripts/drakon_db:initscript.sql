@@ -23,3 +23,4 @@ CREATE function user_registration(newname text,newpass text) RETURNS trigger AS 
         return NEW;
     END;
     $registration$ language  plpgsql;
+

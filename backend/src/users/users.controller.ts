@@ -1,4 +1,4 @@
-import {Controller, Get, Post, Param, Body} from "@nestjs/common";
+import {Controller, Get, Post, Param, Body, ParseUUIDPipe, Delete} from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { User } from "./interfaces/user.interface";
 import { UsersService } from "./users.service";
@@ -16,12 +16,12 @@ export class UsersController
     }
 
     @Get(':uuid')
-    getUserById(@Param() params) {
-        return this.usersService.findByUuid(params.uuid);
+    getUserById(@Param('uuid', new ParseUUIDPipe()) uuid : string) {
+        return this.usersService.findByUuid(uuid);
     }
 
-    @Post()
-    create(@Body() createUserDto :CreateUserDto) {
-        return this.usersService.create(createUserDto);
+    @Delete(':uuid')
+    deleteUserByID(@Param('uuid', new ParseUUIDPipe()) uuid: string) {
+        return this.usersService.remove(uuid);
     }
 }
