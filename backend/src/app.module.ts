@@ -5,12 +5,14 @@ import {TypeOrmModule} from '@nestjs/typeorm'
 import { UsersModule } from './users/users.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import { UsersController } from './users/users.controller';
+import { SchemaModule } from './schema/schema.module';
 
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
-    UsersModule ],
+    UsersModule,
+    SchemaModule ],
   controllers: [AppController],
   providers: [AppService],
 })

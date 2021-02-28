@@ -1,8 +1,8 @@
-import {Controller, Get, Post, Param, Body, ParseUUIDPipe, Delete} from "@nestjs/common";
+import {Controller, Get, Post, Param, Body, ParseUUIDPipe, Delete, NotFoundException, Res, HttpStatus} from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { User } from "./interfaces/user.interface";
 import { UsersService } from "./users.service";
-
+import {Response} from 'express'
 
 @Controller('users') 
 export class UsersController
@@ -11,17 +11,23 @@ export class UsersController
     // injected service in constructor
     constructor (private usersService : UsersService) {}
     @Get()
-    async findAll() :Promise<User[]> {
-        return this.usersService.findAll();
+    async findAll(@Res() res : Response) {
+        const users = await this.usersService.findAll();
+        return res.status(HttpStatus.OK).json(users);
     }
 
     @Get(':uuid')
-    getUserById(@Param('uuid', new ParseUUIDPipe()) uuid : string) {
-        return this.usersService.findByUuid(uuid);
+    getUserById(@Res() res : Response, @Param('uuid', new ParseUUIDPipe()) uuid : string) {
+        const user = this.usersService.findByUuid(uuid);
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+        return res.status(HttpStatus.OK).json(user);
     }
 
     @Delete(':uuid')
-    deleteUserByID(@Param('uuid', new ParseUUIDPipe()) uuid: string) {
-        return this.usersService.remove(uuid);
+    async deleteUserByID(@Res() res : Response, @Param('uuid', new ParseUUIDPipe()) uuid: string) {
+        const user = await this.usersService.remove(uuid);
+        return res.status(HttpStatus.OK).json('User deleted');
     }
 }
