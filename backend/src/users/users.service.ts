@@ -16,7 +16,11 @@ export class UsersService {
         return users;
     }
 
-    async findByUuid(uuid : string) : Promise<User> {
+    async findOneByName(username : string ) : Promise<User | undefined>  {
+        return this.usersRepository.findOne({ name : username});
+    }
+
+    async findByUuid(uuid : string) : Promise<User | undefined> {
         return this.usersRepository.findOne(uuid);
     }
 

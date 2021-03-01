@@ -6,6 +6,7 @@
     "password": "223322",
     "database": "drakon_db",
     "entities": ["dist/**/db/*.entity{.ts,.js}"],
-    "synchronize": true,
-    "logging": false
+    "synchronize": false,
+    "logging": false,
+    "retryAttempts": 1
 }

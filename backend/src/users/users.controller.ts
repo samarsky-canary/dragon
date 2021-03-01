@@ -1,6 +1,5 @@
 import {Controller, Get, Post, Param, Body, ParseUUIDPipe, Delete, NotFoundException, Res, HttpStatus} from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
-import { User } from "./interfaces/user.interface";
 import { UsersService } from "./users.service";
 import {Response} from 'express'
 
@@ -20,7 +19,7 @@ export class UsersController
     getUserById(@Res() res : Response, @Param('uuid', new ParseUUIDPipe()) uuid : string) {
         const user = this.usersService.findByUuid(uuid);
         if (!user) {
-            throw new NotFoundException('User not found');
+            //throw new NotFoundException('User not found');
         }
         return res.status(HttpStatus.OK).json(user);
     }

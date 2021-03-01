@@ -3,7 +3,7 @@ import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 @Entity("users")
 export class User {
     @PrimaryGeneratedColumn("uuid")
-    uuid: string;
+    id: string;
     
     @Column({
         type: "varchar",
@@ -12,5 +12,5 @@ export class User {
     name: string;
 
     @Column()
-    password: string;
+    pswhash: string;
 };
