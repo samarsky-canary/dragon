@@ -7,7 +7,6 @@ export class AuthService {
     constructor (private usersService : UsersService){}
     private saltRounds: number = 10;
 
-
     async validateUser(username : string, password : string): Promise<any> {
         const user = await this.usersService.findOneByName(username);
         console.log(user.pswhash);
