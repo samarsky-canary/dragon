@@ -6,23 +6,34 @@ import {Response} from 'express'
 @Controller('users') 
 export class UsersController
 {
-
     // injected service in constructor
     constructor (private usersService : UsersService) {}
+
+
     @Get()
-    async findAll(@Res() res : Response) {
-        const users = await this.usersService.findAll();
-        return res.status(HttpStatus.OK).json(users);
+    GetAllUsers() {
+        return this.usersService.findAll();
     }
 
-    @Get(':uuid')
-    getUserById(@Res() res : Response, @Param('uuid', new ParseUUIDPipe()) uuid : string) {
-        const user = this.usersService.findByUuid(uuid);
-        if (!user) {
-            //throw new NotFoundException('User not found');
-        }
-        return res.status(HttpStatus.OK).json(user);
+    @Post()
+    getUserByName(@Res() res: Response, @Body() loginData : LoginDTO) {
+        const response = this.usersService.findOneByName(loginData.userName);
+        console.log(loginData);
+        if (!response) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        } 
+        response.then(user => {
+            if (!user) {
+                return res.status(HttpStatus.NOT_FOUND).json("hello");
+            }
+            if (user.pswhash !== loginData.password) {
+                return res.status(HttpStatus.UNAUTHORIZED);
+            }
+            // CREATE TOKEN HERE
+            return res.status(HttpStatus.OK).json(response);
+        });
     }
+
 
     @Delete(':uuid')
     async deleteUserByID(@Res() res : Response, @Param('uuid', new ParseUUIDPipe()) uuid: string) {

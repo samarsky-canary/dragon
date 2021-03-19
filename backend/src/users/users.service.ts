@@ -20,8 +20,12 @@ export class UsersService {
         return this.usersRepository.findOne({ name : username});
     }
 
-    async findByUuid(uuid : string) : Promise<User | undefined> {
-        return this.usersRepository.findOne(uuid);
+
+    async createUser(userData : LoginDTO) : Promise<User | undefined> {
+        var user = new User();
+        user.name = userData.userName;
+        user.pswhash = userData.password;
+        return this.usersRepository.create()
     }
 
     async remove(uuid: string) : Promise<DeleteResult> {

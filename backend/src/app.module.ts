@@ -8,10 +8,12 @@ import { UsersController } from './users/users.controller';
 import {ServeStaticModule} from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({rootPath: join(__dirname, "..", "..", "client", "dist"), exclude: ["/api*"]}),
+    ConfigModule.forRoot(),
+    ServeStaticModule.forRoot({rootPath: join(__dirname, "..", "..", "client-react", "build"), exclude: ["/api*"]}),
     TypeOrmModule.forRoot({autoLoadEntities: true}),
     UsersModule,
     AuthModule],
