@@ -1,4 +1,4 @@
 interface LoginDTO {
-    userName: string;
+    name: string;
     password: string;
 }

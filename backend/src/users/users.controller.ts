@@ -2,12 +2,13 @@ import {Controller, Get, Post, Param, Body, ParseUUIDPipe, Delete, NotFoundExcep
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UsersService } from "./users.service";
 import {Response} from 'express'
+import { AuthService } from "src/auth/auth.service";
 
 @Controller('users') 
 export class UsersController
 {
     // injected service in constructor
-    constructor (private usersService : UsersService) {}
+    constructor (private usersService : UsersService, private authService: AuthService) {}
 
 
     @Get()
@@ -16,22 +17,16 @@ export class UsersController
     }
 
     @Post()
-    getUserByName(@Res() res: Response, @Body() loginData : LoginDTO) {
-        const response = this.usersService.findOneByName(loginData.userName);
+    async getUserByName(@Res() res: Response, @Body() loginData : LoginDTO) {
+        const validatedUser = await this.authService.validateUser(loginData);
+
         console.log(loginData);
-        if (!response) {
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR);
-        } 
-        response.then(user => {
-            if (!user) {
-                return res.status(HttpStatus.NOT_FOUND).json("hello");
-            }
-            if (user.pswhash !== loginData.password) {
-                return res.status(HttpStatus.UNAUTHORIZED);
-            }
-            // CREATE TOKEN HERE
-            return res.status(HttpStatus.OK).json(response);
-        });
+        if (!validatedUser) {
+            return res.status(HttpStatus.NOT_FOUND).json("Bad authentification");
+        }
+        // CREATE TOKEN HERE
+        const userResponse: UserDto = validatedUser;
+        return res.status(HttpStatus.OK).json(validatedUser.id);
     }
 
 

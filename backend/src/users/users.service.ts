@@ -17,13 +17,18 @@ export class UsersService {
     }
 
     async findOneByName(username : string ) : Promise<User | undefined>  {
-        return this.usersRepository.findOne({ name : username});
+        if (!username) {
+            console.log("trying to find undefined username")
+        }
+        return this.usersRepository.findOne({where: {
+            name: username
+        }});
     }
 
 
     async createUser(userData : LoginDTO) : Promise<User | undefined> {
         var user = new User();
-        user.name = userData.userName;
+        user.name = userData.name;
         user.pswhash = userData.password;
         return this.usersRepository.create()
     }

@@ -5,7 +5,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
-  await app.listen(5000);
+  await app.listen(process.env.PORT);
   app.enableCors(); // allow cross origin resource sharing with the client
 }
 bootstrap();
