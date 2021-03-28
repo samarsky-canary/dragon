@@ -20,8 +20,7 @@ export class UsersController
     async getUserByName(@Res() res: Response, @Body() loginData : LoginDTO) {
         const validatedUser = await this.authService.validateUser(loginData);
 
-        console.log(loginData);
-        if (!validatedUser) {
+        if (validatedUser === undefined) {
             return res.status(HttpStatus.NOT_FOUND).json("Bad authentification");
         }
         // CREATE TOKEN HERE

@@ -10,14 +10,16 @@ export class AuthService {
 
     async validateUser(loginData : LoginDTO): Promise<User | undefined> {
         const user = await this.usersService.findOneByName(loginData.name);
-
-        hash(loginData.password, this.saltRounds).then(hash=>{
-            console.log(hash);
-            if (user && user.pswhash === hash ){
-                const {pswhash, ...result} = user;
-                return result;
+        
+        // hash(loginData.password, this.saltRounds).then(hash=>{
+        //     console.log(hash);
+            //if (user && user.pswhash === hash ){
+            if (user && user.pswhash === loginData.password ){
+                
+            const {pswhash, ...result} = user;
+                return user;
             }
-        });
+       // });
         return undefined;
     }
 }

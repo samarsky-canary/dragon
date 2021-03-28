@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { LoginPage } from './loginPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { NavigationBar } from './components/navigationBar';
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <LoginPage></LoginPage>
+    <NavigationBar></NavigationBar>
   </React.StrictMode>,
   document.getElementById('root')
 );
