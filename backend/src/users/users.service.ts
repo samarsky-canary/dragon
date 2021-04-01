@@ -1,7 +1,8 @@
-import { Injectable } from "@nestjs/common"
+import { BadRequestException, Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm";
 import { DeleteResult, Repository } from "typeorm";
 import { User } from "./db/user.entity";
+import { CreateUserDto } from "./dto/create-user.dto";
 
 
 @Injectable()
@@ -17,22 +18,25 @@ export class UsersService {
     }
 
     async findOneByName(username : string ) : Promise<User | undefined>  {
-        if (!username) {
-            console.log("trying to find undefined username")
+        if (username === undefined) {
+            throw new BadRequestException("username is undefinied");
         }
-        return this.usersRepository.findOne({where: {
+        
+        const user = await this.usersRepository.findOne({where: {
             name: username
         }});
+        console.log(user.name);
+        return user;
     }
 
-
-    async createUser(userData : LoginDTO) : Promise<User | undefined> {
+    async create(userData : CreateUserDto) : Promise<User | undefined> {
         var user = new User();
         user.name = userData.name;
         user.pswhash = userData.password;
-        return this.usersRepository.create()
+        return this.usersRepository.create(user);
     }
 
+    
     async remove(uuid: string) : Promise<DeleteResult> {
         const deletedUser = await this.usersRepository.delete(uuid);
         return deletedUser;

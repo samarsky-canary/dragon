@@ -18,7 +18,7 @@ export class UsersController
 
     @Post()
     async getUserByName(@Res() res: Response, @Body() loginData : LoginDTO) {
-        const validatedUser = await this.authService.validateUser(loginData);
+        const validatedUser = await this.authService.validateUser(loginData.name, loginData.password);
 
         if (validatedUser === undefined) {
             return res.status(HttpStatus.NOT_FOUND).json("Bad authentification");
