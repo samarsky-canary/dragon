@@ -1,5 +1,6 @@
+import {IsNotEmpty, IsString} from 'class-validator'
 export class CreateUserDto {
-    uuid: string;
     name: string;
     password: string;
+    role: string;
 }

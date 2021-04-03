@@ -12,5 +12,9 @@ export class User {
     name: string;
 
     @Column()
-    pswhash: string;
+    password: string;
+
+
+    @Column()
+    role: string;
 };

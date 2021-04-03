@@ -21,5 +21,5 @@
 //         default: () => "'[]'",
 //         nullable: false,
 //     })
-//     users : Array<{id: number}> = [];
+//     users : Array<{uuid: number}> = [];
 // }

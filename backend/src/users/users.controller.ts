@@ -10,28 +10,20 @@ export class UsersController
     // injected service in constructor
     constructor (private usersService : UsersService, private authService: AuthService) {}
 
+    @Get('/:id')
+    async findOneById(@Param('id') id): Promise<any> {
+        return this.usersService.findOneById(id);
+    }
 
     @Get()
-    GetAllUsers() {
+    async findAll(): Promise<any> {
         return this.usersService.findAll();
     }
 
-    @Post()
-    async getUserByName(@Res() res: Response, @Body() loginData : LoginDTO) {
-        const validatedUser = await this.authService.validateUser(loginData.name, loginData.password);
-
-        if (validatedUser === undefined) {
-            return res.status(HttpStatus.NOT_FOUND).json("Bad authentification");
-        }
-        // CREATE TOKEN HERE
-        const userResponse: UserDto = validatedUser;
-        return res.status(HttpStatus.OK).json(validatedUser.id);
-    }
-
-
-    @Delete(':uuid')
-    async deleteUserByID(@Res() res : Response, @Param('uuid', new ParseUUIDPipe()) uuid: string) {
-        const user = await this.usersService.remove(uuid);
-        return res.status(HttpStatus.OK).json('User deleted');
-    }
+    
+    // @Delete(':uuid')
+    // async deleteUserByID(@Res() res : Response, @Param('uuid', new ParseUUIDPipe()) uuid: string) {
+    //     const user = await this.usersService.remove(uuid);
+    //     return res.status(HttpStatus.OK).json('User deleted');
+    // }
 }

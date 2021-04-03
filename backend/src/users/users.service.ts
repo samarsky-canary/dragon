@@ -8,37 +8,46 @@ import { CreateUserDto } from "./dto/create-user.dto";
 @Injectable()
 export class UsersService {
 
+
     constructor (
     @InjectRepository(User) private usersRepository : Repository<User>,) 
     {}
 
-    async findAll() : Promise<User[]> {
-        const users = this.usersRepository.find();
-        return users;
+
+    async findAll() : Promise <User[]> {
+        return this.usersRepository.find();
     }
 
-    async findOneByName(username : string ) : Promise<User | undefined>  {
-        if (username === undefined) {
-            throw new BadRequestException("username is undefinied");
-        }
-        
-        const user = await this.usersRepository.findOne({where: {
+    async findOneById(id: string) : Promise<User | undefined> {
+        return await this.usersRepository.findOne(id)
+        .then(user => {
+            return (user) 
+            ? user
+            : undefined
+        });
+    }
+
+    async findOneByName(username : string ) : Promise<User | undefined>  {        
+        return await this.usersRepository.findOne({where: {
             name: username
-        }});
-        console.log(user.name);
-        return user;
+        }})
+        .then(user => {
+            return (user) 
+            ? user
+            : undefined
+        });
     }
 
-    async create(userData : CreateUserDto) : Promise<User | undefined> {
-        var user = new User();
-        user.name = userData.name;
-        user.pswhash = userData.password;
-        return this.usersRepository.create(user);
-    }
+    // async create(userData : CreateUserDto) : Promise<User | undefined> {
+    //     var user = new User();
+    //     user.name = userData.name;
+    //     user.pswhash = userData.password;
+    //     return this.usersRepository.create(user);
+    // }
 
     
-    async remove(uuid: string) : Promise<DeleteResult> {
-        const deletedUser = await this.usersRepository.delete(uuid);
-        return deletedUser;
-    }
+    // async remove(uuid: string) : Promise<DeleteResult> {
+    //     const deletedUser = await this.usersRepository.delete(uuid);
+    //     return deletedUser;
+    // }
 }
