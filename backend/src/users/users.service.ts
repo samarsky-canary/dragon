@@ -13,7 +13,6 @@ export class UsersService {
     @InjectRepository(User) private usersRepository : Repository<User>,) 
     {}
 
-
     async findAll() : Promise <User[]> {
         return this.usersRepository.find();
     }
@@ -38,16 +37,16 @@ export class UsersService {
         });
     }
 
-    // async create(userData : CreateUserDto) : Promise<User | undefined> {
-    //     var user = new User();
-    //     user.name = userData.name;
-    //     user.pswhash = userData.password;
-    //     return this.usersRepository.create(user);
-    // }
+    async create(userData : CreateUserDto) : Promise<User | undefined> {
+        const user = this.usersRepository.create(userData);
+        return await this.usersRepository.save(user).catch(err =>
+            Promise.reject(new BadRequestException(err.toString()))
+            );
+    }
 
     
-    // async remove(uuid: string) : Promise<DeleteResult> {
-    //     const deletedUser = await this.usersRepository.delete(uuid);
-    //     return deletedUser;
-    // }
+    async remove(uuid: string) : Promise<DeleteResult> {
+        const deletedUser = await this.usersRepository.delete(uuid);
+        return deletedUser;
+    }
 }

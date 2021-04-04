@@ -3,7 +3,7 @@
     "host":"localhost",
     "port": 5432,
     "username": "postgres",
-    "password": "223322",
+    "password": "2233",
     "database": "drakon_db",
     "entities": ["dist/**/db/*.entity{.ts,.js}"],
     "synchronize": false,

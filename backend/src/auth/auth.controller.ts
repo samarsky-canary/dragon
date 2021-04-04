@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
@@ -9,11 +9,21 @@ import { AuthService } from './auth.service';
 export class AuthController {
     constructor (private readonly authService : AuthService) {}
 
+
+
+    @Post('signup')
+    public async signup(@Res() res: Response, @Body() user : CreateUserDto) {
+        const createdUser = await this.authService.signup(user);
+        const {password, ...response} = createdUser;
+        return res.status(HttpStatus.CREATED).json(response);
+    }
+
+
     @Post('login')
     public async login(@Res() res: Response, @Body() loginData: UserDto) {
         const validatedUser = await this.authService.validateUser(loginData.name, loginData.password);
         if (!validatedUser) {
-            return res.status(HttpStatus.NOT_FOUND).json("User not found");
+            throw new ForbiddenException('Password doesnt match');
         }
         // CREATE TOKEN HERE
         const userResponse: CreateUserDto = validatedUser;
