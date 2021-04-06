@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, HttpStatus, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
@@ -20,7 +20,7 @@ export class AuthController {
 
 
     @Post('login')
-    public async login(@Res() res: Response, @Body() loginData: UserDto) {
+    public async login(@Res() res: Response, @Body() loginData: CreateUserDto) {
         const validatedUser = await this.authService.validateUser(loginData.name, loginData.password);
         if (!validatedUser) {
             throw new ForbiddenException('Password doesnt match');

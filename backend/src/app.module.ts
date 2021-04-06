@@ -7,6 +7,7 @@ import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthController } from './auth/auth.controller';
+import { CuratorsModule } from './curators/curators.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { AuthController } from './auth/auth.controller';
     ServeStaticModule.forRoot({rootPath: join(__dirname, "..", "..", "client-react", "build"), exclude: ["/api*"]}),
     TypeOrmModule.forRoot({autoLoadEntities: true}),
     UsersModule,
-    AuthModule],
+    AuthModule,
+    CuratorsModule],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -43,6 +43,8 @@ export const LoginPage = () => {
                 </Row>
                 <Row className="justify-content-md-center">
                     <Button variant="outline-primary" onClick={e=>{handleLogInButtonClick();}}>Login</Button>{' '}
+                </Row>
+                <Row className="justify-content-md-center">
                     <Button variant="outline-primary">Register</Button>{' '}
                 </Row>
             </Container>
