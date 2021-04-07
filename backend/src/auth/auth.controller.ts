@@ -1,5 +1,4 @@
 import { Body, Controller, HttpStatus, Post, Request, Res, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { AuthService } from './auth.service';
@@ -8,7 +7,6 @@ import {LocalAuthGuard} from "./local.auth-guard";
 @Controller('auth')
 export class AuthController {
     constructor (private readonly authService : AuthService) {}
-
 
 
     @Post('signup')
@@ -32,7 +30,7 @@ export class AuthController {
     @UseGuards(LocalAuthGuard)
     @Post('login')
     async login(@Request() req) {
-        return req.user;
+        return this.authService.login(req.user);
     }
 
 }

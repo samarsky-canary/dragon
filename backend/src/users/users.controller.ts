@@ -1,20 +1,19 @@
-import {Controller, Get, Post, Param, Body, ParseUUIDPipe, Delete, NotFoundException, Res, HttpStatus} from "@nestjs/common";
-import { CreateUserDto } from "./dto/create-user.dto";
+import {Controller, Get, Post, Param, Body, ParseUUIDPipe, Delete, NotFoundException, Res, HttpStatus, UseGuards} from "@nestjs/common";
+import { JwtAuthGuard } from "src/auth/jwt.auth-guard";
 import { UsersService } from "./users.service";
-import {Response} from 'express'
-import { AuthService } from "src/auth/auth.service";
 
 @Controller('users') 
 export class UsersController
 {
     // injected service in constructor
-    constructor (private usersService : UsersService, private authService: AuthService) {}
+    constructor (private usersService : UsersService) {}
 
     @Get('/:id')
     async findOneById(@Param('id') id): Promise<any> {
         return this.usersService.findOneById(id);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get()
     async findAll(): Promise<any> {
         return this.usersService.findAll();
