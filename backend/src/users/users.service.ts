@@ -18,21 +18,21 @@ export class UsersService {
     }
 
     async findOneById(id: string) : Promise<User | undefined> {
-        return await this.usersRepository.findOne(id)
+        return this.usersRepository.findOne(id)
         .then(user => {
             return (user) 
-            ? user
+            ? Promise.resolve(user)
             : undefined
         });
     }
 
-    async findOneByName(username : string ) : Promise<User | undefined>  {        
+    async findOneByName(username : string ) : Promise<User | undefined>  {
         return await this.usersRepository.findOne({where: {
-            name: username
+            username: username
         }})
         .then(user => {
             return (user) 
-            ? user
+            ? Promise.resolve(user)
             : undefined
         });
     }

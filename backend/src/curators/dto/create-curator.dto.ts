@@ -5,12 +5,12 @@ export class CuratorDto {
 
     @IsNotEmpty()
     @IsUUID()
-    @ManyToOne(type => User, user => user.id)
+    @ManyToOne(type => User, user => user.uuid)
     uuid_curator: string;
 
     @IsNotEmpty()
     @IsUUID()
-    @ManyToOne(type => User, user => user.id)
+    @ManyToOne(type => User, user => user.uuid)
     uuid_user: string;
 
     @IsString()
