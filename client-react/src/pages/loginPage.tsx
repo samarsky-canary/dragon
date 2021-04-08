@@ -24,7 +24,7 @@ export const LoginPage = () => {
         
         axios.post(baseApiURl,userData).then((response: any) => {
             console.log(response);
-        });
+        }).catch(err=> console.log(err));
     }
 
     const greet = "DRAKON IDE";
