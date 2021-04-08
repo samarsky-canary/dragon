@@ -1,9 +1,9 @@
-import { inherits } from 'node:util';
 import React, {useState} from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
+import axios from 'axios';
 
 class LoginDTO {
-    userName: string | undefined;
+    username: string | undefined;
     password: string | undefined;
 }
 
@@ -13,19 +13,18 @@ export const LoginPage = () => {
 
     const [login, setLoginValue]= useState<string>("");
     const [password, setPasswordValue]= useState<string>("");
-
+    const [jwtToken, setJwtToken]= useState<string>("");
 
     function handleLogInButtonClick() {
+        const baseApiURl = "http://localhost:5000/api/auth/login";
+
         const userData = new LoginDTO();
-        userData.userName = login;
+        userData.username = login;
         userData.password = password;
-         
-        const requestOptions = {
-            method: 'POST',
-            body: JSON.stringify(userData),
-        };
-        const baseURL = "http://localhost:5000/api/users";
-        fetch(baseURL,requestOptions).then(response => console.log(response));
+        
+        axios.post(baseApiURl,userData).then((response: any) => {
+            console.log(response);
+        });
     }
 
     const greet = "DRAKON IDE";

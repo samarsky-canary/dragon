@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common"
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm";
 import { DeleteResult, Repository } from "typeorm";
 import { User } from "./db/user.entity";
@@ -7,8 +7,6 @@ import { CreateUserDto } from "./dto/create-user.dto";
 
 @Injectable()
 export class UsersService {
-
-
     constructor (
     @InjectRepository(User) private usersRepository : Repository<User>,) 
     {}
@@ -22,8 +20,9 @@ export class UsersService {
         .then(user => {
             return (user) 
             ? Promise.resolve(user)
-            : undefined
-        });
+            : Promise.reject("User not found")
+        })
+        .catch(err => Promise.reject(new NotFoundException(err)));
     }
 
     async findOneByName(username : string ) : Promise<User | undefined>  {
@@ -33,8 +32,9 @@ export class UsersService {
         .then(user => {
             return (user) 
             ? Promise.resolve(user)
-            : undefined
-        });
+            : Promise.reject("User not found")
+        })
+        .catch(err => Promise.reject(new NotFoundException(err)));
     }
 
     async create(userData : CreateUserDto) : Promise<User | undefined> {
@@ -44,9 +44,13 @@ export class UsersService {
             );
     }
 
+
+    async update(id: string, payload: CreateUserDto) {
+        return this.usersRepository.findOne(id);
+    }
+
     
-    async remove(uuid: string) : Promise<DeleteResult> {
-        const deletedUser = await this.usersRepository.delete(uuid);
-        return deletedUser;
+    async delete(uuid: string) : Promise<DeleteResult> {
+        return await this.usersRepository.delete(uuid);
     }
 }

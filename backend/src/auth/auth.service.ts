@@ -1,52 +1,57 @@
-import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
-import { hash, compare } from 'bcrypt';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UserRole } from 'src/users/enum';
 import { User } from 'src/users/db/user.entity';
 import {v4 as uuidv4} from 'uuid'
 import {IViewUser} from "../users/interfaces/user.interface";
 import { JwtService } from '@nestjs/jwt';
+import { CryptoService } from './bcrypt.service';
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService : JwtService,
+    private cryptoService: CryptoService
     )
     {}
 
-  static salt = 10;
 
-  async signup(user : CreateUserDto) : Promise<User> {
+  async signUp(user : CreateUserDto) : Promise<any> {
     const newUser = new User();
     newUser.username = user.username;
-    newUser.password  = await hash(user.password, AuthService.salt);
-    newUser.uuid = uuidv4();
+    newUser.password  = await this.cryptoService.hashPassword(user.password);
     newUser.role = UserRole.USER;
-    return this.usersService.create(newUser);
+    return this.usersService.create(newUser)
+    .then(user => {
+      return this.createToken(user);
+    });
   }
 
 
 
-  async validateUser(username: string, password: string): Promise<IViewUser | undefined> {
-    const user = await this.usersService.findOneByName(username);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    if (await compare(password, user.password)) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return undefined;
+  async logIn(username: string, password: string): Promise<IViewUser | undefined> {
+    return await this.usersService.findOneByName(username)
+    .then(async user => {
+      return await this.cryptoService.checkPassword(password, user.password) 
+      ? Promise.resolve(user)
+      : Promise.reject(new UnauthorizedException("Invalid password"))
+    })
   }
 
 
-  async login(user: any) {
-    const payload = {username: user.username, sub: user.userId};
+  async createToken(user) {
+    const payload = {username: user.username, sub: user.uuid};
     return {
       access_token: this.jwtService.sign(payload),
-      role: user.role
+      uuid: user.uuid,
+      role: user.role,
     }
+  }
+
+  async verify(payload) {
+    return await this.usersService.findOneById(payload.sub)
+    .then(signedUser => Promise.resolve(signedUser))
+    .catch(err => Promise.reject(new UnauthorizedException("Invalid Authorization")))
   }
 }

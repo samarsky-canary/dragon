@@ -1,5 +1,4 @@
-import { Body, Controller, HttpStatus, Post, Request, Res, UseGuards } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, HttpCode, HttpStatus, Post, Request, Res, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import {LocalAuthGuard} from "./local.auth-guard";
@@ -9,28 +8,19 @@ export class AuthController {
     constructor (private readonly authService : AuthService) {}
 
 
+    @HttpCode(HttpStatus.CREATED)
     @Post('signup')
-    public async signup(@Res() res: Response, @Body() user : CreateUserDto) {
-        const createdUser = await this.authService.signup(user);
+    public async signup(@Body() user : CreateUserDto) {
+        const createdUser = await this.authService.signUp(user);
         const {password, ...response} = createdUser;
-        return res.status(HttpStatus.CREATED).json(response);
+        return response;
     }
 
-
-    // @Post('login')
-    // public async login(@Res() res: Response, @Body() loginData: CreateUserDto) {
-    //     const validatedUser = await this.authService.validateUser(loginData.username, loginData.password);
-    //     if (!validatedUser) {
-    //         throw new ForbiddenException('Password doesnt match');
-    //     }
-    //     // CREATE TOKEN HERE
-    //     return res.status(HttpStatus.OK).json(validatedUser);
-    // }
-
+    @HttpCode(HttpStatus.OK)
     @UseGuards(LocalAuthGuard)
     @Post('login')
     async login(@Request() req) {
-        return this.authService.login(req.user);
+        return this.authService.createToken(req.user);
     }
 
 }
