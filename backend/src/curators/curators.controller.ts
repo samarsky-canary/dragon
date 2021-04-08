@@ -1,8 +1,11 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Res, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Res, UseGuards, ValidationPipe } from '@nestjs/common';
 import { Response } from 'express';
+import { JwtAuthGuard } from 'src/auth/jwt.auth-guard';
 import { CuratorService } from './curator.service';
 import { CuratorDto } from './dto/create-curator.dto';
 
+
+//@UseGuards(JwtAuthGuard)
 @Controller('curators')
 export class CuratorsController {
 

@@ -1,38 +1,57 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
-import { hash, genSalt, compare } from 'bcrypt';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UserRole } from 'src/users/enum';
 import { User } from 'src/users/db/user.entity';
 import {v4 as uuidv4} from 'uuid'
+import {IViewUser} from "../users/interfaces/user.interface";
+import { JwtService } from '@nestjs/jwt';
+import { CryptoService } from './bcrypt.service';
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private jwtService : JwtService,
+    private cryptoService: CryptoService
+    )
+    {}
 
-  static salt = 10;
 
-  async signup(user : CreateUserDto) : Promise<User> {
+  async signUp(user : CreateUserDto) : Promise<any> {
     const newUser = new User();
-    newUser.name = user.name;
-    newUser.password  = await hash(user.password, AuthService.salt);
-    newUser.id = uuidv4();
+    newUser.username = user.username;
+    newUser.password  = await this.cryptoService.hashPassword(user.password);
     newUser.role = UserRole.USER;
-    return this.usersService.create(newUser);
+    return this.usersService.create(newUser)
+    .then(user => {
+      return this.createToken(user);
+    });
   }
 
 
 
-  async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.usersService.findOneByName(username);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+  async logIn(username: string, password: string): Promise<IViewUser | undefined> {
+    return await this.usersService.findOneByName(username)
+    .then(async user => {
+      return await this.cryptoService.checkPassword(password, user.password) 
+      ? Promise.resolve(user)
+      : Promise.reject(new UnauthorizedException("Invalid password"))
+    })
+  }
 
-    const isCorrect = await compare(password, user.password);
-    if (user && isCorrect) {
-      const { password, ...result } = user;
-      return result;
+
+  async createToken(user) {
+    const payload = {username: user.username, sub: user.uuid};
+    return {
+      access_token: this.jwtService.sign(payload),
+      uuid: user.uuid,
+      role: user.role,
     }
-    return null;
+  }
+
+  async verify(payload) {
+    return await this.usersService.findOneById(payload.sub)
+    .then(signedUser => Promise.resolve(signedUser))
+    .catch(err => Promise.reject(new UnauthorizedException("Invalid Authorization")))
   }
 }

@@ -1,6 +1,5 @@
-export interface IUser {
+export type IViewUser = {
     uuid: string;
-    name: string;
-    password: string;
+    username: string;
     role: string;
 }

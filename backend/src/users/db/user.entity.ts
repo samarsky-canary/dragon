@@ -2,14 +2,16 @@ import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity("users")
 export class User {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+    @PrimaryGeneratedColumn("uuid",{
+        name: "id"
+    })
+    uuid: string;
     
     @Column({
         type: "varchar",
         length: 50,
     })
-    name: string;
+    username: string;
 
     @Column()
     password: string;
@@ -17,4 +19,4 @@ export class User {
 
     @Column()
     role: string;
-};
+}
