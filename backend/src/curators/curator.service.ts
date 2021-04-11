@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException, NotImplementedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { Curator } from './db/curator.entity';
@@ -21,6 +21,14 @@ export class CuratorService {
                 throw new NotFoundException("Relation not found");
             } 
         )
+    }
+
+    async findStudents(id_curator: number) {
+        throw NotImplementedException;
+    }
+
+    async findCurators(id_user: number) {
+        throw NotImplementedException;
     }
 
     async update(id: number, payload: CuratorDto) {

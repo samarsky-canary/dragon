@@ -28,7 +28,6 @@ export class UsersController
         return this.usersService.findAll();
     }
 
-    
     @Delete('/:id')
     async deleteUserByID(@Param('id', new ParseUUIDPipe()) id: string) {
         return this.usersService.delete(id);

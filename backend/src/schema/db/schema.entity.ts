@@ -1,25 +1,30 @@
-// import {} from "@nestjs/common";
-// import { User } from "src/users/db/user.entity";
-// import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import {} from "@nestjs/common";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
-// @Entity("schema")
-// export class Schema {
-//     @PrimaryGeneratedColumn('uuid')
-//     uuid: string;
+@Entity("dragon_scheme")
+export class Schema {
+    @PrimaryGeneratedColumn("uuid",{
+        name: "id",
+    })
+    uuid: string;
 
-//     @Column()
-//     schema_name : string;
+    @Column({
+        type: "varchar",
+        length: 50
+    })
+    name : string;
 
+    @Column("uuid",{
+        name: "id_user"
+    })
+    idUser : string
 
-//     @OneToOne(type => User)
-//     @JoinColumn()
-//     user : User;
+    @Column("jsonb")
+    data: JSON;
 
-//     @Column({
-//         type: "jsonb",
-//         array: false,
-//         default: () => "'[]'",
-//         nullable: false,
-//     })
-//     users : Array<{uuid: number}> = [];
-// }
+    @Column("timestamp")
+    last_changed: Date;
+
+    @Column("uuid")
+    last_changed_by_id: string;
+}

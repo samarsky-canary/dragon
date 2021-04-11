@@ -1,4 +1,5 @@
 export enum UserRole {
     CURATOR = 'CURATOR',
-    USER = 'USER'
+    USER = 'USER',
+    ADMIN = 'ADMIN'
 }
