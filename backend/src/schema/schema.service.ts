@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Schema } from './db/schema.entity';
 import { CreateSchemaDto } from './dto/schema.dto';
-// import { Schema } from './db/schema.entity';
 
 @Injectable()
 export class SchemaService {
@@ -22,7 +21,7 @@ export class SchemaService {
             schema => {
                 if (schema) return schema;
                 throw new NotFoundException("schema not found");
-            } 
+            }  
         )
     }
 
