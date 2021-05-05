@@ -5,8 +5,8 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import { EditorPage } from "../pages/editorPage";
-import { LoginPage } from "../pages/loginPage";
+import { EditorPage } from "../Editor/editorPage";
+import { Login } from "../Login/Login";
 
 export const NavigationBar = () => {
     return (
@@ -27,9 +27,9 @@ export const NavigationBar = () => {
                     renders the first one that matches the current URL. */}
                 <Switch>
                     <Route exact path="/">
-                        <LoginPage />
+                        <Login />
                     </Route>
-                    <Route path="/editor">
+                    <Route exact path="/editor">
                         <EditorPage />
                     </Route>
                 </Switch>
