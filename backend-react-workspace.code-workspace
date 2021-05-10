@@ -8,9 +8,6 @@
 		},
 		{
 			"path": "docs"
-		},
-		{
-			"path": "shared"
 		}
 	],
 	"settings": {}

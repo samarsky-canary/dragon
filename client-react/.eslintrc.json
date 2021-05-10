@@ -21,5 +21,7 @@
         "@typescript-eslint"
     ],
     "rules": {
-    }
+        // other rules
+        "react/prop-types" : "off"
+      }
 }

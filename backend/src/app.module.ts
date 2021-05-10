@@ -14,7 +14,7 @@ import { SchemaModule } from './schema/schema.module';
   imports: [
     ConfigModule.forRoot(),
     ServeStaticModule.forRoot({rootPath: join(__dirname, "..", "..", "client-react", "build"), exclude: ["/api*"]}),
-    ServeStaticModule.forRoot({renderPath: '/sample', rootPath: join(__dirname, "..", "..", "client", "dist"), exclude: ["/api*"]}),
+    //ServeStaticModule.forRoot({renderPath: '/sample', rootPath: join(__dirname, "..", "..", "client", "dist"), exclude: ["/api*"]}),
     
     TypeOrmModule.forRoot({autoLoadEntities: true}),
     UsersModule,

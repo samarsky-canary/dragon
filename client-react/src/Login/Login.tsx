@@ -1,47 +1,43 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { Container, Row, Button } from 'react-bootstrap';
-import styles from './Login.module.scss';
+import './Login.module.scss';
+import {AuthStateService} from '../services/AuthStateService';
+const greet = "DRAKON IDE";
+
+const authStateService = new AuthStateService().getInstance();
 
 
-class LoginDTO {
-  username: string | undefined;
-  password: string | undefined;
+interface Props {
+    setToken: (value: string) => void;
 }
 
-
-export const Login: React.FC = () => {
-  const [login, setLoginValue]= useState<string>("");
+export const Login: React.FC<Props> = ({setToken} : Props) => {
+  const [username, setusername]= useState<string>("");
   const [password, setPasswordValue]= useState<string>("");
-  const [jwtToken, setJwtToken]= useState<string>("");
 
-  function handleLogInButtonClick() {
-      const baseApiURl = "http://localhost:5000/api/auth/login";
-
-      const userData = new LoginDTO();
-      userData.username = login;
-      userData.password = password;
-      
-      axios.post(baseApiURl,userData).then((response: any) => {
-          console.log(response);
-      }).catch(err=> console.log(err));
+  const handleSubmit = (e? : React.FormEvent<HTMLInputElement>)=> {
+      e?.preventDefault();
+      authStateService.Authentificate(username, password).then(isLogged => {
+          if (isLogged) {
+            setToken(authStateService.getToken());
+          }
+      });
   }
 
-  const greet = "DRAKON IDE";
   return (
       <div>
-          <Container>
+          <Container className="login-wrapper">
               <Row className="justify-content-md-center">
                   <h1>{greet}</h1>
               </Row>
               <Row className="justify-content-md-center">
-                  <input type="text" value={login} onChange={e=>{setLoginValue(e.target.value)}} ></input>
+                  <input type="text" value={username} onChange={e=>{setusername(e.target.value)}} ></input>
               </Row>
               <Row className="justify-content-md-center">
                   <input type="password" value={password} onChange={e=>{setPasswordValue(e.target.value)}}></input>
               </Row>
               <Row className="justify-content-md-center">
-                  <Button variant="outline-primary" onClick={e=>{handleLogInButtonClick();}}>Login</Button>{' '}
+                  <Button variant="outline-primary" onClick={()=>{handleSubmit();}}>Login</Button>{' '}
               </Row>
               <Row className="justify-content-md-center">
                   <Button variant="outline-primary">Register</Button>{' '}
