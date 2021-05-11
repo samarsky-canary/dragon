@@ -2,11 +2,12 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 
-drop table IF EXISTS users;
+drop table IF EXISTS users CASCADE ;
 create table users(
     id uuid PRIMARY KEY,
-    name text NOT NULL UNIQUE ,
-    pswhash text NOT NULL
+    username text NOT NULL UNIQUE,
+    role text,
+    password text NOT NULL
     );
 
 
@@ -43,12 +44,6 @@ CREATE TRIGGER validate_user_role BEFORE INSERT OR UPDATE ON curators
 FOR EACH ROW EXECUTE PROCEDURE curator_relation_role_check();
 
 
-insert into curators (id_curator, id_user, relation_name) values
-((SELECT id from users where username ='Jersy' and role='CURATOR'),
- (SELECT id from users where username = 'Jersy' and role ='CURATOR'),
- 'student IPR-31');
-
-
 
 -- Enabled encryption for password
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
@@ -73,9 +68,7 @@ FOR EACH ROW EXECUTE PROCEDURE user_registration();
 
 
 
-UPDATE users SET username = 'Fill   ' WHERE username = 'Jeremy';
-
-DROP function  user_rename();
+DROP function if exists user_rename();
 CREATE OR REPLACE FUNCTION user_rename () RETURNS trigger as
     $$
     BEGIN
@@ -92,7 +85,7 @@ FOR EACH ROW EXECUTE PROCEDURE user_rename();
 
 --#################################################
 
-Drop table  dragon_scheme;
+Drop table if exists dragon_scheme CASCADE ;
 CREATE TABLE IF NOT EXISTS dragon_scheme (
     id uuid PRIMARY KEY ,
     name varchar(50),
@@ -114,7 +107,7 @@ CREATE OR REPLACE function update_scheme() RETURNS trigger AS $registration$
 CREATE TRIGGER register_new_user BEFORE UPDATE ON dragon_scheme
 FOR EACH ROW EXECUTE PROCEDURE update_scheme();
 
-CALL delete_user( '6eb0808f-77d7-4ad6-8b98-3c560f9e4520'::uuid);
+drop procedure if exists delete_user(delete_id uuid);
 CREATE procedure delete_user(delete_id uuid) as
     $$
     BEGIN
@@ -126,6 +119,7 @@ CREATE procedure delete_user(delete_id uuid) as
     $$
 language  plpgsql;
 
+DROP function if exists delete_user();
 CREATE FUNCTION delete_user() returns trigger as
     $$
     BEGIN
