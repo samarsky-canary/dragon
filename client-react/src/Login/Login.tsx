@@ -27,6 +27,7 @@ export const Login: React.FC<Props> = ({setToken} : Props) => {
   return (
       <div>
           <Container className="login-wrapper">
+          <div className="my-5">
               <Row className="justify-content-md-center">
                   <h1>{greet}</h1>
               </Row>
@@ -42,6 +43,7 @@ export const Login: React.FC<Props> = ({setToken} : Props) => {
               <Row className="justify-content-md-center">
                   <Button variant="outline-primary">Register</Button>{' '}
               </Row>
+              </div>
           </Container>
       </div>);
 };

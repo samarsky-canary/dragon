@@ -7,12 +7,14 @@ import {v4 as uuidv4} from 'uuid'
 import {IViewUser} from "../users/interfaces/user.interface";
 import { JwtService } from '@nestjs/jwt';
 import { CryptoService } from './bcrypt.service';
+import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService : JwtService,
-    private cryptoService: CryptoService
+    private cryptoService: CryptoService,
+    private readonly configService: ConfigService, 
     )
     {}
 
@@ -47,6 +49,14 @@ export class AuthService {
       uuid: user.uuid,
       role: user.role,
     }
+  }
+
+  async verifyToken(token) {
+    return await this.jwtService.verifyAsync(token, {secret: this.configService.get<string>('SECRET_KEY')})
+    .then(payload=>Promise.resolve({username: payload.username, uuid: payload.sub}))
+    .catch(err => 
+      Promise.reject(new UnauthorizedException("Invalid Token"))
+    );
   }
 
   async verify(payload) {

@@ -1,7 +1,13 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Request, Res, UseGuards } from '@nestjs/common';
+import { Param } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, Res, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import {LocalAuthGuard} from "./local.auth-guard";
+
+
+interface JwtPayload {
+    token: string
+}
 
 @Controller('auth')
 export class AuthController {
@@ -21,6 +27,12 @@ export class AuthController {
     @Post('login')
     async login(@Request() req) {
         return this.authService.createToken(req.user);
+    }
+
+    @HttpCode(HttpStatus.OK)
+    @Get('verify/:token')
+    async verify(@Param('token')token: string) {
+        return this.authService.verifyToken(token)
     }
 
 }
