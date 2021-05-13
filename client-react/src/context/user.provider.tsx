@@ -15,8 +15,15 @@ type Props = {
 
 export const UserProvider = ({children}: Props) => {
    
+    const defaultValue : IUserContextType = {
+        username: "",
+        access_token: "",
+        uuid: "",
+        role: ""
+    }
+
     return(
-        <UserContext.Provider value={{}}>
+        <UserContext.Provider value={defaultValue}>
             {children}
         </UserContext.Provider>
     )

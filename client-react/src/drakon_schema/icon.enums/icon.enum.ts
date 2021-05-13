@@ -1,15 +1,14 @@
-export enum IconTypes{
-    BEGIN =  "BEGIN",
-    END = "END",
-    DECLARATION = "DECLARATION",
-    ACTION = "ACTION",
-    MACRO_IF = "MACRO_IF",
-    IF = "IF",
-    ELSE = "ELSE",
-    MACRO_WHILE = "MACRO_WHILE",
-    END_WHILE = "END_WHILE",
-    COMMENT = "COMMENT",
-    IMPUT = "INPUT",
-    OUTPUT = "OUTPUT",
-    SEPARATOR = "SEPARATOR"
-}
+export const IconTypes = {
+    BEGIN : "BEGIN",
+    END : "END",
+    ACTION : "ACTION",
+    IF : "IF",
+    ENDIF: "ENDIF",
+    ELSE : "ELSE",
+    SWITCH : "MACRO_WHILE",
+    IMPUT : "INPUT",
+    OUTPUT : "OUTPUT",
+    PAUSE : "PAUSE",
+    COMMENT : "COMMENT",
+    SEPARATOR : "SEPARATOR"
+} as const

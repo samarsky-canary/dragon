@@ -4,6 +4,8 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import { UserProvider } from './context/user.provider';
+import LogRocket from 'logrocket';
+LogRocket.init('kpl3db/drakon');
 
 
 ReactDOM.render(

@@ -14,8 +14,6 @@ const App : React.FC = () => {
         return (<Login setToken={setToken}></Login>)
     }
 
-
-
     return(
     <div className="wrapper">
       <BrowserRouter>
