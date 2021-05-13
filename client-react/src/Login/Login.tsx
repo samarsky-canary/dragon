@@ -61,10 +61,10 @@ export const Login: React.FC<Props> = ({ setToken }: Props) => {
                                 </Alert>
                             </div>
                             <div className="justify-content-md-center">
-                                <Button variant="btn btn-primary btn-block" onClick={() => { handleSubmit(); }}>Login</Button>{' '}
+                                <Button variant="btn btn-primary btn-block" onClick={() => { handleSubmit(); }}>Вход</Button>{' '}
                             </div>
                             <div className="justify-content-md-center">
-                                <Button variant="btn btn-warning btn-block mt-2">Register</Button>{' '}
+                                <Button variant="btn btn-warning btn-block mt-2">Регистрация</Button>{' '}
                             </div>
                         </div>
                     </div>

@@ -5,6 +5,7 @@ import { EditorPage } from './Editor/editorPage';
 import Login from './Login/Login';
 import { NotFoundPage } from './NotFound/NotFound';
 import { NavigationHeader } from './components/NavigationHeader';
+import { DocPage } from './DocPage/DocPage';
 
 
 const App : React.FC = () => {
@@ -23,6 +24,9 @@ const App : React.FC = () => {
                 <Switch>
                   <Route exact path="/">
                     <EditorPage />
+                  </Route>
+                  <Route exact path="/docs">
+                    <DocPage />
                   </Route>
                   <Route component={NotFoundPage}/>
                 </Switch>

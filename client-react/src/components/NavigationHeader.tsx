@@ -11,9 +11,9 @@ export const NavigationHeader : FC = () => {
 
                 <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><div className="nav-link px-2 text-secondary">DRAKON IDE</div></li>
-                <li><a href="#" className="nav-link px-2 text-white">Редактор</a></li>
+                <li><a href="/" className="nav-link px-2 text-white">Редактор</a></li>
                 <li><a href="#" className="nav-link px-2 text-white">Курирование</a></li>
-                <li><a href="#" className="nav-link px-2 text-white">Документация</a></li>
+                <li><a href="docs" className="nav-link px-2 text-white">Документация</a></li>
                 <li><a href="#" className="nav-link px-2 text-white">О продукте</a></li>
                 </ul>
 

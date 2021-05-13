@@ -7,9 +7,9 @@ export const D3Sample : FC = () => {
     const ref: RefObject<HTMLDivElement> = React.createRef();
 
     const draw = () => {
-        d3.select(ref.current).append('p').text('Hello World');
+        d3.select(ref.current).append('p').text('D3 заглушка');
         d3.select('svg').append('g').attr('transform', 'translate(250, 0)')
-        .append('rect').attr('width', 500).attr('height', 500).attr('fill', 'tomato');
+        .append('rect').attr('width', 500).attr('height', 500).attr('fill', 'gray');
     }
     
 
@@ -21,7 +21,7 @@ export const D3Sample : FC = () => {
         <div className='D3Sample' ref={ref}>
             <svg width="500" height="500">
                 <g transform="translate(0, 0)">
-                    <rect width="500" height="500" fill="green" />
+                    <rect width="500" height="500" fill="gray" />
                 </g>
             </svg>
         </div>
