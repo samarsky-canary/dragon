@@ -29,7 +29,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "proxy": "http://localhost:5000",
   "eslintConfig": {
@@ -57,7 +58,6 @@
     "@typescript-eslint/parser": "^4.16.1",
     "eslint": "^7.21.0",
     "eslint-plugin-react": "^7.22.0",
-    "jest": "^26.6.3",
     "ts-jest": "^26.5.6"
   }
 }
