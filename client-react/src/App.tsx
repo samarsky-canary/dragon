@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { EditorPage } from './Editor/editorPage';
 import Login from './Login/Login';
 import { NotFoundPage } from './NotFound/NotFound';
+import { NavigationHeader } from './components/NavigationHeader';
 
 
 const App : React.FC = () => {
@@ -15,16 +16,19 @@ const App : React.FC = () => {
     }
 
     return(
-    <div className="wrapper">
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/">
-            <EditorPage />
-          </Route>
-          <Route component={NotFoundPage}/>
-        </Switch>
-      </BrowserRouter>
-    </div>
+      <div className='wrap-0'>
+        <NavigationHeader></NavigationHeader>
+            <div className="wrapper">
+              <BrowserRouter>
+                <Switch>
+                  <Route exact path="/">
+                    <EditorPage />
+                  </Route>
+                  <Route component={NotFoundPage}/>
+                </Switch>
+              </BrowserRouter>
+            </div>
+      </div>
   );
 }
 
