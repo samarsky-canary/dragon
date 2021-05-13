@@ -42,7 +42,7 @@
     "enhanced-resolve": "^4.1.1",
     "file-loader": "^6.0.0",
     "konva": "^6.0.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "mxgraph": "^4.1.1"
   }
 }
