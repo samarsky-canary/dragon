@@ -7,7 +7,6 @@ import { UserProvider } from './context/user.provider';
 import LogRocket from 'logrocket';
 LogRocket.init('kpl3db/drakon');
 
-
 ReactDOM.render(
   <React.StrictMode>
     <UserProvider>

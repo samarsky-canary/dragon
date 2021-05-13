@@ -24,18 +24,31 @@ export class AuthStateService {
         return AuthStateService._accessToken;
     }
 
-    public Authentificate (username:string, password:string) : Promise<boolean> {
+    public Authentificate (username:string, password:string) : Promise<ResponsePayload> {
         // here works proxy!!! 
         const baseApiURl = process.env.REACT_APP_CLIENT_DOMAIN + "/api/auth/login";
-        
+
         return axios.post<loginResponseDTO>(baseApiURl,{username, password}).then((response) => {
             AuthStateService._accessToken = response.data.access_token;
             AuthStateService._role = response.data.role;
             AuthStateService._uuid = response.data.uuid;
-            return true;
+            return {
+                success: true,
+                statusText: response.statusText,
+                body: response.data
+            };
         }).catch(err=> {
-            console.log(err); 
-            return false;
+            const responseData: ResponsePayload = {success: false, statusText: err.message};
+            if (err.response) {
+                responseData.statusText = err.response.data.message;
+            }
+            return responseData;
         });
     }
 }
+
+type ResponsePayload = {
+    success: boolean;
+    statusText: string;
+    body?: loginResponseDTO 
+};
