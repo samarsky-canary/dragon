@@ -1,7 +1,7 @@
 import React, { FC, createContext } from 'react';
 
 type UserState = {
-    user: string;
+    user?: string;
     token: string;
     uuid: string;
     role: string;
@@ -24,8 +24,10 @@ type UserAction = {
 const userReducer = (state : UserState, action : UserAction) :UserState => {
     switch (action.type) {
       case "LOGIN":
-        localStorage.setItem("user", JSON.stringify(action.payload.user));
+        localStorage.clear()
+        localStorage.setItem("role", JSON.stringify(action.payload.role));
         localStorage.setItem("token", JSON.stringify(action.payload.token));
+        localStorage.setItem("uuid", JSON.stringify(action.payload.uuid));
         return {
           ...action.payload,
           isAuthenticated: true,
@@ -56,10 +58,9 @@ export const UserContext = createContext({} as IContextProps);
 // eslint-disable-next-line
 export const UserProvider : FC = (props: any) => {
     const [state, dispatch] = React.useReducer(userReducer, initialState);
-    const value = {state, dispatch};
 
     return(
-        <UserContext.Provider value={value}>
+        <UserContext.Provider value={{state, dispatch}}>
             {props.children}
         </UserContext.Provider>
     )

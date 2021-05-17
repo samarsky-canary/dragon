@@ -24,6 +24,15 @@ export class AuthStateService {
         return AuthStateService._accessToken;
     }
 
+    public TokenVerification(token: string) {
+        const baseApiURl = process.env.REACT_APP_CLIENT_DOMAIN + "/api/auth/verify";
+        return axios.post(baseApiURl,{params: token}).then((response) => {
+            return true;
+        }).catch(err=> {
+            return false;
+        });
+    }
+
     public Authentificate (username:string, password:string) : Promise<ResponsePayload> {
         // here works proxy!!! 
         const baseApiURl = process.env.REACT_APP_CLIENT_DOMAIN + "/api/auth/login";

@@ -1,23 +1,27 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Alert, Button } from 'react-bootstrap';
 import './Login.scss';
 import { AuthStateService } from '../services/AuthStateService';
+import { UserContext } from '../context/user.provider';
 
 const greet = "DRAKON IDE";
 const authStateService = new AuthStateService().getInstance();
 
-interface Props {
-    setToken: (value: string) => void;
+export type UserState = {
+    user?: string;
+    token: string;
+    uuid: string;
+    role: string;
+    isAuthenticated: boolean,
 }
 
-
-export const Login: React.FC<Props> = ({ setToken }: Props) => {
+export const Login: React.FC = () => {
     const [username, setusername] = useState<string>("");
     const [password, setPasswordValue] = useState<string>("");
     const [passwordShown, setPasswordShown] = useState(false);
     const [errorHidden, setErrorHidden] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
-
+    const {state, dispatch} = useContext(UserContext);
 
     const togglePasswordVisiblity = () => {
         setPasswordShown(passwordShown ? false : true);
@@ -27,7 +31,16 @@ export const Login: React.FC<Props> = ({ setToken }: Props) => {
         e?.preventDefault();
         authStateService.Authentificate(username, password).then(isLogged => {
             if (isLogged.success) {
-                setToken(authStateService.getToken());
+                const payload : UserState = {
+                    token: isLogged.body!.access_token,
+                    uuid: isLogged.body!.uuid,
+                    role: isLogged.body!.role,
+                    isAuthenticated: true
+                };
+                dispatch({
+                    type: "LOGIN",
+                    payload: payload 
+                })
             }
             else {
                 setErrorMessage(isLogged.statusText);

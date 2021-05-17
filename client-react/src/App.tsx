@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { EditorPage } from './Editor/editorPage';
@@ -6,14 +6,38 @@ import Login from './Login/Login';
 import { NotFoundPage } from './NotFound/NotFound';
 import { NavigationHeader } from './components/NavigationHeader';
 import { DocPage } from './DocPage/DocPage';
+import { UserContext } from './context/user.provider';
+import { AuthStateService } from './services/AuthStateService';
 
+const authService = new AuthStateService().getInstance();
 
 const App : React.FC = () => {
 
-    const [token, setToken] = useState<string>();
+    const {state,dispatch} = useContext(UserContext);
 
-    if (!token) {
-        return (<Login setToken={setToken}></Login>)
+
+
+    const isTokenValid = (token: string) :boolean => {
+      if (authService.TokenVerification(token)){
+        dispatch({
+          type: "LOGIN",
+          payload: {
+            user: "",
+            token: token,
+            role: localStorage.getItem('role')!,
+            uuid: localStorage.getItem('uuid')!,
+            isAuthenticated: true
+          }
+        })
+        return true;
+      }
+      return false;
+    }
+
+
+    const token = localStorage.getItem('token')!;
+    if (isTokenValid(token)) {
+      return (<Login></Login>)
     }
 
     return(
