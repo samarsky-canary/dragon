@@ -1,4 +1,4 @@
-import { Icon, IconBegin, IconEnd } from "./icon.model";
+import { Icon, IconBegin, IconEnd, IconIf } from "./icon.model";
 
 
 export class DragonSchema {
@@ -6,7 +6,7 @@ export class DragonSchema {
     public _storage: Map<string, Icon>;
 
     constructor(){
-        let end = new IconEnd();
+        const end = new IconEnd();
         this._head = new IconBegin();
         this._head.next = end.id;
         this._storage = new Map([
@@ -15,8 +15,22 @@ export class DragonSchema {
         ]);
     }
 
+    public toJson() {
+        return Object.fromEntries(this._storage);
+    }
+
+
+    public InsertIf(toInsert: IconIf, whereToInsert: string) {
+        const ancestor = this._storage.get(whereToInsert);
+        if (ancestor) {
+            toInsert.next = ancestor.next;
+            ancestor.next = toInsert.id;
+        }
+        this._storage.set(toInsert.id, toInsert);
+    }
+
     public Insert(toInsert: Icon, whereToInsert: string ) {
-        let ancestor = this._storage.get(whereToInsert);
+        const ancestor = this._storage.get(whereToInsert);
         if (ancestor) {
             toInsert.next = ancestor.next;
             ancestor.next = toInsert.id;
@@ -35,11 +49,11 @@ export class DragonSchema {
     }
 
     public ToString(): string {
-        let result: string ="";
-        let endFlag: boolean = false;
+        let result ="";
+        let endFlag = false;
         let current = this._head.id;
         while (!endFlag) {
-            let icon = this._storage.get(current);
+            const icon = this._storage.get(current);
             if (icon === undefined)
                 throw new Error("invalid icon id");
             result += `${icon.type}  ${icon.id}\n`;

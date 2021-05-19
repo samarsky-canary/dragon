@@ -13,7 +13,7 @@ test(('Container insert'), ()=> {
      let action = new IconAction();
      action.text = "let a = 10";
      schema.Insert(action,schema._head.id);
-     console.log(schema.ToString());
+     console.log(schema.toJson());
     
      let iconToUpdate = schema.Get(schema._head.id);
      iconToUpdate!.text = "Schema name";
