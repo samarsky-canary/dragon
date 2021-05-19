@@ -2,11 +2,14 @@
     "type":"postgres",
     "host":"localhost",
     "port": 5432,
-    "username": "postgres",
+    "username": "sacanary",
     "password": "2233",
     "database": "drakon_db",
     "entities": ["dist/**/db/*.entity{.ts,.js}"],
     "synchronize": false,
     "logging": false,
-    "retryAttempts": 1
+    "retryAttempts": 1,
+    "cli" : {
+        "migrationsDir" : "src/migration"
+    }
 }
