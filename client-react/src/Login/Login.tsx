@@ -44,7 +44,7 @@ export const Login: React.FC<Props> = ({setToken}) => {
 
     const handleSignupSubmit = async (e?: React.MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
         e?.preventDefault();
-        const response = await authStateService.Authentificate(username, password);
+        const response = await authStateService.RegisterUser(username, password);
         if (response.status === 201 && response.body) {
             setToken({
                 type: "LOGIN",
