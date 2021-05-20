@@ -15,11 +15,12 @@ export class DragonSchema {
         ]);
     }
 
+    // eslint-disable-next-line
     public toJson() {
         return Object.fromEntries(this._storage);
     }
 
-
+    // eslint-disable-next-line
     public InsertIf(toInsert: IconIf, whereToInsert: string) {
         const ancestor = this._storage.get(whereToInsert);
         if (ancestor) {
@@ -29,6 +30,7 @@ export class DragonSchema {
         this._storage.set(toInsert.id, toInsert);
     }
 
+    // eslint-disable-next-line
     public Insert(toInsert: Icon, whereToInsert: string ) {
         const ancestor = this._storage.get(whereToInsert);
         if (ancestor) {
@@ -38,6 +40,7 @@ export class DragonSchema {
         this._storage.set(toInsert.id, toInsert);
     }
 
+    // eslint-disable-next-line
     public Update(icon: Icon) {
         if (!this._storage.has(icon.id))
             throw new Error('icon not exists');

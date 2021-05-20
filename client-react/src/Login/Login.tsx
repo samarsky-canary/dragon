@@ -1,66 +1,62 @@
-import React, { MouseEvent, useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Alert, Button } from 'react-bootstrap';
 import './Login.scss';
 import { AuthStateService } from '../services/AuthStateService';
-import { UserContext, UserState } from '../context/user.provider';
+import { UserAction } from '../context/user.provider';
 
 const greet = "DRAKON IDE";
 const authStateService = new AuthStateService().getInstance();
 
-export const Login: React.FC = () => {
+
+type Props = {
+    setToken: React.Dispatch<UserAction>;
+}
+
+
+export const Login: React.FC<Props> = ({setToken}) => {
     const [username, setusername] = useState<string>("");
     const [password, setPasswordValue] = useState<string>("");
 
     const [passwordShown, setPasswordShown] = useState(false);
     const [errorHidden, setErrorHidden] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
-    
-    const {state, dispatch} = useContext(UserContext);
 
     const togglePasswordVisiblity = () => {
         setPasswordShown(passwordShown ? false : true);
       };
 
-    const handleLoginSubmit = (e?: React.MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
+    const handleLoginSubmit = async (e?: React.MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
         e?.preventDefault();
-        authStateService.Authentificate(username, password).then(response => {
-            if (response.status === 200) {
-                const payload : UserState = {
-                    token: response.body!.access_token,
-                    uuid: response.body!.uuid,
-                    role: response.body!.role
-                };
-                dispatch({
-                    type: "LOGIN",
-                    payload: payload 
-                })
-            }
-            else {
-                setErrorMessage(response.statusText);
-                setErrorHidden(false);
-            }
-        });
+        const response = await authStateService.Authentificate(username, password);
+        if (response.status === 200 && response.body) {
+            setToken({
+                type: "LOGIN",
+                payload: {     
+                    token: response.body.access_token
+                } 
+            });
+        }
+        else {
+            setErrorMessage(response.statusText);
+            setErrorHidden(false);
+        }
     }
 
-    const handleSignupSubmit = (e?: React.MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
+    const handleSignupSubmit = async (e?: React.MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
         e?.preventDefault();
-        authStateService.RegisterUser(username, password).then(response => {
-            if (response.status === 201) {
-                const payload : UserState = {
-                    token: response.body!.access_token,
-                    uuid: response.body!.uuid,
-                    role: response.body!.role
-                };
-                dispatch({
-                    type: "SIGNUP",
-                    payload: payload 
-                })
-            }
-            else {
-                setErrorMessage(response.statusText);
-                setErrorHidden(false);
-            }
-        });
+        const response = await authStateService.Authentificate(username, password);
+        if (response.status === 201 && response.body) {
+            setToken({
+                type: "LOGIN",
+                payload: {     
+                    token: response.body.access_token
+                } 
+            });
+        }
+        else {
+            setErrorMessage(response.statusText);
+            setErrorHidden(false);
+        }
     }
 
 

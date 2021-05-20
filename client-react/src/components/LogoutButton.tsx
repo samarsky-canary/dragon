@@ -6,16 +6,15 @@ import { UserContext } from '../context/user.provider';
 
 
 export const LogoutButton : React.FC = () => {
-    const {state,dispatch} = useContext(UserContext);
+    const {dispatch} = useContext(UserContext);
 
 
     function handleLogout(e: React.MouseEvent<HTMLElement, MouseEvent>) {
+        e.preventDefault();
         dispatch({
             type: "LOGOUT",
             payload: {
-                token: undefined,
-                uuid: undefined,
-                role: undefined
+                token: undefined
             }
         })
     }

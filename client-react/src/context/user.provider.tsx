@@ -2,53 +2,46 @@ import React, { FC, createContext } from 'react';
 
 export type UserState = {
     token: string | undefined;
-    uuid: string | undefined;
-    role: string | undefined;
 }
-const initialState : UserState = {
+const initialTokenState : UserState = {
     token: undefined,
-    uuid: undefined,
-    role: undefined,
 }
 
 
-type UserAction = {
-    type :'LOGIN' | 'LOGOUT' | 'SIGNUP' | "UPDATELOCAL";
+export type UserAction = {
+    type :'LOGIN' | 'LOGOUT' | 'SIGNUP';
     payload: UserState
 }
 
 const userReducer = (state : UserState, action : UserAction) :UserState => {
+    console.log(state.token);
     switch (action.type) {
       case "SIGNUP":
       case "LOGIN":
-        localStorage.clear()
-        localStorage.setItem("role", JSON.stringify(action.payload.role));
-        localStorage.setItem("token", JSON.stringify(action.payload.token));
-        localStorage.setItem("uuid", JSON.stringify(action.payload.uuid));
+        sessionStorage.setItem('token', JSON.stringify(action.payload.token));
+        console.log(sessionStorage.getItem('token'))
         return  action.payload;
       case "LOGOUT":
         localStorage.clear();
         return {
-          token: undefined,
-          role: undefined,
-          uuid: undefined,
+          token: undefined
         };
       default:
         return state;
     }
   };
 
-  interface IContextProps {
+  interface UserContextProps {
     state: UserState;
     dispatch: React.Dispatch<UserAction>;
   }
 
-export const UserContext = createContext({} as IContextProps);
+export const UserContext = createContext({} as UserContextProps);
 
   
 // eslint-disable-next-line
 export const UserProvider : FC = (props: any) => {
-    const [state, dispatch] = React.useReducer(userReducer, initialState);
+    const [state, dispatch] = React.useReducer(userReducer, initialTokenState);
 
     return(
         <UserContext.Provider value={{state, dispatch}}>

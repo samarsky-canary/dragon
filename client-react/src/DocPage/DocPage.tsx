@@ -14,8 +14,10 @@ function myFunc(schema: DragonSchema) {
      console.log(schema.toJson());
     
      const iconToUpdate = schema.Get(schema._head.id);
-     iconToUpdate!.text = "Schema name";
-     schema.Update(iconToUpdate!)
+     if (iconToUpdate !== undefined) {
+        iconToUpdate.text = "Schema name";
+        schema.Update(iconToUpdate)
+     }
 }
 myFunc
 export const DocPage: FC = () => {
