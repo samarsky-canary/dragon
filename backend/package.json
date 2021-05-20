@@ -13,7 +13,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "start:dev:db": "./src/scripts/docker-db.sh",
+    "start:dev:dockerdb": "./scripts/docker-db.sh",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
 
     "typeorm:run" : "ts-node $(yarn bin typeorm) migration:run",

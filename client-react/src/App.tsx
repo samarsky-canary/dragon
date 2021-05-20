@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import './App.css';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import {Route, Switch } from 'react-router-dom';
 import { EditorPage } from './Editor/editorPage';
 import Login from './Login/Login';
 import { NotFoundPage } from './NotFound/NotFound';
@@ -18,9 +18,8 @@ const App : React.FC = () => {
 
     return(
       <div className='wrap-0'>
-        <NavigationHeader></NavigationHeader>
+        <NavigationHeader/>
             <div className="wrapper">
-              <BrowserRouter>
                 <Switch>
                 <Route exact path="/docs">
                     <DocPage />
@@ -28,9 +27,8 @@ const App : React.FC = () => {
                   <Route exact path="/">
                     <EditorPage />
                   </Route>
-                  <Route component={NotFoundPage}/>
+                  <Route path="*" component={NotFoundPage}/>
                 </Switch>
-              </BrowserRouter>
             </div>
       </div>
   );
