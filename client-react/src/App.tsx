@@ -13,31 +13,28 @@ const authService = new AuthStateService().getInstance();
 
 const App : React.FC = () => {
 
-    const {state,dispatch} = useContext(UserContext);
+    const {dispatch} = useContext(UserContext);
 
-
-
-    const isTokenValid = (token: string) :boolean => {
-      if (authService.TokenVerification(token)){
-        dispatch({
-          type: "LOGIN",
-          payload: {
-            user: "",
-            token: token,
-            role: localStorage.getItem('role')!,
-            uuid: localStorage.getItem('uuid')!,
-            isAuthenticated: true
-          }
-        })
-        return true;
-      }
-      return false;
+    const isTokenValid = (token: string) => {
+      return authService.TokenVerification(token).then(isLogged => {
+        if (isLogged){
+          return true;
+        }
+        return false;
+      });
     }
+      
 
 
-    const token = localStorage.getItem('token')!;
-    if (isTokenValid(token)) {
+    const token = localStorage.getItem('token');
+    if (!token) {
       return (<Login></Login>)
+    } else {
+      if (!isTokenValid(token)) {
+        return (<Login></Login>)
+      } else {
+        console.log( localStorage.getItem('token'))
+      }
     }
 
     return(

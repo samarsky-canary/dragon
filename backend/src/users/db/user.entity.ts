@@ -1,6 +1,4 @@
-import { Curator } from "src/curators/db/curator.entity";
-import { Schema } from "src/schema/db/schema.entity";
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity("users")
 export class User {
@@ -12,7 +10,6 @@ export class User {
     @Column({
         type: "varchar",
         length: 50,
-        unique: true,
     })
     username: string;
 
@@ -22,10 +19,4 @@ export class User {
 
     @Column()
     role: string;
-
-    @OneToMany(()=> Curator, curator => curator.uuid_curator)
-    curators: Curator[]
-
-    @OneToMany(()=> Curator, curator => curator.uuid_curator)
-    schemas: Schema[]
 }

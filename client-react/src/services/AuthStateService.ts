@@ -6,6 +6,7 @@ export class AuthStateService {
     private static _accessToken: string;
     private static _role: string;
     private static _uuid: string;
+    private static BASE_API_PREFIX = "/api/auth/";
 
     constructor(){
         // empty constructor
@@ -33,31 +34,59 @@ export class AuthStateService {
         });
     }
 
-    public Authentificate (username:string, password:string) : Promise<ResponsePayload> {
+    public async  Authentificate (username:string, password:string) : Promise<ResponsePayload> {
         // here works proxy!!! 
-        const baseApiURl = process.env.REACT_APP_CLIENT_DOMAIN + "/api/auth/login";
+        const URL = process.env.REACT_APP_CLIENT_DOMAIN + AuthStateService.BASE_API_PREFIX + "login";
 
-        return axios.post<loginResponseDTO>(baseApiURl,{username, password}).then((response) => {
+        try {
+            const response = await axios.post<loginResponseDTO>(URL, { username, password });
             AuthStateService._accessToken = response.data.access_token;
             AuthStateService._role = response.data.role;
             AuthStateService._uuid = response.data.uuid;
             return {
-                success: true,
+                status: response.status,
                 statusText: response.statusText,
                 body: response.data
             };
-        }).catch(err=> {
-            const responseData: ResponsePayload = {success: false, statusText: err.message};
+        } catch (err) {
+            const responseData: ResponsePayload = { status: err.status, statusText: err.message };
             if (err.response) {
                 responseData.statusText = err.response.data.message;
             }
             return responseData;
-        });
+        }
     }
+
+    public async RegisterUser(username:string, password:string) : Promise<ResponsePayload> {
+        const URL = process.env.REACT_APP_CLIENT_DOMAIN + AuthStateService.BASE_API_PREFIX + "signup";
+        try {
+            const response = await axios.post<loginResponseDTO>(URL, { username, password });
+            AuthStateService._accessToken = response.data.access_token;
+            AuthStateService._role = response.data.role;
+            AuthStateService._uuid = response.data.uuid;
+            return {
+                status: response.status,
+                statusText: response.statusText,
+                body: response.data
+            };
+        } catch (err) {
+            const responseData: ResponsePayload = { status: err.status, statusText: err.message };
+            if (err.response) {
+                responseData.statusText = err.response.data.message;
+            }
+            return responseData;
+        }
+    }
+
+    public Logout() : void {
+            AuthStateService._accessToken = AuthStateService._role = AuthStateService._uuid = "";
+    }
+    
+
 }
 
 type ResponsePayload = {
-    success: boolean;
+    status: number;
     statusText: string;
     body?: loginResponseDTO 
 };

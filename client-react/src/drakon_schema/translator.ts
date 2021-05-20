@@ -3,7 +3,7 @@ import { IconIf } from './icon.model';
 import * as FileSaver from 'file-saver'
 
 const IfSchemaPatternTranslate = (iconIF: IconIf) : string => {
-    let translatedSchema = "";
+    const translatedSchema = "";
 
     return translatedSchema;
 }

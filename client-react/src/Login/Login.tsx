@@ -1,41 +1,34 @@
-import React, { useContext, useState } from 'react';
+import React, { MouseEvent, useContext, useState } from 'react';
 import { Alert, Button } from 'react-bootstrap';
 import './Login.scss';
 import { AuthStateService } from '../services/AuthStateService';
-import { UserContext } from '../context/user.provider';
+import { UserContext, UserState } from '../context/user.provider';
 
 const greet = "DRAKON IDE";
 const authStateService = new AuthStateService().getInstance();
 
-export type UserState = {
-    user?: string;
-    token: string;
-    uuid: string;
-    role: string;
-    isAuthenticated: boolean,
-}
-
 export const Login: React.FC = () => {
     const [username, setusername] = useState<string>("");
     const [password, setPasswordValue] = useState<string>("");
+
     const [passwordShown, setPasswordShown] = useState(false);
     const [errorHidden, setErrorHidden] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
+    
     const {state, dispatch} = useContext(UserContext);
 
     const togglePasswordVisiblity = () => {
         setPasswordShown(passwordShown ? false : true);
       };
 
-    const handleSubmit = (e?: React.FormEvent<HTMLInputElement>) => {
+    const handleLoginSubmit = (e?: React.MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
         e?.preventDefault();
-        authStateService.Authentificate(username, password).then(isLogged => {
-            if (isLogged.success) {
+        authStateService.Authentificate(username, password).then(response => {
+            if (response.status === 200) {
                 const payload : UserState = {
-                    token: isLogged.body!.access_token,
-                    uuid: isLogged.body!.uuid,
-                    role: isLogged.body!.role,
-                    isAuthenticated: true
+                    token: response.body!.access_token,
+                    uuid: response.body!.uuid,
+                    role: response.body!.role
                 };
                 dispatch({
                     type: "LOGIN",
@@ -43,11 +36,34 @@ export const Login: React.FC = () => {
                 })
             }
             else {
-                setErrorMessage(isLogged.statusText);
-                setErrorHidden(isLogged.success);
+                setErrorMessage(response.statusText);
+                setErrorHidden(false);
             }
         });
     }
+
+    const handleSignupSubmit = (e?: React.MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
+        e?.preventDefault();
+        authStateService.RegisterUser(username, password).then(response => {
+            if (response.status === 201) {
+                const payload : UserState = {
+                    token: response.body!.access_token,
+                    uuid: response.body!.uuid,
+                    role: response.body!.role
+                };
+                dispatch({
+                    type: "SIGNUP",
+                    payload: payload 
+                })
+            }
+            else {
+                setErrorMessage(response.statusText);
+                setErrorHidden(false);
+            }
+        });
+    }
+
+
 
     return (
         <div className="background-div bg-dark text-white">
@@ -74,10 +90,10 @@ export const Login: React.FC = () => {
                                 </Alert>
                             </div>
                             <div className="justify-content-md-center">
-                                <Button variant="btn btn-primary btn-block" onClick={() => { handleSubmit(); }}>Вход</Button>{' '}
+                                <Button variant="btn btn-primary btn-block" onClick={(e) => { handleLoginSubmit(e); }}>Вход</Button>{' '}
                             </div>
                             <div className="justify-content-md-center">
-                                <Button variant="btn btn-warning btn-block mt-2">Регистрация</Button>{' '}
+                                <Button variant="btn btn-warning btn-block mt-2" onClick={(e) => { handleSignupSubmit(e)} }>Регистрация</Button>{' '}
                             </div>
                         </div>
                     </div>

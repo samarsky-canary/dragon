@@ -1,27 +1,21 @@
-import { User } from "src/users/db/user.entity";
-import {Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn, Unique} from "typeorm";
+import {Column, Entity, PrimaryColumn, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity('curators')
-@Unique("relation",["uuid_user","uuid_curator"])
 export class Curator {
     
     @PrimaryGeneratedColumn('increment')
     id : number
 
-    @ManyToOne(() => User, user => user.curators)
-    @JoinColumn({
+    @Column({
         name: "id_curator"
     })
-    uuid_curator: User
-
-    @ManyToOne(() => User, user => user.curators)
-    @JoinColumn({
-        name: "id_user"
-    })
-    uuid_user: User;
+    uuid_curator: string
 
     @Column({
-        type: "text",
+        name: "id_user"
     })
+    uuid_user: string;
+
+    @Column()
     relation_name: string
 }

@@ -1,46 +1,37 @@
 import React, { FC, createContext } from 'react';
 
-type UserState = {
-    user?: string;
-    token: string;
-    uuid: string;
-    role: string;
-    isAuthenticated: boolean,
+export type UserState = {
+    token: string | undefined;
+    uuid: string | undefined;
+    role: string | undefined;
 }
 const initialState : UserState = {
-    user: "",
-    token: "",
-    uuid: "",
-    role: "",
-    isAuthenticated: false
+    token: undefined,
+    uuid: undefined,
+    role: undefined,
 }
 
 
 type UserAction = {
-    type :'LOGIN' | 'LOGOUT';
+    type :'LOGIN' | 'LOGOUT' | 'SIGNUP' | "UPDATELOCAL";
     payload: UserState
 }
 
 const userReducer = (state : UserState, action : UserAction) :UserState => {
     switch (action.type) {
+      case "SIGNUP":
       case "LOGIN":
         localStorage.clear()
         localStorage.setItem("role", JSON.stringify(action.payload.role));
         localStorage.setItem("token", JSON.stringify(action.payload.token));
         localStorage.setItem("uuid", JSON.stringify(action.payload.uuid));
-        return {
-          ...action.payload,
-          isAuthenticated: true,
-        };
+        return  action.payload;
       case "LOGOUT":
         localStorage.clear();
         return {
-          ...state,
-          user: "",
-          token: "",
-          role: "",
-          uuid: "",
-          isAuthenticated: false,
+          token: undefined,
+          role: undefined,
+          uuid: undefined,
         };
       default:
         return state;

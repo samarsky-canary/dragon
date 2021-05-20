@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
+import React from 'react';
+import { LogoutButton } from './LogoutButton';
 
 
 
-export const NavigationHeader : FC = () => {
+export const NavigationHeader : React.FC = () => {
     
     return(
         <header className="p3 bg-dark text-white">
@@ -18,7 +19,7 @@ export const NavigationHeader : FC = () => {
                 </ul>
 
                 <div className="text-end justify-content-end">
-                <button type="button" className="btn btn-outline-light m-1">Выйти</button>
+                <LogoutButton/>                
                 </div>
             </div>
             </div>
