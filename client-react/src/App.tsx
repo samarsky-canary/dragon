@@ -22,7 +22,7 @@ const App : React.FC = () => {
             <div className="wrapper">
                 <Switch>
                 <Route exact path="/docs">
-                    <DocPage />
+                    <DocPage/>
                   </Route>
                   <Route exact path="/">
                     <EditorPage />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Button } from 'react-bootstrap';
 import './Login.scss';
 import { AuthStateService } from '../services/AuthStateService';
@@ -60,6 +60,9 @@ export const Login: React.FC<Props> = ({setToken}) => {
     }
 
 
+    useEffect(()=>{
+        document.title = "Вход и регистрация"
+    });
 
     return (
         <div className="background-div bg-dark text-white">
