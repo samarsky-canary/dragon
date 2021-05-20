@@ -1,5 +1,6 @@
 import {} from "@nestjs/common";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/users/db/user.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("dragon_scheme")
 export class Schema {
@@ -14,10 +15,11 @@ export class Schema {
     })
     name : string;
 
-    @Column("uuid",{
+    @ManyToOne(() => User, user => user.curators)
+    @JoinColumn({
         name: "id_user"
     })
-    idUser : string
+    id_user : User
 
     @Column("jsonb")
     data: JSON;
@@ -25,6 +27,9 @@ export class Schema {
     @Column("timestamp")
     last_changed: Date;
 
-    @Column("uuid")
+    @ManyToOne(() => User, user => user.curators)
+    @JoinColumn({
+        name: "last_changed_by_id"
+    })
     last_changed_by_id: string;
 }

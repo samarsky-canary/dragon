@@ -9,6 +9,8 @@
     "synchronize": false,
     "logging": false,
     "retryAttempts": 1,
+    "migrationsRun" : false,
+    "migrations": ["dist/migration/**/*{.ts,.js}"],
     "cli" : {
         "migrationsDir" : "src/migration"
     }
