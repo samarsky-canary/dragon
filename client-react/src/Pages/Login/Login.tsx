@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Button } from 'react-bootstrap';
 import './Login.scss';
-import { AuthStateService } from '../services/AuthStateService';
-import { UserAction } from '../context/user.provider';
+import { AuthStateService } from '../../services/AuthStateService';
+import { UserAction } from '../../context/user.provider';
 
 const greet = "DRAKON IDE";
 const authStateService = new AuthStateService().getInstance();

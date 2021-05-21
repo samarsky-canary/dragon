@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { Button } from 'react-bootstrap';
-import { DragonSchema } from '../drakon_schema/dragon.schema';
-import { IconAction } from '../drakon_schema/icon.model';
-import { DrgTranslationSave } from '../drakon_schema/translator';
+import { DragonSchema } from '../../drakon_schema/dragon.schema';
+import { IconAction } from '../../drakon_schema/icon.model';
+import { DrgTranslationSave } from '../../drakon_schema/translator';
 
 
 

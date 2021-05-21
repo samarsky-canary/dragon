@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { D3Sample } from '../components/Sheet';
+import { D3Sample } from '../../components/Sheet';
 
 
 export const EditorPage : React.FC = () => {

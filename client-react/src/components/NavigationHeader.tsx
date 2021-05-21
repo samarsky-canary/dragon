@@ -17,15 +17,13 @@ export const NavigationHeader: React.FC = () => {
                                 <Link to="/" className="nav-link px-2 text-white">Редактор</Link>
                             </li>
                             <li>
-                                <Route>
-                                    <Link to="/" className="nav-link px-2 text-white">Курирование</Link>
-                                </Route>
+                                <Link to="/curators" className="nav-link px-2 text-white">Курирование</Link>
                             </li>
                             <li>
                                 <Link to="/docs" className="nav-link px-2 text-white">Документация</Link>
                             </li>
                             <li>
-                                <Link to="/" className="nav-link px-2 text-white">О программе</Link>
+                                <Link to="/about" className="nav-link px-2 text-white">О программе</Link>
                             </li>
                     </ul>
 
