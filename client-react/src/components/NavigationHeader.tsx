@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
+import { Navbar, Nav, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { LogoutButton } from './LogoutButton';
 
@@ -8,7 +8,7 @@ import { LogoutButton } from './LogoutButton';
 export const NavigationHeader: React.FC = () => {
 
     return (
-        <Navbar bg="light" expand="lg">
+        <Navbar bg="dark" variant="dark" expand="lg">
             <Navbar.Brand href="#home">DRAKON IDE</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">

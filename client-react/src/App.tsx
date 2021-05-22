@@ -21,7 +21,6 @@ const App: React.FC = () => {
   return (
     <div className='wrap-0'>
       <NavigationHeader />
-      <div className="wrapper">
         <Switch>
           <Route exact path="/docs">
             <DocPage />
@@ -37,7 +36,6 @@ const App: React.FC = () => {
           </Route>
           <Route path="*" component={NotFoundPage} />
         </Switch>
-      </div>
     </div>
   );
 }

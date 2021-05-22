@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Button } from 'react-bootstrap';
+import { Alert, Button, Container } from 'react-bootstrap';
 import './Login.scss';
 import { AuthStateService } from '../../services/AuthStateService';
 import { UserAction } from '../../context/user.provider';
@@ -66,7 +66,7 @@ export const Login: React.FC<Props> = ({setToken}) => {
 
     return (
         <div className="background-div bg-dark text-white">
-            <div className="container">
+            <Container>
                 <div className="row my-5 d-flex justify-content-center">
                     <div className="col-4">
                         <h1 className="text-center mb-2">{greet}</h1>
@@ -89,15 +89,15 @@ export const Login: React.FC<Props> = ({setToken}) => {
                                 </Alert>
                             </div>
                             <div className="justify-content-md-center">
-                                <Button variant="btn btn-primary btn-block" onClick={(e) => { handleLoginSubmit(e); }}>Вход</Button>{' '}
+                                <Button variant="info btn-block" onClick={(e) => { handleLoginSubmit(e); }}>Вход</Button>{' '}
                             </div>
                             <div className="justify-content-md-center">
-                                <Button variant="btn btn-warning btn-block mt-2" onClick={(e) => { handleSignupSubmit(e)} }>Регистрация</Button>{' '}
+                                <Button variant="warning btn-block mt-2" onClick={(e) => { handleSignupSubmit(e)} }>Регистрация</Button>{' '}
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </Container>
         </div>);
 };
 
