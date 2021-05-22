@@ -21,7 +21,7 @@ export const LogoutButton : React.FC = () => {
 
     return (
         <div>
-            <Button variant="btn btn-outline-light btn-block mt-1" onClick={(e) => { handleLogout(e)} }>Выйти</Button>{' '}
+            <Button variant="btn btn-warning btn-block mt-1" onClick={(e) => { handleLogout(e)} }>Выйти</Button>{' '}
         </div>
     );
 }

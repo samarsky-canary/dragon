@@ -2,13 +2,15 @@ import React, { useEffect } from 'react';
 import { D3Sample } from '../../components/Sheet';
 
 
-export const EditorPage : React.FC = () => {
+export const EditorPage: React.FC = () => {
 
-    
-    useEffect(()=>{
+
+    useEffect(() => {
         document.title = "DRAKON IDE"
     });
     return (
-        <div><D3Sample></D3Sample></div>
+        <div>
+            <D3Sample />
+        </div>
     );
 }

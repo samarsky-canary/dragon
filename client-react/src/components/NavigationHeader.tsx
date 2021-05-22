@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { LogoutButton } from './LogoutButton';
 
 
@@ -7,31 +8,20 @@ import { LogoutButton } from './LogoutButton';
 export const NavigationHeader: React.FC = () => {
 
     return (
-        <header className="p3 bg-dark text-white">
-            <div className="">
-                <div className="p-2 d-flex flex-wrap align-items-center justify-content-lg-between justify-content-between ">
-
-                    <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                            <li><div className="nav-link px-2 text-secondary">DRAKON IDE</div></li>
-                            <li>
-                                <Link to="/" className="nav-link px-2 text-white">Редактор</Link>
-                            </li>
-                            <li>
-                                <Link to="/curators" className="nav-link px-2 text-white">Курирование</Link>
-                            </li>
-                            <li>
-                                <Link to="/docs" className="nav-link px-2 text-white">Документация</Link>
-                            </li>
-                            <li>
-                                <Link to="/about" className="nav-link px-2 text-white">О программе</Link>
-                            </li>
-                    </ul>
-
-                    <div className="text-end justify-content-end">
-                        <LogoutButton />
-                    </div>
-                </div>
-            </div>
-        </header>
+        <Navbar bg="light" expand="lg">
+            <Navbar.Brand href="#home">DRAKON IDE</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto">
+                    <Nav.Link as={Link} to="/">Редактор</Nav.Link>
+                    <Nav.Link as={Link} to="/curators">Курирование</Nav.Link>
+                    <Nav.Link as={Link} to="/docs">Документация</Nav.Link>
+                    <Nav.Link as={Link} to="/about">О программе</Nav.Link>
+                </Nav>
+                <Form inline>
+                    <LogoutButton />
+                </Form>
+            </Navbar.Collapse>
+        </Navbar>
     )
 }
