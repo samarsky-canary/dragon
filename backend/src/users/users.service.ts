@@ -5,6 +5,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { DeleteResult, Repository } from "typeorm";
 import { User } from "./db/user.entity";
 import { CreateUserDto } from "./dto/create-user.dto";
+import { UserDto } from "./dto/user.dto";
 
 
 @Injectable()
@@ -33,11 +34,13 @@ export class UsersService {
     }
 
 
-    async findOneById(id: string) : Promise<User | undefined> {
+
+
+    async findOneById(id: string) : Promise<UserDto>{
         return this.usersRepository.findOne(id)
         .then(user => {
             return (user) 
-            ? Promise.resolve(user)
+            ? Promise.resolve({username: user.username, role: user.role, uuid: user.uuid})
             : Promise.reject("User not found")
         })
         .catch(err => Promise.reject(new NotFoundException(err)));

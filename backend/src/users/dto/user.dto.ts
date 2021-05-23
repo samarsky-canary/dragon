@@ -8,16 +8,10 @@ export class UserDto {
     @OneToMany(type => Curator, curator => curator.uuid_curator)
     uuid: string;
 
-
     @IsNotEmpty()
     @IsString()
     username: string;
-    
-    @IsNotEmpty()
-    @IsString()
-    password: string;
 
-    
     @IsString()
     role: string;
 }
