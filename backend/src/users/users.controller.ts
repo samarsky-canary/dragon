@@ -1,4 +1,4 @@
-import {Controller, Get, Post, Param, Body, ParseUUIDPipe, Delete, NotFoundException, Res, HttpStatus, UseGuards, ValidationPipe, Put} from "@nestjs/common";
+import {Controller, Get, Post, Param, Body, ParseUUIDPipe, Delete, NotFoundException, Res, HttpStatus, UseGuards, ValidationPipe, Put, Headers} from "@nestjs/common";
 import { identity } from "rxjs";
 import { JwtAuthGuard } from "src/auth/jwt.auth-guard";
 import { LocalAuthGuard } from "src/auth/local.auth-guard";
@@ -24,7 +24,8 @@ export class UsersController
 
 
     @Get()
-    async findAll(): Promise<any> {
+    async GetLoggedUserInfo(@Headers('Authorization') token: string): Promise<any> {
+        const parsedToken = token.split(' ')[1];
         return this.usersService.findAll();
     }
 

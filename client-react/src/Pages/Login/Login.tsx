@@ -32,7 +32,10 @@ export const Login: React.FC<Props> = ({setToken}) => {
             setToken({
                 type: "LOGIN",
                 payload: {     
-                    token: response.body.access_token
+                    token: response.body.access_token,
+                    role: response.body.role,
+                    username: response.body.username,
+                    uuid: response.body.uuid,
                 } 
             });
         }
@@ -49,7 +52,10 @@ export const Login: React.FC<Props> = ({setToken}) => {
             setToken({
                 type: "LOGIN",
                 payload: {     
-                    token: response.body.access_token
+                    token: response.body.access_token,
+                    role: response.body.role,
+                    username: response.body.username,
+                    uuid: response.body.uuid,
                 } 
             });
         }

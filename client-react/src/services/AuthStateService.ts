@@ -3,9 +3,10 @@ import { loginResponseDTO } from '../DTO/IloginResponseDTO';
 
 export class AuthStateService {
     private static _instance: AuthStateService;
-    private static _accessToken: string;
-    private static _role: string;
-    private static _uuid: string;
+    private static _accessToken: string | undefined;
+    private static _role: string | undefined;
+    private static _uuid: string | undefined;
+    private static _username: string | undefined;
     private static BASE_API_PREFIX = "/api/auth/";
 
     constructor(){
@@ -22,8 +23,21 @@ export class AuthStateService {
 
 
     public getToken() : string {
-        return AuthStateService._accessToken;
+        if (AuthStateService._accessToken) {
+            return AuthStateService._accessToken;
+        } else {
+            throw new Error("token is undefined");
+        }
     }
+
+    public getUUID() : string {
+        if (AuthStateService._uuid) {
+            return AuthStateService._uuid;
+        } else {
+            throw new Error('uuid is not set');
+        }
+    }
+
 
     public async TokenVerification(token: string) : Promise<boolean> {
         const URL = process.env.REACT_APP_CLIENT_DOMAIN + AuthStateService.BASE_API_PREFIX  + "verify";
@@ -43,6 +57,7 @@ export class AuthStateService {
             AuthStateService._accessToken = response.data.access_token;
             AuthStateService._role = response.data.role;
             AuthStateService._uuid = response.data.uuid;
+            AuthStateService._username = response.data.uuid;
             return {
                 status: response.status,
                 statusText: response.statusText,

@@ -1,4 +1,6 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common"
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common"
+import { ConfigService } from "@nestjs/config";
+import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DeleteResult, Repository } from "typeorm";
 import { User } from "./db/user.entity";
@@ -7,6 +9,7 @@ import { CreateUserDto } from "./dto/create-user.dto";
 
 @Injectable()
 export class UsersService {
+
     constructor (
     @InjectRepository(User) private usersRepository : Repository<User>,) 
     {}
@@ -14,6 +17,21 @@ export class UsersService {
     async findAll() : Promise <User[]> {
         return this.usersRepository.find();
     }
+
+    async getUseInfo(token : string) {
+    //     return await this.jwtService.verifyAsync(token, {secret: this.configService.get<string>('SECRET_KEY')})
+    // .then(payload=> 
+    //     this.usersRepository.findOne(payload.sub))
+    //     .then(user => {
+    //         return (user) 
+    //         ? Promise.resolve(user)
+    //         : Promise.reject("User not found")
+    //     })
+    // .catch(err => 
+    //   Promise.reject(new UnauthorizedException("Invalid Token"))
+    // );
+    }
+
 
     async findOneById(id: string) : Promise<User | undefined> {
         return this.usersRepository.findOne(id)

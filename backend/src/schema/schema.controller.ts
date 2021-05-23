@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, ParseUUIDPipe, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, ParseUUIDPipe, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
+import { JwtAuthGuard } from 'src/auth/jwt.auth-guard';
 import { CreateSchemaDto } from './dto/schema.dto';
 import { SchemaService } from './schema.service';
 
 @Controller('schema')
+@UseGuards(JwtAuthGuard)
 export class SchemaController {
     constructor (private schemaService : SchemaService){}
     
@@ -12,10 +14,12 @@ export class SchemaController {
     async getAll() {
         return this.schemaService.findAll();
     }
+
     @Get('/:id')
     async getOneById(@Param('id', ParseUUIDPipe) id : string) {
         return this.schemaService.findOneById(id);
     }
+    
     @Get('/user/:id')
     async getAllByUserId(@Param('id', ParseUUIDPipe) id : string) {
         return this.schemaService.findAllByUserId(id);

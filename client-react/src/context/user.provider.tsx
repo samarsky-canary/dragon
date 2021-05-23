@@ -2,9 +2,15 @@ import React, { FC, createContext } from 'react';
 
 export type UserState = {
     token: string | undefined;
+    role: string | undefined;
+    username: string | undefined;
+    uuid: string | undefined;
 }
 const initialTokenState : UserState = {
     token: undefined,
+    role : undefined,
+    username : undefined,
+    uuid : undefined,
 }
 
 
@@ -19,12 +25,18 @@ const userReducer = (state : UserState, action : UserAction) :UserState => {
       case "SIGNUP":
       case "LOGIN":
         sessionStorage.setItem('token', JSON.stringify(action.payload.token));
+        sessionStorage.setItem('role', JSON.stringify(action.payload.role));
+        sessionStorage.setItem('username', JSON.stringify(action.payload.role));
+        sessionStorage.setItem('uuid', JSON.stringify(action.payload.role));
         console.log(sessionStorage.getItem('token'))
         return  action.payload;
       case "LOGOUT":
         localStorage.clear();
         return {
-          token: undefined
+          token: undefined,
+          role : undefined,
+          username : undefined,
+          uuid : undefined,
         };
       default:
         return state;

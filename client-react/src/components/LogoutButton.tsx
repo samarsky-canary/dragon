@@ -14,7 +14,10 @@ export const LogoutButton : React.FC = () => {
         dispatch({
             type: "LOGOUT",
             payload: {
-                token: undefined
+                token: undefined,
+                role : undefined,
+                username: undefined,
+                uuid: undefined
             }
         })
     }
