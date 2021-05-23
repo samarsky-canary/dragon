@@ -6,40 +6,39 @@ const BASE_API_PREFIX = "/api/schema";
 
 
 
-export class ProjectService {
-    private static _instance: ProjectService;
+export class SchemaService {
+    private static _instance: SchemaService;
     private static _authService : AuthStateService;
 
     constructor(authService : AuthStateService){
-        ProjectService._authService = authService.getInstance();
+        SchemaService._authService = authService.getInstance();
     }
 
-    public getInstance(): ProjectService {
-        if (!ProjectService._instance){
-            ProjectService._instance = new ProjectService(ProjectService._authService);
+    public getInstance(): SchemaService {
+        if (!SchemaService._instance){
+            SchemaService._instance = new SchemaService(SchemaService._authService);
         }
-        return ProjectService._instance;
+        return SchemaService._instance;
     }
 
-    public async getUserSchemas(user_id : string) {
+    public async getUserSchemas(user_id : string) : Promise<SchemaDTO[]> {
         const headers = {
-            "Authorization" : `Bearer ${ProjectService._authService.getToken()}`
+            "Authorization" : `Bearer ${SchemaService._authService.getToken()}`
         }
-        return axios.post<Array<SchemaDTO>>(`${BASE_API_PREFIX}/user/`, {
+        return axios.get<Array<SchemaDTO>>(`${BASE_API_PREFIX}/user/${user_id}`, {
             headers : headers,
-            params: {
-                id: user_id
-            }
         })
         .then(response => {
-            //TODO: дописать после создания тестов
             return response.data;
+        })
+        .catch(err => {
+            throw new Error("unable to get schemas");
         })
     }
 }
 
 
-interface SchemaDTO {
+export type SchemaDTO = {
     uuid: string;
     name: string;
     idUser: string;

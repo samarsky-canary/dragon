@@ -1,20 +1,38 @@
-import React from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { Button, Container, ListGroup } from 'react-bootstrap';
+import { UserContext } from '../../../context/user.provider';
+import { SchemaService, SchemaDTO } from '../../../services/ProjectService';
 import './ProjectsSidebar.scss'
 
+type Props = {
+    schemaService: SchemaService,
+    setSchema: (value: SchemaDTO) => void;
+    schema : SchemaDTO | undefined;
+}
 
-export const ProjectsSidebar = () => {
+export const ProjectsSidebar: FC<Props> = ({ schemaService, setSchema, schema }) => {
+    const { state } = useContext(UserContext);
+    const [schemas, setSchemas] = useState<SchemaDTO[]>([]);
 
+
+    useEffect(() => {
+        if (state.uuid) {
+            schemaService.getUserSchemas(state.uuid)
+                .then(schemas => setSchemas(schemas))
+                .catch(err => setSchemas([]))
+        }
+    }, [schema]);
 
     return (
-        <div>
-            <Container fluid>
-                <ListGroup>
-                    <ListGroup.Item as={Button}>Press me</ListGroup.Item>
-                    <ListGroup.Item as={Button}>Press me2</ListGroup.Item>
-                    <ListGroup.Item as={Button}>Press me3</ListGroup.Item>
-                </ListGroup>
-            </Container>
-        </div>
+        <ListGroup>
+            {schemas.map((scheme) => (
+                <ListGroup.Item
+                    key={scheme.uuid}
+                    action variant={scheme.uuid === schema?.uuid ? `info` : ''}
+                    onClick={() => setSchema(scheme)}>
+                    {scheme.name}
+                </ListGroup.Item>
+            ))}
+        </ListGroup>
     )
 }

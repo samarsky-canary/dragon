@@ -1,4 +1,4 @@
-import {ProjectService} from './ProjectService';
+import {SchemaService} from './ProjectService';
 import {AuthStateService} from './AuthStateService';
 
 // default user for test
@@ -8,7 +8,7 @@ const user = {
 }
 
 const authStateService = new AuthStateService().getInstance();
-const projectService = new ProjectService(authStateService).getInstance();
+const projectService = new SchemaService(authStateService).getInstance();
 var UUID : string;
 
 test(('Willy login'),()=>{

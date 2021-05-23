@@ -7,7 +7,6 @@ export const D3Sample : FC = () => {
     const ref: RefObject<HTMLDivElement> = React.createRef();
 
     const draw = () => {
-        d3.select(ref.current).append('p').text('D3 заглушка');
         d3.select('svg').append('g').attr('transform', 'translate(250, 0)')
         .append('rect').attr('width', 500).attr('height', 500).attr('fill', 'gray');
     }

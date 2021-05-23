@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import './App.css';
 import { Route, Switch } from 'react-router-dom';
-import { EditorPage } from './Pages/Editor/editorPage';
+import { EditorPage } from './Pages/Editor/Editor';
 import Login from './Pages/Login/Login';
 import { NotFoundPage } from './Pages/NotFound/NotFound';
 import { NavigationHeader } from './components/NavigationHeader';
