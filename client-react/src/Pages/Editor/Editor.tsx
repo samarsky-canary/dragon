@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Col, Container, Modal, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Modal, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
 import { D3Sample } from '../../components/Sheet';
 import { AuthStateService } from '../../services/AuthStateService';
 import { SchemaDTO, SchemaService } from '../../services/ProjectService';
@@ -9,8 +9,8 @@ import './Editor.scss'
 import { DrgTranslationSave, DrgTranslationSaveTEMP } from '../../drakon_schema/translator';
 
 
-const authService : AuthStateService = new AuthStateService().getInstance();
-const schemaService : SchemaService = new SchemaService(authService).getInstance();
+const authService: AuthStateService = new AuthStateService().getInstance();
+const schemaService: SchemaService = new SchemaService(authService).getInstance();
 
 export const EditorPage: React.FC = () => {
     const [schema, setSchema] = useState<SchemaDTO>();
@@ -20,22 +20,41 @@ export const EditorPage: React.FC = () => {
         if (schema) {
             DrgTranslationSaveTEMP(schema);
         } else {
-            return <Modal  show={true}>No schema selected</Modal>
+            return <Modal show={true}>No schema selected</Modal>
         }
     }
 
+    const renderTooltip = (props: any) => (
+        <Tooltip id="button-tooltip" {...props}>
+            Выберите схему
+        </Tooltip>
+    );
+
     useEffect(() => {
         document.title = schema === undefined ? "DRAKON IDE" : schema.name;
-    },[schema]);
+    }, [schema]);
     return (
 
         <Container fluid id="main-wrap">
             <Row>
                 <Col xs={2}>
-                    <Card bg="dark" text="light">
-                        <Card.Header>ДРАКОН-схемы:</Card.Header>
+                    <OverlayTrigger
+                        placement="right"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={renderTooltip}
+                    >
+                        <Card >
+                            <Card.Header>Схемы пользователя:</Card.Header>
+                            <Card.Body>
+                                <ProjectsSidebar schemaService={schemaService} setSchema={setSchema} schema={schema} />
+                            </Card.Body>
+                        </Card>
+                    </OverlayTrigger>
+                    <Card>
+                        <Card.Header>Управление схемой</Card.Header>
                         <Card.Body>
-                            <ProjectsSidebar  schemaService={schemaService} setSchema={setSchema} schema={schema}/>
+                            <Button variant="primary btn-block" disabled={schema === undefined? true: false} onClick={() => { handleSubmit(); }}>Скачать</Button>{' '}
+                            <Button variant="danger btn-block"  disabled={schema === undefined? true: false} onClick={() => { handleSubmit(); }}>Удалить</Button>{' '}
                         </Card.Body>
                     </Card>
                 </Col>
@@ -47,7 +66,9 @@ export const EditorPage: React.FC = () => {
                 </Col>
             </Row>
             <Row>
-                <Button variant="btn btn-primary btn-block" onClick={() => { handleSubmit(); }}>Download</Button>{' '}
+                <Col xs={2}>
+                    
+                </Col>
             </Row>
         </Container>
     );
