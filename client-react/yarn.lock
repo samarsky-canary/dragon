@@ -3099,6 +3099,11 @@ base@^0.11.1:
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
 
+batch-processor@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/batch-processor/-/batch-processor-1.0.0.tgz#75c95c32b748e0850d10c2b168f6bdbe9891ace8"
+  integrity sha1-dclcMrdI4IUNEMKxaPa9vpiRrOg=
+
 batch@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"
@@ -4892,6 +4897,13 @@ electron-to-chromium@^1.3.564, electron-to-chromium@^1.3.723:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.727.tgz#857e310ca00f0b75da4e1db6ff0e073cc4a91ddf"
   integrity sha512-Mfz4FIB4FSvEwBpDfdipRIrwd6uo8gUDoRDF4QEYb4h4tSuI3ov594OrjU6on042UlFHouIJpClDODGkPcBSbg==
 
+element-resize-detector@^1.1.10:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/element-resize-detector/-/element-resize-detector-1.2.2.tgz#bf7c3ff915957e4e62e86241ed2f9c86b078892b"
+  integrity sha512-+LOXRkCJc4I5WhEJxIDjhmE3raF8jtOMBDqSCgZTMz2TX3oXAX5pE2+MDeopJlGdXzP7KzPbBJaUGfNaP9HG4A==
+  dependencies:
+    batch-processor "1.0.0"
+
 elliptic@^6.5.3:
   version "6.5.4"
   resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.4.tgz#da37cebd31e79a1367e941b592ed1fbebd58abbb"
@@ -6524,7 +6536,7 @@ internmap@^1.0.0:
   resolved "https://registry.yarnpkg.com/internmap/-/internmap-1.0.1.tgz#0017cc8a3b99605f0302f2b198d272e015e5df95"
   integrity sha512-lDB5YccMydFBtasVtxnZ3MRBHuaoE8GKsppq+EchKL2U4nK/DmEpPHNH8MZe5HkMtpSiTSOZwfN0tzYjO/lJEw==
 
-invariant@^2.2.4:
+invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -9738,7 +9750,7 @@ prop-types-extra@^1.1.0:
     react-is "^16.3.2"
     warning "^4.0.0"
 
-prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.8, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -9937,6 +9949,15 @@ react-bootstrap@^1.5.1:
     react-transition-group "^4.4.1"
     uncontrollable "^7.2.1"
     warning "^4.0.3"
+
+react-container-dimensions@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/react-container-dimensions/-/react-container-dimensions-1.4.1.tgz#73a8b497f09c6b55a18a79b18a57a8327138f343"
+  integrity sha512-f5WXYpsL0vAuT9hD6bSTqRYOJXFbU9JzjSZfscNT77PbdCUReLv2/aSvYBgkXyALtOBVdS/nwO5RVZgBxxWDnw==
+  dependencies:
+    element-resize-detector "^1.1.10"
+    invariant "^2.2.2"
+    prop-types "^15.5.8"
 
 react-dev-utils@^11.0.3:
   version "11.0.4"
@@ -12047,6 +12068,11 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
+
+use-image@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/use-image/-/use-image-1.0.7.tgz#b2c42b78d32868762a37631673eb169a244d5ad1"
+  integrity sha512-Z8hB8+lAGe25iqO3YaHO7bSvBSGErEakYQ6RGyRrPZoMDLKBIuZ67ikzn8f5ydjWorqFzeX+U3vVwnXoE1Q56Q==
 
 use@^3.1.0:
   version "3.1.1"

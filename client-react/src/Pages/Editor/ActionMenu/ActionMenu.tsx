@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Container, ListGroup, Image, Card, Row } from 'react-bootstrap';
+import { Button, Image, Card, Row } from 'react-bootstrap';
 import action from '../../../images/action.png'
 import comment from '../../../images/comment.png'
 import input from '../../../images/input.png'

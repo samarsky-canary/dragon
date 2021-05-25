@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Container, Modal, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
-import { D3Sample } from '../../components/Sheet';
 import { AuthStateService } from '../../services/AuthStateService';
 import { SchemaDTO, SchemaService } from '../../services/ProjectService';
 import { ActionMenu } from './ActionMenu/ActionMenu';
 import { ProjectsSidebar } from './ProjectsSidebar/ProjectsSidebar';
 import './Editor.scss'
-import { DrgTranslationSave, DrgTranslationSaveTEMP } from '../../drakon_schema/translator';
+import { DrgTranslationSaveTEMP } from '../../drakon_schema/translator';
+import { KonvaCanvas } from './KonvaCanvas/KonvaCanvas';
+import ContainerDimensions from 'react-container-dimensions';
 
 
 const authService: AuthStateService = new AuthStateService().getInstance();
@@ -14,7 +15,6 @@ const schemaService: SchemaService = new SchemaService(authService).getInstance(
 
 export const EditorPage: React.FC = () => {
     const [schema, setSchema] = useState<SchemaDTO>();
-
 
     function handleSubmit() {
         if (schema) {
@@ -24,6 +24,7 @@ export const EditorPage: React.FC = () => {
         }
     }
 
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
     const renderTooltip = (props: any) => (
         <Tooltip id="button-tooltip" {...props}>
             Выберите схему
@@ -53,8 +54,8 @@ export const EditorPage: React.FC = () => {
                     <Card>
                         <Card.Header>Управление схемой</Card.Header>
                         <Card.Body>
-                            <Button variant="primary btn-block" disabled={schema === undefined? true: false} onClick={() => { handleSubmit(); }}>Скачать</Button>{' '}
-                            <Button variant="danger btn-block"  disabled={schema === undefined? true: false} onClick={() => { handleSubmit(); }}>Удалить</Button>{' '}
+                            <Button variant="primary btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleSubmit(); }}>Скачать</Button>{' '}
+                            <Button variant="danger btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleSubmit(); }}>Удалить</Button>{' '}
                         </Card.Body>
                     </Card>
                 </Col>
@@ -62,12 +63,14 @@ export const EditorPage: React.FC = () => {
                     <ActionMenu />
                 </Col>
                 <Col xs={7}>
-                    <D3Sample />
+                    <ContainerDimensions>
+                        {({ height, width }) => <KonvaCanvas height={height} width={width} />}
+                    </ContainerDimensions>
                 </Col>
             </Row>
             <Row>
                 <Col xs={2}>
-                    
+
                 </Col>
             </Row>
         </Container>

@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { Button, Container, ListGroup } from 'react-bootstrap';
+import {Button, ListGroup } from 'react-bootstrap';
 import { UserContext } from '../../../context/user.provider';
 import { SchemaService, SchemaDTO } from '../../../services/ProjectService';
 import './ProjectsSidebar.scss'
@@ -19,7 +19,7 @@ export const ProjectsSidebar: FC<Props> = ({ schemaService, setSchema, schema })
         if (state.uuid) {
             schemaService.getUserSchemas(state.uuid)
                 .then(schemas => setSchemas(schemas))
-                .catch(err => setSchemas([]))
+                .catch(_err => setSchemas([]))
         }
     }, [schema]);
 
@@ -33,6 +33,7 @@ export const ProjectsSidebar: FC<Props> = ({ schemaService, setSchema, schema })
                     {scheme.name}
                 </ListGroup.Item>
             ))}
+            <ListGroup.Item as={Button} variant="warning">Создать схему</ListGroup.Item>
         </ListGroup>
     )
 }
