@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, Container } from 'react-bootstrap';
+import { Alert, Button, Container, Form } from 'react-bootstrap';
 import './Login.scss';
 import { AuthStateService } from '../../services/AuthStateService';
 import { UserAction } from '../../context/user.provider';
@@ -13,7 +13,7 @@ type Props = {
 }
 
 
-export const Login: React.FC<Props> = ({setToken}) => {
+export const Login: React.FC<Props> = ({ setToken }) => {
     const [username, setusername] = useState<string>("");
     const [password, setPasswordValue] = useState<string>("");
 
@@ -23,7 +23,7 @@ export const Login: React.FC<Props> = ({setToken}) => {
 
     const togglePasswordVisiblity = () => {
         setPasswordShown(passwordShown ? false : true);
-      };
+    };
 
     const handleLoginSubmit = async (e?: React.MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
         e?.preventDefault();
@@ -31,12 +31,12 @@ export const Login: React.FC<Props> = ({setToken}) => {
         if (response.status === 200 && response.body) {
             setToken({
                 type: "LOGIN",
-                payload: {     
+                payload: {
                     token: response.body.access_token,
                     role: response.body.role,
                     username: response.body.username,
                     uuid: response.body.uuid,
-                } 
+                }
             });
         }
         else {
@@ -51,12 +51,12 @@ export const Login: React.FC<Props> = ({setToken}) => {
         if (response.status === 201 && response.body) {
             setToken({
                 type: "LOGIN",
-                payload: {     
+                payload: {
                     token: response.body.access_token,
                     role: response.body.role,
                     username: response.body.username,
                     uuid: response.body.uuid,
-                } 
+                }
             });
         }
         else {
@@ -66,45 +66,38 @@ export const Login: React.FC<Props> = ({setToken}) => {
     }
 
 
-    useEffect(()=>{
+    useEffect(() => {
         document.title = "Вход и регистрация"
     });
 
     return (
         <div className="background-div bg-dark text-white">
             <Container>
-                <div className="row my-5 d-flex justify-content-center">
-                    <div className="col-4">
-                        <h1 className="text-center mb-2">{greet}</h1>
-                        <div className="form-group">
-                            <div className="form-group">
-                                <label>Логин</label>
-                                <input className="form-control" type="text" value={username} onChange={e => { setusername(e.target.value) }} ></input>
-                            </div>
-                            <div className="form-group">
-                                <label>Пароль</label>
-                                <input 
-                                    className="form-control" 
-                                    type={passwordShown ? "text" : "password"} 
-                                    value={password} 
-                                    onChange={e => { setPasswordValue(e.target.value) }}>
-                                </input>
-                                <img className="img-fluid" src={process.env.PUBLIC_URL + '/icons/eye.ico'} onClick={togglePasswordVisiblity}></img>
-                                <Alert hidden={errorHidden} variant="danger">
-                                {errorMessage}
-                                </Alert>
-                            </div>
-                            <div className="justify-content-md-center">
-                                <Button variant="info btn-block" onClick={(e) => { handleLoginSubmit(e); }}>Вход</Button>{' '}
-                            </div>
-                            <div className="justify-content-md-center">
-                                <Button variant="warning btn-block mt-2" onClick={(e) => { handleSignupSubmit(e)} }>Регистрация</Button>{' '}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Container>
-        </div>);
+                <h1 className="text-center mb-2">{greet}</h1>
+                <Form>
+                    <Form.Group controlId="username">
+                        <Form.Label>Имя пользователя</Form.Label>
+                        <Form.Control
+                            type="text"
+                            placeholder="Введите Ваш уникальный логин"
+                            value={username}
+                            onChange={e => { setusername(e.target.value) }} />
+                    </Form.Group>
+                    <Form.Group controlId="password">
+                        <Form.Label>Пароль</Form.Label>
+                        <Form.Control 
+                            type={passwordShown ? "text" : "password"} 
+                            placeholder="Пароль" 
+                            value={password}
+                            onChange={e => { setPasswordValue(e.target.value) }} />
+                        <img className="img-fluid" src={process.env.PUBLIC_URL + '/icons/eye.ico'} onClick={togglePasswordVisiblity}></img>
+                        <Alert hidden={errorHidden} variant="danger">{errorMessage}</Alert>
+                    </Form.Group>
+                    <Button variant="info btn-block" onKeyPress={(e) => { if (e.key === "Enter") handleLoginSubmit() }} onClick={(e) => { handleLoginSubmit(e); }}>Вход</Button>
+                    <Button variant="warning btn-block mt-2" onClick={(e) => { handleSignupSubmit(e) }}>Регистрация</Button>
+                </Form>
+            </Container >
+        </div >);
 };
 
 export default Login;
