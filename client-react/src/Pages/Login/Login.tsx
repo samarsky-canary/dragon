@@ -72,7 +72,7 @@ export const Login: React.FC<Props> = ({ setToken }) => {
 
     return (
         <div className="background-div bg-dark text-white">
-            <Container>
+            <Container className="login-content">
                 <h1 className="text-center mb-2">{greet}</h1>
                 <Form>
                     <Form.Group controlId="username">

@@ -1,33 +1,27 @@
-import React, { FC } from 'react';
-import { Button } from 'react-bootstrap';
-import { DragonSchema } from '../../drakon_schema/dragon.schema';
-import { IconAction } from '../../drakon_schema/icon.model';
-import { DrgTranslationSave } from '../../drakon_schema/translator';
+import React, { FC, useEffect, useState } from 'react';
+import { Container } from 'react-bootstrap';
+import Markdown from 'markdown-to-jsx';
 
-
-
-const schema = new DragonSchema();
-function myFunc(schema: DragonSchema) {
-    const action = new IconAction();
-     action.text = "let a = 10";
-     schema.Insert(action,schema._head.id);
-     console.log(schema.toJson());
-    
-     const iconToUpdate = schema.Get(schema._head.id);
-     if (iconToUpdate !== undefined) {
-        iconToUpdate.text = "Schema name";
-        schema.Update(iconToUpdate)
-     }
-}
-myFunc
 export const DocPage: FC = () => {
-    return (
-        <div>
-            <Button variant="btn btn-primary btn-block" onClick={() => { handleSubmit(); }}>Download</Button>{' '}
-        </div>
-    )
-}
 
-function handleSubmit() {
-    DrgTranslationSave(schema);
+    const file_name = 'TODO.md';
+    const [post, setPost] = useState('');
+
+    useEffect(() => {
+        import(`./${file_name}`)
+            .then(res => {
+                fetch(res.default)
+                    .then(res => res.text())
+                    .then(res => setPost(res))
+                    .catch(err => console.log(err));
+            })
+            .catch(err => console.log(err));
+    });
+
+
+    return (
+        <Container>
+            <Markdown>{post}</Markdown>
+        </Container>
+    )
 }
