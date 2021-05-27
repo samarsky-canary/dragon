@@ -10,6 +10,7 @@ const EXTRAWIDTH_SPACE = 30;
 
 type IconProps = {
     text?: string;
+    setText?: (value: string) => void
     x?: number;
     y?: number;
 }
