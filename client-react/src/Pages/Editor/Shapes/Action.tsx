@@ -42,6 +42,7 @@ export const Action: FC<IconProps> = ({ text, x, y }) => {
         <Group 
         draggable
         ref={groupRef}
+        onClick={()=> {console.log("clicked icon")}}
         >
             <Rect ref={rectRef} 
             width={textWidth + EXTRAWIDTH_SPACE} 

@@ -6,6 +6,9 @@ import { Action } from '../Shapes/Action';
 type Props = {
     width: number;
     height: number;
+    text: string | undefined;
+    setText: (value: string) => void
+
 }
 
 export const KonvaCanvas: React.FC<Props> = ({ width, height }) => {
