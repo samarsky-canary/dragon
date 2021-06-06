@@ -9,11 +9,11 @@ const authStateService = new AuthStateService().getInstance();
 
 
 type Props = {
-    setToken: React.Dispatch<UserAction>;
+    setRegisterData: React.Dispatch<UserAction>;
 }
 
 
-export const Login: React.FC<Props> = ({ setToken }) => {
+export const Login: React.FC<Props> = ({ setRegisterData }) => {
     const [username, setusername] = useState<string>("");
     const [password, setPasswordValue] = useState<string>("");
 
@@ -29,14 +29,10 @@ export const Login: React.FC<Props> = ({ setToken }) => {
         e?.preventDefault();
         const response = await authStateService.Authentificate(username, password);
         if (response.status === 200 && response.body) {
-            setToken({
+            console.log(response.body)
+            setRegisterData({
                 type: "LOGIN",
-                payload: {
-                    token: response.body.access_token,
-                    role: response.body.role,
-                    username: response.body.username,
-                    uuid: response.body.uuid,
-                }
+                payload: response.body
             });
         }
         else {
@@ -49,14 +45,9 @@ export const Login: React.FC<Props> = ({ setToken }) => {
         e?.preventDefault();
         const response = await authStateService.RegisterUser(username, password);
         if (response.status === 201 && response.body) {
-            setToken({
+            setRegisterData({
                 type: "LOGIN",
-                payload: {
-                    token: response.body.access_token,
-                    role: response.body.role,
-                    username: response.body.username,
-                    uuid: response.body.uuid,
-                }
+                payload: response.body
             });
         }
         else {

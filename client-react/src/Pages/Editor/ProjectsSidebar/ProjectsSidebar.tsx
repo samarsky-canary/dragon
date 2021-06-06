@@ -16,12 +16,13 @@ export const ProjectsSidebar: FC<Props> = ({ schemaService, setSchema, schema })
 
 
     useEffect(() => {
+        if (state)
         if (state.uuid) {
             schemaService.getUserSchemas(state.uuid)
                 .then(schemas => setSchemas(schemas))
-                .catch(_err => setSchemas([]))
+                .catch(_err => console.log(_err))
         }
-    }, [schema]);
+    }, []);
 
     return (
         <ListGroup>

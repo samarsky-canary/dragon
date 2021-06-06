@@ -1,13 +1,8 @@
 import React, { FC, createContext } from 'react';
+import { loginResponseDTO } from '../DTO/IloginResponseDTO';
 
-export type UserState = {
-    token: string | undefined;
-    role: string | undefined;
-    username: string | undefined;
-    uuid: string | undefined;
-}
-const initialTokenState : UserState = {
-    token: undefined,
+const initialTokenState : loginResponseDTO = {
+    access_token: undefined,
     role : undefined,
     username : undefined,
     uuid : undefined,
@@ -16,35 +11,25 @@ const initialTokenState : UserState = {
 
 export type UserAction = {
     type :'LOGIN' | 'LOGOUT' | 'SIGNUP';
-    payload: UserState
+    payload: loginResponseDTO
 }
 
-const userReducer = (state : UserState, action : UserAction) :UserState => {
-    console.log(state.token);
+const userReducer = (state : loginResponseDTO, action : UserAction) :loginResponseDTO => {
     switch (action.type) {
       case "SIGNUP":
       case "LOGIN":
-        sessionStorage.setItem('token', JSON.stringify(action.payload.token));
-        sessionStorage.setItem('role', JSON.stringify(action.payload.role));
-        sessionStorage.setItem('username', JSON.stringify(action.payload.role));
-        sessionStorage.setItem('uuid', JSON.stringify(action.payload.role));
-        console.log(sessionStorage.getItem('token'))
+        localStorage.setItem('user', JSON.stringify(action.payload));
         return  action.payload;
       case "LOGOUT":
         localStorage.clear();
-        return {
-          token: undefined,
-          role : undefined,
-          username : undefined,
-          uuid : undefined,
-        };
+        return initialTokenState
       default:
         return state;
     }
   };
 
   interface UserContextProps {
-    state: UserState;
+    state: loginResponseDTO;
     dispatch: React.Dispatch<UserAction>;
   }
 

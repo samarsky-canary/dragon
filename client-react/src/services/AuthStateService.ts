@@ -40,8 +40,8 @@ export class AuthStateService {
 
 
     public async TokenVerification(token: string) : Promise<boolean> {
-        const URL = process.env.REACT_APP_CLIENT_DOMAIN + AuthStateService.BASE_API_PREFIX  + "verify";
-        return await axios.post(URL,{params: token}).then(() => {
+        const URL = process.env.REACT_APP_CLIENT_DOMAIN + AuthStateService.BASE_API_PREFIX  + "verify/" + token;
+        return await axios.post(URL).then(() => {
             return true
         }).catch(()=> {
             return false

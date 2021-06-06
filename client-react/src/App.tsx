@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './App.css';
 import { Route, Switch } from 'react-router-dom';
 import { EditorPage } from './Pages/Editor/Editor';
@@ -14,8 +14,22 @@ const App: React.FC = () => {
 
   const { state, dispatch } = useContext(UserContext)
 
-  if (!state.token) {
-    return <Login setToken={dispatch} />
+
+  // Check if user already have saved logged info
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      dispatch({
+        type: "LOGIN",
+        payload: foundUser
+      });
+    }
+  }, []);
+
+
+  if (!state.access_token) {
+    return <Login setRegisterData={dispatch} />
   }
 
   return (
