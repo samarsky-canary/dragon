@@ -9,6 +9,10 @@ export const InstructionType = {
     BRANCH: "branch",
     INPUT: "input",
     OUTPUT: "output",
+    LOOP: "loop",
+    SWITCH: 'switch',
+    COMMENT: 'comment',
+    SLEEP: 'sleep'
 } as const
 
 
@@ -46,7 +50,6 @@ abstract class DragonInstruction {
         this.children.splice(pos,1);
     }
 
-
     public Find (uuid: string) {
         if (this.id === uuid) {
             return this;
@@ -59,14 +62,17 @@ abstract class DragonInstruction {
 
 }
 
-
-
 export class DragonActionInstruction extends DragonInstruction {
     constructor(parent: string) {
         super(InstructionType.ACTION,parent);
     }
 }
 
+export class DragonSleepInstruction extends DragonInstruction {
+    constructor(parent: string) {
+        super(InstructionType.SLEEP,parent);
+    }
+}
 
 export class DragonInputInstruction extends DragonInstruction {
     constructor(parent: string) {
@@ -80,6 +86,11 @@ export class DragonOutputInstruction extends DragonInstruction {
     }
 }
 
+export class DragonCommentInstruction extends DragonInstruction {
+    constructor(parent: string) {
+        super(InstructionType.COMMENT,parent);
+    }
+}
 
 class DragonBranchInstruction extends DragonInstruction {
     constructor(parent: string) {
@@ -97,12 +108,30 @@ export class DragonConditionInstruction extends DragonInstruction{
     }
 }
 
+export class DragonLoopInstruction extends DragonInstruction{
+    constructor(parent: string) {
+        super(InstructionType.LOOP,parent);
+        this.Add(new DragonBranchInstruction(this.id));
+    }
+}
+
+export class DragonSwitchInstruction extends DragonInstruction{
+    constructor(parent: string) {
+        super(InstructionType.SWITCH,parent);
+        this.Add(new DragonBranchInstruction(this.id));
+        this.Add(new DragonBranchInstruction(this.id));
+    }
+
+    addBranch(branch: DragonBranchInstruction){
+        throw new Error('Not implemented');
+    }
+}
+
 class DragonSchemaInstruction extends DragonInstruction{
     constructor() {
         super(InstructionType.SCHEMA, "")
     }
 }
-
 
 class DragonPrimitiveIstruction extends DragonInstruction{
     constructor(parent: string) {
@@ -127,24 +156,29 @@ export class DragonSchema2 {
     }
 
     public Insert(instruction : DragonInstruction, next?: string) {
+        
+        this.containers.get(instruction.parent)?.Add(instruction,next);
+        this.containers.set(instruction.id, instruction);
         switch(instruction.type){
 
             case InstructionType.CONDITION:
-                this.containers.get(instruction.parent)?.Add(instruction,next);
                 const ifInstruction = instruction.children[0];
                 const elseInstruction = instruction.children[1];
-
-                this.containers.set(instruction.id, instruction);
                 this.containers.set(ifInstruction.id, ifInstruction);
                 this.containers.set(elseInstruction.id, elseInstruction);
                 break;
             
 
+            case InstructionType.LOOP:
+                instruction.children.forEach(value => {
+                    const branch = value;
+                    this.containers.set(value.id,value);
+                })
+                break;
             case InstructionType.BRANCH:
                 throw new Error('manual branch insert not allowed');
             default:
-                this.containers.get(instruction.parent)?.Add(instruction,next);
-                this.containers.set(instruction.id, instruction);
+                
                 break;
         }
         
@@ -216,9 +250,18 @@ export class DragonSchema2 {
                     if (instruction.text !== "")
                         code = code.replace(`[${instruction.id}]`, instruction.text + ";");
                     break;
-                
 
+                case InstructionType.COMMENT:
+                    if (instruction.text !== "")
+                        code = code.replace(`[${instruction.id}]`, `/*${instruction.text}*/`);
+                    break;
+                
                 case InstructionType.OUTPUT:
+                    if (instruction.text !== "")
+                        code = code.replace(`[${instruction.id}]`, `console.log(${instruction.text});`);
+                    break;
+
+                case InstructionType.INPUT:
                     if (instruction.text !== "")
                         code = code.replace(`[${instruction.id}]`, `console.log(${instruction.text});`);
                     break;
@@ -234,6 +277,13 @@ export class DragonSchema2 {
                     instruction.children.forEach((value,key)=>{
                         code = this.parseInstruction(value,code, ++deep);
                     })
+                    break;
+
+                // Condition SCOPES if {inner} else {inner2}
+                case InstructionType.LOOP:
+                    generatedCode = `while (${instruction.text}) {\n\t[${instruction.children[0].id}]\t}`
+                    code = code.replace(`[${instruction.id}]`, generatedCode);
+                    code = this.parseInstruction(instruction.children[0], code, ++deep);
                     break;
 
                     // BRANC SCOPES {inner}

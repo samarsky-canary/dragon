@@ -1,4 +1,4 @@
-import { DragonActionInstruction, DragonConditionInstruction, DragonOutputInstruction, DragonSchema2 } from "./dragon.model";
+import { DragonActionInstruction, DragonCommentInstruction, DragonConditionInstruction, DragonLoopInstruction, DragonOutputInstruction, DragonSchema2 } from "./dragon.model";
 
 
 const schema = new DragonSchema2();
@@ -20,6 +20,11 @@ test(('Schema Test2'),()=>{
     condition.text = "simple === 22"
     schema.Insert(condition)
 
+    const loop = new DragonLoopInstruction(condition.children[0].id!);
+    loop.text
+    loop.text = "simple > 22"
+    schema.Insert(loop);
+
     id = condition.children[0].id;
 
     const action = new DragonActionInstruction(id);
@@ -39,6 +44,12 @@ test(('Schema Test2'),()=>{
     const output = new DragonOutputInstruction(PrimitiveRef!);
     output.text = ("simple");
     schema.Insert(output);
+
+
+    const comment = new DragonCommentInstruction(id);
+    comment.text="my sample comment";
+    schema.Insert(comment);
+
 });
 
 test(('Schema Test3'),()=>{
