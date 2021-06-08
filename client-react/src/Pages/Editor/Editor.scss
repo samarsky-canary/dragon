@@ -1,12 +1,20 @@
 #main-wrap{
-    padding: 1rem;
+    padding: 0.5rem;
 
     .card-body{
-        padding: 1rem
+        padding: 1rem;
     }
     
     .card {
-        border-radius: 0rem;
+        //`border-radius: 0rem;
+    }
+
+    .col-2{
+        padding-right: 0rem;
+    }
+
+    .col-1{
+        padding-right: 0rem;
     }
 }
 

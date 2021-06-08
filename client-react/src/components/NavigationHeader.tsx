@@ -1,15 +1,18 @@
-import React from 'react';
-import { Navbar, Nav, Form } from 'react-bootstrap';
+import React, { useContext } from 'react';
+import { Navbar, Nav, Form, ModalTitle } from 'react-bootstrap';
+import { Label } from 'react-konva';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../context/user.provider';
 import { LogoutButton } from './LogoutButton';
 
 
 
 export const NavigationHeader: React.FC = () => {
-
+  const { state, dispatch } = useContext(UserContext)
+    
     return (
         <Navbar fixed="bottom" bg="dark" variant="dark" expand="lg">
-            <Navbar.Brand href="#home">DRAKON IDE</Navbar.Brand>
+            <Navbar.Brand href="/">DRAKON IDE</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
@@ -19,6 +22,7 @@ export const NavigationHeader: React.FC = () => {
                     <Nav.Link as={Link} to="/about">О программе</Nav.Link>
                 </Nav>
                 <Form inline>
+                    <Navbar.Brand aria-disabled href="/curators">Willy</Navbar.Brand>
                     <LogoutButton />
                 </Form>
             </Navbar.Collapse>

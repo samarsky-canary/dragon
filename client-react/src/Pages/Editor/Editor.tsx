@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Col, Container, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
 import { AuthStateService } from '../../services/AuthStateService';
-import { SchemaDTO, SchemaService } from '../../services/ProjectService';
+import { SchemaDTO, SchemaService } from '../../services/SchemaService';
 import { ActionMenu } from './ActionMenu/ActionMenu';
 import { ProjectsSidebar } from './ProjectsSidebar/ProjectsSidebar';
 import './Editor.scss'

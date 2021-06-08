@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Button, Modal } from 'react-bootstrap';
 import { DrgTranslationSaveTEMP } from '../../../drakon_schema/translator';
-import { SchemaDTO } from '../../../services/ProjectService';
+import { SchemaDTO } from '../../../services/SchemaService';
 
 type Props = {
     schema : SchemaDTO | undefined

@@ -1,7 +1,7 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import {Button, ListGroup } from 'react-bootstrap';
 import { UserContext } from '../../../context/user.provider';
-import { SchemaService, SchemaDTO } from '../../../services/ProjectService';
+import { SchemaService, SchemaDTO } from '../../../services/SchemaService';
 import './ProjectsSidebar.scss'
 
 type Props = {

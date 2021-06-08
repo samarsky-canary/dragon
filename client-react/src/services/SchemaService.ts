@@ -1,14 +1,14 @@
 import axios from 'axios';
+import { DragonSchema } from '../drakon_schema/dragon.schema';
 import { loginResponseDTO } from '../DTO/IloginResponseDTO';
 import { AuthStateService } from './AuthStateService';
 
 const BASE_API_PREFIX = "/api/schema";
 
-
-
 export class SchemaService {
     private static _instance: SchemaService;
     private static _authService : AuthStateService;
+    private static _schema: DragonSchema | undefined;
 
     constructor(authService : AuthStateService){
         SchemaService._authService = authService.getInstance();

@@ -13,5 +13,6 @@ export const IconTypes = {
     OUTPUT : "OUTPUT",
     PAUSE : "PAUSE",
     COMMENT : "COMMENT",
-    SEPARATOR : "SEPARATOR"
+    SEPARATOR : "SEPARATOR",
+    ENDBLOCK : "ENDBLOCK"
 } as const

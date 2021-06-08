@@ -1,7 +1,7 @@
 import { DragonSchema } from './dragon.schema';
 import { IconIf } from './icon.model';
 import * as FileSaver from 'file-saver'
-import { SchemaDTO } from '../services/ProjectService';
+import { SchemaDTO } from '../services/SchemaService';
 
     // eslint-disable-next-line
 const IfSchemaPatternTranslate = (iconIF: IconIf) : string => {

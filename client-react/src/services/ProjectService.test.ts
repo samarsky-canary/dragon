@@ -1,4 +1,4 @@
-import {SchemaService} from './ProjectService';
+import {SchemaService} from './SchemaService';
 import {AuthStateService} from './AuthStateService';
 
 // default user for test
