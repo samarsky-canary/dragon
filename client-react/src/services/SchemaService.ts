@@ -40,7 +40,7 @@ export class SchemaService {
     }
 
 
-    public async createNewSchema(user_id: string) : Promise<SchemaDTO> {
+    public async createNewSchema(user_id: string) : Promise<SchemaDTO | undefined> {
         const headers = {
             "Authorization" : `Bearer ${SchemaService._authService.getToken()}`
         }
@@ -50,16 +50,16 @@ export class SchemaService {
             last_changed_by_id: user_id,
             data: new DragonModel().toJSON()
         }
-        return axios.post<SchemaDTO>(`${BASE_API_PREFIX}/create`, {
-            headers : headers,
-            body: schema
+        return axios.post<SchemaDTO>(`${BASE_API_PREFIX}/create`, schema, {
+            headers : headers
         })
         .then(response => {
             return response.data;
         })
         .catch(err => {
-            throw new Error(err);
-        })
+            console.log(err);
+            return undefined;
+        });
     }
 }
 

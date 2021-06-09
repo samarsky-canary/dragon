@@ -16,7 +16,6 @@ const schemaService: SchemaService = new SchemaService(authService).getInstance(
 
 export const EditorPage: React.FC = () => {
     const [schema, setSchema] = useState<SchemaDTO>();
-    const [iconText, setIconText] = useState<string>();
 
 
     /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -52,12 +51,12 @@ export const EditorPage: React.FC = () => {
                 </Col>
                 <Col xs={7}>
                     <ContainerDimensions>
-                        {({ height, width }) => <KonvaCanvas height={height} width={width}  text={iconText} setText={setIconText}/>}
+                        {({ height, width }) => <KonvaCanvas height={height} width={width} schema={schema}/>}
                     </ContainerDimensions>
                 </Col>
                 <Col xs={2}>
                     <SchemaControl schema={schema}/>
-                   <IconFieldsEditor text={iconText} setText={setIconText}/>
+                   {/* <IconFieldsEditor text={iconText} setText={setIconText}/> */}
                 </Col>
             </Row>
         </Container>

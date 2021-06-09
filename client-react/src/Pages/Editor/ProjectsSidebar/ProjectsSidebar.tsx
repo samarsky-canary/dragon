@@ -16,8 +16,11 @@ export const ProjectsSidebar: FC<Props> = ({ schemaService, setSchema, schema })
     const [schemas, setSchemas] = useState<SchemaDTO[]>([]);
 
 
-    const CreateSchema = ()=> {
-        schemaService.createNewSchema(state.uuid!);
+    const CreateSchema = async ()=> {
+        const generatedSchema = await schemaService.createNewSchema(state.uuid!);
+        if (generatedSchema) {
+                schema = generatedSchema;
+        }
     }
 
     useEffect(() => {

@@ -1,5 +1,5 @@
 import { DragonActionInstruction, DragonCommentInstruction, DragonConditionInstruction, DragonLoopInstruction, DragonOutputInstruction, DragonModel } from "./dragon.model";
-
+import equal from "deep-equal";
 
 const schema = new DragonModel();
 const PrimitiveRef = schema.containers.get(schema.head)?.children[0].id;
@@ -52,9 +52,14 @@ test(('Schema Test2'),()=>{
 
 });
 
-test(('Schema Test3'),()=>{
+test(('Replicated schema from JSON comparison'),()=>{
     console.log(schema.toJavaScript());
     const str = JSON.stringify(schema);
     const obj = JSON.parse(str);
+    var replicatedSchema = new DragonModel();
+    replicatedSchema.restoreFromJSON(obj);
+    expect(schema.toJSON()).toStrictEqual(replicatedSchema.toJSON());
+    expect(schema.toJavaScript()).toStrictEqual(replicatedSchema.toJavaScript());
+
 });
 

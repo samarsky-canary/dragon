@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Layer, Stage, Rect } from 'react-konva';
 import useImage from 'use-image';
+import { DragonModel } from '../../../dragon/dragon.model/dragon.model';
+import { SchemaDTO } from '../../../services/SchemaService';
 import { Action } from '../Shapes/Action';
 
 type Props = {
     width: number;
     height: number;
-    text: string | undefined;
-    setText: (value: string) => void
-
+    schema?: SchemaDTO;
 }
 
-export const KonvaCanvas: React.FC<Props> = ({ width, height }) => {
+export const KonvaCanvas: React.FC<Props> = ({ width, height, schema }) => {
 
+    useEffect(()=>{
+        if (schema) {
+            const model = new DragonModel().restoreFromJSON(schema?.data);
+            console.log(schema.data)
+        }
+
+    },[schema])
+    
     const [grid] = useImage("./grid.gif");
 
     return (
