@@ -9,6 +9,7 @@ import { DocPage } from './Pages/DocPage/DocPage';
 import { UserContext } from './context/user.provider';
 import { Curators } from './Pages/Curators/Curators';
 import { About } from './Pages/About/About';
+import { AuthStateService } from './services/AuthStateService';
 
 const App: React.FC = () => {
 
@@ -20,10 +21,15 @@ const App: React.FC = () => {
     const loggedInUser = localStorage.getItem("user");
     if (loggedInUser) {
       const foundUser = JSON.parse(loggedInUser);
-      dispatch({
-        type: "LOGIN",
-        payload: foundUser
-      });
+      const as = new AuthStateService().getInstance();
+      if (as.TokenVerification(foundUser.access_token))
+      {
+          as.setMeta(foundUser.uuid, foundUser.role, foundUser.username, foundUser.access_token)
+          dispatch({
+            type: "LOGIN",
+            payload: foundUser
+          });
+      }
     }
   }, []);
 

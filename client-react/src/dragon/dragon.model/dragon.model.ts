@@ -1,4 +1,3 @@
-import { type } from "os";
 import {v4 as uuidv4} from "uuid";
 
 export const InstructionType = {
@@ -21,20 +20,21 @@ abstract class DragonInstruction {
     type: string;
     id: string;
     parent: string;
-    text: string = "";
+    text: string;
     // вложенные инструкции
     children: DragonInstruction[];
 
-    constructor(type: string, parent: string, resolve_id?: string) {
+    constructor(type: string, parent: string) {
         this.type = type;
         this.parent = parent;
+        this.text = "";
         this.id = uuidv4();
         this.children = [];
     }
 
     public Add(instruction : DragonInstruction, uuid_next?: string) {
         if (uuid_next) {
-            const pos = this.children.findIndex((element,index,array)=>{
+            const pos = this.children.findIndex((element)=>{
                 return element.id === uuid_next
             });
             this.children.splice(pos,0,instruction);
@@ -44,7 +44,7 @@ abstract class DragonInstruction {
     }
 
     public Remove(uuid: string) {
-        const pos = this.children.findIndex((element,index,array)=>{
+        const pos = this.children.findIndex((element)=>{
             return element.id === uuid
         });
         this.children.splice(pos,1);
@@ -141,7 +141,7 @@ class DragonPrimitiveIstruction extends DragonInstruction{
 }
 
 
-export class DragonSchema2 {
+export class DragonModel {
     head: string
     containers: Map<string,DragonInstruction> = new Map();
 
@@ -155,19 +155,20 @@ export class DragonSchema2 {
         this.Insert(new DragonPrimitiveIstruction(this.head));
     }
 
-    public Insert(instruction : DragonInstruction, next?: string) {
+    public Insert(instruction : DragonInstruction, next?: string) : void{
         
         this.containers.get(instruction.parent)?.Add(instruction,next);
         this.containers.set(instruction.id, instruction);
         switch(instruction.type){
 
             case InstructionType.CONDITION:
-                const ifInstruction = instruction.children[0];
-                const elseInstruction = instruction.children[1];
-                this.containers.set(ifInstruction.id, ifInstruction);
-                this.containers.set(elseInstruction.id, elseInstruction);
-                break;
-            
+                {
+                    const ifInstruction = instruction.children[0];
+                    const elseInstruction = instruction.children[1];
+                    this.containers.set(ifInstruction.id, ifInstruction);
+                    this.containers.set(elseInstruction.id, elseInstruction);
+                }
+                break;            
 
             case InstructionType.LOOP:
                 instruction.children.forEach(value => {
@@ -184,8 +185,8 @@ export class DragonSchema2 {
         
     }
 
-    public toJSON() {
-        let jsonOjb = Object.create(null);
+    public toJSON() : JSON{
+        const jsonOjb = Object.create(null);
         jsonOjb.head = this.head;
         this.containers.forEach((value,key)=> {
 
@@ -216,17 +217,24 @@ export class DragonSchema2 {
     }
 
 
-    public getInstruction(uuid: string) {
+    public getInstruction(uuid: string){
         return this.containers.get(uuid);
     }
 
     public Update(uuid: string, text: string) {
-        this.containers.get(uuid)!.text = text;
+        Promise.resolve(this.containers.get(uuid)).then(container =>
+            {
+                if (container)
+                    container.text = text;
+                else 
+                    throw new Error ("Instruction not found")  
+            }).catch(err => 
+                console.log(err));
     }
 
 
 
-    public parseInstruction(instruction: DragonInstruction, code: string, deep: number = 0) : string {
+    public parseInstruction(instruction: DragonInstruction, code: string, deep = 0) : string {
         const offset = '\t'.repeat(deep);
         switch (instruction.type) {
             case InstructionType.SCHEMA:
@@ -235,15 +243,17 @@ export class DragonSchema2 {
                 break;
 
             case InstructionType.PRIMITIVE:
-                let stringOfChildren:string = "";
-                instruction.children.forEach((value,key)=>{
-                    stringOfChildren+=`${offset}[${value.id}]\n`;
-                })
-                let generatedCode = `function ${instruction.text}() {\n${stringOfChildren}\n}`
-                code = code.replace(`[${instruction.id}]`, generatedCode);
-                instruction.children.forEach((value,key)=>{
-                    code = this.parseInstruction(value,code, ++deep);
-                })
+                {
+                    let stringOfChildren = "";
+                    instruction.children.forEach((value)=>{
+                        stringOfChildren+=`${offset}[${value.id}]\n`;
+                    })
+                    const generatedCode = `function ${instruction.text}() {\n${stringOfChildren}\n}`
+                    code = code.replace(`[${instruction.id}]`, generatedCode);
+                    instruction.children.forEach((value)=>{
+                        code = this.parseInstruction(value,code, ++deep);
+                    })
+                }
                 break;
 
                 case InstructionType.ACTION:
@@ -268,35 +278,41 @@ export class DragonSchema2 {
 
                 // Condition SCOPES if {inner} else {inner2}
                 case InstructionType.CONDITION:
-                    let arrayOfChildren : string[]= [];
-                    instruction.children.forEach((value,key)=>{
-                        arrayOfChildren.push(`\t[${value.id}]\n`);
-                    })
-                    generatedCode = `if (${instruction.text}) {\n\t${arrayOfChildren[0]}\t} else {\n\t${arrayOfChildren[1]}\t}`
-                    code = code.replace(`[${instruction.id}]`, generatedCode);
-                    instruction.children.forEach((value,key)=>{
-                        code = this.parseInstruction(value,code, ++deep);
-                    })
+                    {
+                        const arrayOfChildren : string[]= [];
+                        instruction.children.forEach((value)=>{
+                            arrayOfChildren.push(`\t[${value.id}]\n`);
+                        })
+                        const generatedCode = `if (${instruction.text}) {\n\t${arrayOfChildren[0]}\t} else {\n\t${arrayOfChildren[1]}\t}`
+                        code = code.replace(`[${instruction.id}]`, generatedCode);
+                        instruction.children.forEach((value)=>{
+                            code = this.parseInstruction(value,code, ++deep);
+                        })
+                    }
                     break;
 
                 // Condition SCOPES if {inner} else {inner2}
                 case InstructionType.LOOP:
-                    generatedCode = `while (${instruction.text}) {\n\t[${instruction.children[0].id}]\t}`
-                    code = code.replace(`[${instruction.id}]`, generatedCode);
-                    code = this.parseInstruction(instruction.children[0], code, ++deep);
+                    {
+                        const generatedCode = `while (${instruction.text}) {\n\t[${instruction.children[0].id}]\t}`
+                        code = code.replace(`[${instruction.id}]`, generatedCode);
+                        code = this.parseInstruction(instruction.children[0], code, ++deep);
+                    }
                     break;
 
                     // BRANC SCOPES {inner}
                     case InstructionType.BRANCH:
-                    stringOfChildren = "";
-                    instruction.children.forEach((value,key)=>{
-                        stringOfChildren+=`[${value.id}]\n`;
-                    })
-                    generatedCode = stringOfChildren;
-                    code = code.replace(`[${instruction.id}]`, generatedCode);
-                    instruction.children.forEach((value,key)=>{
-                        code = this.parseInstruction(value,code);
-                    })
+                    {
+                        let stringOfChildren = "";
+                        instruction.children.forEach((value)=>{
+                            stringOfChildren+=`[${value.id}]\n`;
+                        })
+                        const generatedCode = stringOfChildren;
+                        code = code.replace(`[${instruction.id}]`, generatedCode);
+                        instruction.children.forEach((value)=>{
+                            code = this.parseInstruction(value,code);
+                        })
+                    }
                     break;
 
             default:
@@ -306,7 +322,7 @@ export class DragonSchema2 {
     }
 
     public toJavaScript() : string{
-        let code = ``;
+        const code = ``;
         return this.parseInstruction(this.containers.get(this.head)!, code);
     }
 }

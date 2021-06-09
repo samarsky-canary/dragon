@@ -1,7 +1,7 @@
-import { DragonActionInstruction, DragonCommentInstruction, DragonConditionInstruction, DragonLoopInstruction, DragonOutputInstruction, DragonSchema2 } from "./dragon.model";
+import { DragonActionInstruction, DragonCommentInstruction, DragonConditionInstruction, DragonLoopInstruction, DragonOutputInstruction, DragonModel } from "./dragon.model";
 
 
-const schema = new DragonSchema2();
+const schema = new DragonModel();
 const PrimitiveRef = schema.containers.get(schema.head)?.children[0].id;
 
 const Action = new DragonActionInstruction(PrimitiveRef!);
@@ -54,6 +54,7 @@ test(('Schema Test2'),()=>{
 
 test(('Schema Test3'),()=>{
     console.log(schema.toJavaScript());
-    console.log(schema);
+    const str = JSON.stringify(schema);
+    const obj = JSON.parse(str);
 });
 

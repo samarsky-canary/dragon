@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DragonSchema } from '../drakon_schema/dragon.schema';
+import { DragonModel } from '../dragon/dragon.model/dragon.model';
 import { loginResponseDTO } from '../DTO/IloginResponseDTO';
 import { AuthStateService } from './AuthStateService';
 
@@ -8,7 +8,10 @@ const BASE_API_PREFIX = "/api/schema";
 export class SchemaService {
     private static _instance: SchemaService;
     private static _authService : AuthStateService;
-    private static _schema: DragonSchema | undefined;
+    private static _schema: DragonModel | undefined;
+
+
+
 
     constructor(authService : AuthStateService){
         SchemaService._authService = authService.getInstance();
@@ -35,6 +38,37 @@ export class SchemaService {
             throw new Error("unable to get schemas");
         })
     }
+
+
+    public async createNewSchema(user_id: string) : Promise<SchemaDTO> {
+        const headers = {
+            "Authorization" : `Bearer ${SchemaService._authService.getToken()}`
+        }
+        const schema: CreateSchemaDTO = {
+            name: "NewSchema",
+            idUser: user_id,
+            last_changed_by_id: user_id,
+            data: new DragonModel().toJSON()
+        }
+        return axios.post<SchemaDTO>(`${BASE_API_PREFIX}/create`, {
+            headers : headers,
+            body: schema
+        })
+        .then(response => {
+            return response.data;
+        })
+        .catch(err => {
+            throw new Error(err);
+        })
+    }
+}
+
+
+export type CreateSchemaDTO = {
+    name: string;
+    idUser: string;
+    data: JSON;
+    last_changed_by_id: string;
 }
 
 

@@ -1,6 +1,7 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import {Button, ListGroup } from 'react-bootstrap';
 import { UserContext } from '../../../context/user.provider';
+import { AuthStateService } from '../../../services/AuthStateService';
 import { SchemaService, SchemaDTO } from '../../../services/SchemaService';
 import './ProjectsSidebar.scss'
 
@@ -14,6 +15,10 @@ export const ProjectsSidebar: FC<Props> = ({ schemaService, setSchema, schema })
     const { state } = useContext(UserContext);
     const [schemas, setSchemas] = useState<SchemaDTO[]>([]);
 
+
+    const CreateSchema = ()=> {
+        schemaService.createNewSchema(state.uuid!);
+    }
 
     useEffect(() => {
         if (state)
@@ -34,7 +39,7 @@ export const ProjectsSidebar: FC<Props> = ({ schemaService, setSchema, schema })
                     {scheme.name}
                 </ListGroup.Item>
             ))}
-            <ListGroup.Item as={Button} variant="warning">Создать схему</ListGroup.Item>
+            <ListGroup.Item onClick={()=> CreateSchema()} as={Button} variant="warning">Создать схему</ListGroup.Item>
         </ListGroup>
     )
 }

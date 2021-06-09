@@ -9,10 +9,9 @@ export class DragonSchema {
         const end = new IconEnd();
         this._head = new IconBegin();
         this._head.next = end.id;
-        this._storage = new Map([
-            [this._head.id, this._head],
-            [end.id, end],
-        ]);
+        this._storage = new Map();
+        this._storage.set(this._head.id, this._head);
+        this._storage.set(end.id, end);
     }
 
     // eslint-disable-next-line

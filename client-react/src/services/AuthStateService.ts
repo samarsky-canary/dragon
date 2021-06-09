@@ -9,6 +9,13 @@ export class AuthStateService {
     private static _username: string | undefined;
     private static BASE_API_PREFIX = "/api/auth/";
 
+
+    public setMeta(uuid: string, role: string, username: string, access_token: string) {
+        AuthStateService._uuid = uuid;
+        AuthStateService._role = role;
+        AuthStateService._username = username;
+        AuthStateService._accessToken = access_token;
+    }
     constructor(){
         // empty constructor
     }
@@ -41,7 +48,7 @@ export class AuthStateService {
 
     public async TokenVerification(token: string) : Promise<boolean> {
         const URL = process.env.REACT_APP_CLIENT_DOMAIN + AuthStateService.BASE_API_PREFIX  + "verify/" + token;
-        return await axios.post(URL).then(() => {
+        return await axios.get(URL).then(() => {
             return true
         }).catch(()=> {
             return false
