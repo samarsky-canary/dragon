@@ -20,10 +20,10 @@ test(('Schema Test2'),()=>{
     condition.text = "simple === 22"
     schema.Insert(condition)
 
-    const loop = new DragonLoopInstruction(condition.children[0].id!);
-    loop.text
-    loop.text = "simple > 22"
-    schema.Insert(loop);
+    // const loop = new DragonLoopInstruction(condition.children[0].id!);
+    // loop.text
+    // loop.text = "simple > 22"
+    // schema.Insert(loop);
 
     id = condition.children[0].id;
 
@@ -53,13 +53,12 @@ test(('Schema Test2'),()=>{
 });
 
 test(('Replicated schema from JSON comparison'),()=>{
-    console.log(schema.toJavaScript());
     const str = JSON.stringify(schema);
     const obj = JSON.parse(str);
     var replicatedSchema = new DragonModel();
     replicatedSchema.restoreFromJSON(obj);
     expect(schema.toJSON()).toStrictEqual(replicatedSchema.toJSON());
     expect(schema.toJavaScript()).toStrictEqual(replicatedSchema.toJavaScript());
-
+    console.log(schema.toJavaScript())
 });
 

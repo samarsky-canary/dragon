@@ -315,6 +315,12 @@ export class DragonModel {
         })
     }
 
+    static restoreFromJSON(schema: any){
+        const restored = new DragonModel();
+        restored.restoreFromJSON(schema);
+        return restored;
+    }
+
     public restoreFromJSON(schema: any) {
         this.head = schema.head;
         this.containers.clear(); // clear previos state
