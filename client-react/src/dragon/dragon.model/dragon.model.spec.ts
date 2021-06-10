@@ -53,12 +53,14 @@ test(('Schema Test2'),()=>{
 });
 
 test(('Replicated schema from JSON comparison'),()=>{
+    schema.setInstructionsOffset();
     const str = JSON.stringify(schema);
     const obj = JSON.parse(str);
     var replicatedSchema = new DragonModel();
     replicatedSchema.restoreFromJSON(obj);
+    replicatedSchema.setInstructionsOffset();
     expect(schema.toJSON()).toStrictEqual(replicatedSchema.toJSON());
-    expect(schema.toJavaScript()).toStrictEqual(replicatedSchema.toJavaScript());
-    console.log(schema.toJavaScript())
+    expect(replicatedSchema.toJavaScript()).toStrictEqual( schema.toJavaScript());
+    console.log(schema.toJSON())
 });
 

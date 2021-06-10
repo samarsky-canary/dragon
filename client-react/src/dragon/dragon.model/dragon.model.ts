@@ -21,6 +21,7 @@ class DragonInstruction {
     id: string;
     parent: string;
     text: string;
+    offset: number;
     // вложенные инструкции
     children: DragonInstruction[];
 
@@ -30,6 +31,7 @@ class DragonInstruction {
         this.text = "";
         this.id = uuidv4();
         this.children = [];
+        this.offset = 0;
     }
 
     public setMeta(meta: metadataInterface) {
@@ -118,10 +120,9 @@ export class DragonConditionInstruction extends DragonInstruction {
 }
 
 export class DragonLoopInstruction extends DragonInstruction {
-    constructor(parent: string, restore?:boolean) {
+    constructor(parent: string, restore?: boolean) {
         super(InstructionType.LOOP, parent);
-        if (restore)
-        {
+        if (restore) {
             return
         }
         this.Add(new DragonBranchInstruction(this.id));
@@ -211,6 +212,7 @@ export class DragonModel {
                 type: value.type,
                 text: value.text,
                 parent: value.parent,
+                offset: value.offset,
                 children: arr
             }
             jsonOjb[key] = iconD;
@@ -218,6 +220,31 @@ export class DragonModel {
 
         return (jsonOjb);
 
+    }
+
+
+    private seOffset(instruction: DragonInstruction) {
+        const parent = this.containers.get(instruction.parent);
+        if (parent) {
+            switch (instruction.type) {
+                case InstructionType.BRANCH:
+                    instruction.offset = parent.offset + parent.children.findIndex((value) => { return value === instruction });
+                    break;
+                case InstructionType.PRIMITIVE:
+                    instruction.offset = parent.offset + parent.children.findIndex((value) => { return value === instruction });
+                    break;
+                default:
+                    instruction.offset = parent.offset;
+            }
+        }
+        const children = instruction.children;
+        children.forEach((value) => {
+            this.seOffset(value);
+        })
+    }
+
+    public setInstructionsOffset() {
+        this.seOffset(this.containers.get(this.head)!)
     }
 
     public Delete(parent: string, uuid: string) {
@@ -250,7 +277,6 @@ export class DragonModel {
         val.id = instruction_meta.id!;
         val.text = instruction_meta.text;
         val.parent = instruction_meta.parent;
-
         this.containers.set(val.id, val);
         if (val.parent) {
             this.containers.get(val.parent)?.children.push(val);
@@ -265,7 +291,7 @@ export class DragonModel {
 
         switch (instruction.type) {
             case InstructionType.SCHEMA:
-                    this.castInstruction(new DragonSchemaInstruction(), instruction);
+                this.castInstruction(new DragonSchemaInstruction(), instruction);
                 break;
 
             case InstructionType.PRIMITIVE:
@@ -315,7 +341,7 @@ export class DragonModel {
         })
     }
 
-    static restoreFromJSON(schema: any){
+    static restoreFromJSON(schema: any) {
         const restored = new DragonModel();
         restored.restoreFromJSON(schema);
         return restored;
@@ -425,6 +451,7 @@ type metadataInterface = {
     id?: string;
     type: string;
     parent: string;
+    offset: number;
     text: string;
     children: Array<string>
 }
