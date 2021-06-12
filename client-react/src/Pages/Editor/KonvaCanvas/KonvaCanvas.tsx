@@ -1,21 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef } from 'react';
 import { Layer, Stage, Rect } from 'react-konva';
 import {Layer as _layer} from 'konva/lib/Layer';
 import useImage from 'use-image';
-import { DragonModel, InstructionType } from '../../../dragon/dragon.model/dragon.model';
+import { DragonModel } from '../../../dragon/dragon.model/dragon.model';
 import { Schema } from '../Shapes/Schema';
 
 type Props = {
     width: number;
     height: number;
-    model?: DragonModel;
+    model: DragonModel;
+    setModel: (value: DragonModel) => void;
+    actionMenuOption: number;
 }
-
-const WITDH = 160;
-const HEIGHT = 40;
-const VERTICAL_SPACING = 60;
-
-
 
 
 function getCenter(node: any) {
@@ -100,69 +96,13 @@ function updateLine(rect1: any, rect2: any, line: any) {
     line.points(points);
 }
 
-
-type iconInterface = {
-    id: string;
-    x: number;
-    y: number;
-    parent_id: string;
-    previous_id: string;
-    text: string;
-    type: string;
-}
-
-
-function generateShapes(model: DragonModel | undefined) {
-    let y_offset = 0;
-    const obj = new Map<string, iconInterface>();
-    if (model) {
-        model.containers.forEach((value, i) => {
-            const childrenPos = model.containers.get(value.parent)?.children.findIndex((element) => (element.id === value.id));
-            let previous = childrenPos === 0 ? value.parent : model.containers.get(value.parent)?.children[childrenPos! - 1].id;
-            previous = previous ? previous : "";
-            let x = 120 + value.offset * 6;
-            let y = (y_offset = y_offset + VERTICAL_SPACING);
-
-
-            switch (value.type) {
-                case InstructionType.SCHEMA:
-                    break;
-
-                case InstructionType.ACTION:
-                    x = x - 80;
-                    y = y - 20;
-                    break;
-                default:
-                    break;
-            }
-            obj.set(value.id, {
-                id: i.toString(),
-                x: x,
-                y: y,
-                parent_id: value.parent,
-                previous_id: previous,
-                text: value.text,
-                type: value.type
-            })
-
-        });
-    }
-    return obj;
-}
-
-
-export const KonvaCanvas: React.FC<Props> = ({ width, height, model }) => {
+export const KonvaCanvas: React.FC<Props> = ({ width, height, model, setModel, actionMenuOption }) => {
     const [grid] = useImage("./grid.gif");
+    
 
-    const INITIAL_STATE = generateShapes(model);
-    const [stars, setStars] = React.useState(INITIAL_STATE);
-
-
-    useEffect(() => {
-        setStars(generateShapes(model))
-        console.log(model?.toJSON())
-    }, [model])
-
+    useEffect(()=>{
+        console.log('updated')
+    },[model])
     const groupRef = useRef<_layer>(null)
 
     return (
@@ -171,7 +111,7 @@ export const KonvaCanvas: React.FC<Props> = ({ width, height, model }) => {
                 <Rect width={width} height={height} fillPatternImage={grid} stroke="grey"></Rect>
             </Layer>
             <Layer ref={groupRef}>
-                <Schema model={model} layerRef={groupRef}/>
+                <Schema model={model}  setModel={setModel} layerRef={groupRef} actionMenuOption={actionMenuOption}/>
             </Layer>
         </Stage>
     )

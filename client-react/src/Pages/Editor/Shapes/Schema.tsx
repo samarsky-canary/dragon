@@ -34,9 +34,10 @@ const StartPoint = {
 const HeightOffset = HEIGHT * 2;
 
 type IconProps = {
-    model? : DragonModel,
-    layerRef : React.RefObject<_layer>
-
+    model: DragonModel,
+    setModel: (value: DragonModel) => void,
+    layerRef : React.RefObject<_layer>,
+    actionMenuOption: number;
 }
 
 interface Node {
@@ -49,7 +50,7 @@ interface Node {
     y: number;
 }
 
-export const Schema: FC<IconProps> = ({model, layerRef}) => {
+export const Schema: FC<IconProps> = ({model, setModel, layerRef, actionMenuOption}) => {
     if (!model) return null;
     // const konvaRefs = new Map<string, React.MutableRefObject<undefined>>();
     const groupRef = useRef<_group>(null)
@@ -92,7 +93,7 @@ export const Schema: FC<IconProps> = ({model, layerRef}) => {
                         {
                             id: "",
                             previous: prev,
-                            parent: icon.id,
+                            parent: icon.parent,
                             text: icon.id,
                             shape: Shape.INSERTER,
                             x: prev.x + WIDTH/2,
@@ -144,15 +145,25 @@ export const Schema: FC<IconProps> = ({model, layerRef}) => {
     function parseModel(model: DragonModel) {
         const temp_nodes: Array<Node> = [];
         parseInstruction(model.getInstruction(model.head), temp_nodes);
+        const end = {
+            id: 'end',
+            previous: temp_nodes[temp_nodes.length -1],
+            parent: '',
+            text: "Конец",
+            shape: Shape.END,
+            x: temp_nodes[temp_nodes.length -1].x,
+            y: temp_nodes[temp_nodes.length -1].y + HeightOffset
+        }
+        temp_nodes.push(end);
         temp_nodes.push(
             {
-                id: 'end',
-                previous: temp_nodes[temp_nodes.length -1],
-                parent: '',
-                text: "Конец",
-                shape: Shape.END,
-                x: temp_nodes[temp_nodes.length -1].x,
-                y: temp_nodes[temp_nodes.length -1].y + HeightOffset
+                id: "",
+                previous: end.previous,
+                parent: model.getInstruction(model.head).children[0].id,
+                text: "",
+                shape: Shape.INSERTER,
+                x: end.x + WIDTH/2,
+                y: end.y - HeightOffset/4,
             }
         );
         return temp_nodes;
@@ -161,20 +172,6 @@ export const Schema: FC<IconProps> = ({model, layerRef}) => {
 
     return (
         <Group ref={groupRef}>
-            {
-                nodes.map((value, key)=>{
-                    switch (value.shape) {
-                        case Shape.BEGIN:
-                            return <Begin key={key} id={value.id} x={value.x} y={value.y} text={value.text} />
-                        case Shape.END:
-                            return <Begin key={key} id={value.id} x={value.x} y={value.y} text={value.text} />
-                        case Shape.ACTION:
-                            return <Action key={key} id={value.id} x={value.x} y={value.y} text={value.text} />
-                        case Shape.INSERTER:
-                            return <Inserter key={key} id={value.id} x={value.x} y={value.y} next={value.parent} previous={value.previous.id} ></Inserter>
-                    }
-                })
-            }
             {
                 nodes.map((value, key)=>{
                     switch (value.shape) {
@@ -194,6 +191,21 @@ export const Schema: FC<IconProps> = ({model, layerRef}) => {
                     }
                 })
             }
+            {
+                nodes.map((value, key)=>{
+                    switch (value.shape) {
+                        case Shape.BEGIN:
+                            return <Begin key={key} id={value.id} x={value.x} y={value.y} text={value.text} />
+                        case Shape.END:
+                            return <Begin key={key} id={value.id} x={value.x} y={value.y} text={value.text} />
+                        case Shape.ACTION:
+                            return <Action setModel={setModel}  model={model} key={key} id={value.id} parent={value.parent} x={value.x} y={value.y} text={value.text} actionMenuOption={actionMenuOption} />
+                        case Shape.INSERTER:
+                            return <Inserter setModel={setModel}  model={model} key={key} id={value.id} x={value.x} y={value.y} parent={value.parent} next={value.text} actionMenuOption={actionMenuOption}></Inserter>
+                    }
+                })
+            }
+            
         </Group>
     );
 }

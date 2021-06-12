@@ -3,13 +3,22 @@ import { Group, Rect, Text } from 'react-konva';
 import { Rect as _rect } from 'konva/lib/shapes/Rect';
 import { Text as _text } from 'konva/lib/shapes/Text';
 import { Group as _group } from 'konva/lib/Group';
-import { IconProps } from './Begin';
 import { HEIGHT, WIDTH } from './CONSTRAINTS';
+import { DragonModel } from '../../../dragon/dragon.model/dragon.model';
 
 
+type IconProps = {
+    text: string,
+    x: number,
+    y: number,
+    id: string,
+    parent: string;
+    model: DragonModel;
+    actionMenuOption: number;
+    setModel: (value: DragonModel) => void;
+}
 
-
-export const Action: FC<IconProps> = ({ text, id, x ,y}) => {
+export const Action: FC<IconProps> = ({ text, id, parent, x ,y, model, setModel, actionMenuOption}) => {
     const [textWidth, setTextWidth] = useState(0);
     const [textHeight, setTextHeight] = useState(0);
     const rectRef = useRef<_rect>(null);
@@ -32,8 +41,23 @@ export const Action: FC<IconProps> = ({ text, id, x ,y}) => {
         }
     }, [textWidth, textHeight])
 
+
+    function InsertInstruction(){
+        if( actionMenuOption === 9){
+            const m = DragonModel.restoreFromJSON(model.toJSON());
+            m.Delete(parent,id);
+            setModel(m);
+        }
+}
+
+
+
     return (
-        <Group id={id} draggable ref={groupRef}
+        <Group 
+        id={id} 
+        draggable 
+        ref={groupRef}
+        onClick={(()=>(InsertInstruction()))}
         >
             <Rect ref={rectRef} 
             width={WIDTH} 

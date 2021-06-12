@@ -10,8 +10,27 @@ import question from '../../../images/question.png'
 import variant from '../../../images/variant.png'
 import './ActionMenu.scss'
 
+type Props ={
+    setActionMenuOption: (value: number) => void;
+}
 
-export const ActionMenu: React.FC = () => {
+const ActionMenuOptions = {
+    ACTION: 1,
+    COMMENT: 2,    
+    INPUT: 3,
+    OUTPUT: 4,
+    QUESTION: 5,
+    LOOP: 6,
+    VARIANT: 7,
+    PAUSE: 8,
+    DELETE: 9,
+    RESET: 0,
+}
+
+
+export const ActionMenu: React.FC<Props> = (props) => {
+
+    //const images: any = {action, comment, input, loop, output, pause, question, variant};
 
 
     return (
@@ -20,7 +39,7 @@ export const ActionMenu: React.FC = () => {
             <Card.Body>
                 <Row>
                     <Button className="img-button">
-                        <Image rounded src={action} fluid />
+                        <Image rounded src={action} fluid onClick={()=>{props.setActionMenuOption(ActionMenuOptions.ACTION)}}/>
                     </Button>
                     <Button className="img-button">
                         <Image rounded src={comment} fluid />
@@ -48,6 +67,14 @@ export const ActionMenu: React.FC = () => {
                     </Button>
                     <Button className="img-button">
                         <Image rounded src={pause} fluid />
+                    </Button>
+                </Row>
+                <Row>
+                    <Button className="img-button" onClick={()=>{props.setActionMenuOption(ActionMenuOptions.DELETE)}}>
+                        Удалить
+                    </Button>
+                    <Button className="img-button" onClick={()=>{props.setActionMenuOption(ActionMenuOptions.RESET)}}>
+                        Сбросить
                     </Button>
                 </Row>
             </Card.Body>

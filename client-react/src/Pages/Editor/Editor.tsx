@@ -3,7 +3,7 @@ import { Card, Col, Container, OverlayTrigger, Row, Tooltip } from 'react-bootst
 import { AuthStateService } from '../../services/AuthStateService';
 import { SchemaDTO, SchemaService } from '../../services/SchemaService';
 import { ActionMenu } from './ActionMenu/ActionMenu';
-import { ProjectsSidebar } from './ProjectsSidebar/ProjectsSidebar';
+import { ProjectTree } from './ProjectTree/ProjectTree';
 import './Editor.scss'
 import { KonvaCanvas } from './KonvaCanvas/KonvaCanvas';
 import ContainerDimensions from 'react-container-dimensions';
@@ -17,13 +17,13 @@ const schemaService: SchemaService = new SchemaService(authService).getInstance(
 
 export const EditorPage: React.FC = () => {
     const [schema, setSchema] = useState<SchemaDTO>();
-    const [model, setModel] = useState<DragonModel>();
+    const [model, setModel] = useState<DragonModel>(new DragonModel());
+    const [actionMenuOption, setActionMenuOption] = useState<number>(0);
 
     useEffect(()=>{
         if (schema) {
             setModel(DragonModel.restoreFromJSON(schema?.data));
         }
-
     },[schema])
 
     /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -49,17 +49,17 @@ export const EditorPage: React.FC = () => {
                         <Card >
                             <Card.Header>Схемы пользователя: {authService.getUsername()}</Card.Header>
                             <Card.Body>
-                                <ProjectsSidebar schemaService={schemaService} setSchema={setSchema} schema={schema} />
+                                <ProjectTree schemaService={schemaService} setSchema={setSchema} schema={schema} />
                             </Card.Body>
                         </Card>
                     </OverlayTrigger>
                 </Col>
                 <Col xs={1}>
-                    <ActionMenu />
+                    <ActionMenu setActionMenuOption={setActionMenuOption}/>
                 </Col>
                 <Col xs={7}>
                     <ContainerDimensions>
-                        {({ height, width }) => <KonvaCanvas height={height} width={width} model={model}/>}
+                        {({ height, width }) => <KonvaCanvas height={height} width={width} setModel={setModel} model={model} actionMenuOption={actionMenuOption}/>}
                     </ContainerDimensions>
                 </Col>
                 <Col xs={2}>

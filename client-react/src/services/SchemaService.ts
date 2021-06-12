@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { DragonModel } from '../dragon/dragon.model/dragon.model';
-import { loginResponseDTO } from '../DTO/IloginResponseDTO';
 import { AuthStateService } from './AuthStateService';
 
 const BASE_API_PREFIX = "/api/schema";
@@ -16,6 +15,17 @@ export class SchemaService {
     constructor(authService : AuthStateService){
         SchemaService._authService = authService.getInstance();
     }
+
+
+
+    public setModel(model: DragonModel){
+        SchemaService._schema = model;
+    }
+
+    public getModel() {
+        return SchemaService._schema;
+    }
+
 
     public getInstance(): SchemaService {
         if (!SchemaService._instance){
