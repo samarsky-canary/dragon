@@ -7,16 +7,15 @@ import { Shape as _shape} from 'konva/lib/Shape';
 import { HEIGHT, WIDTH } from './CONSTRAINTS';
 
 
-type IconProps = {
+export type IconProps = {
     text: string,
     x: number,
     y: number,
-    id: string,
-    icon_type: string,
+    id: string
 }
 
 
-export const Begin: FC<IconProps> = ({icon_type: type, text, id, x ,y}) => {
+export const Begin: FC<IconProps> = ({ text, id, x ,y}) => {
     const [textWidth, setTextWidth] = useState(0);
     const [textHeight, setTextHeight] = useState(0);
     const rectRef = useRef<_rect>(null);
@@ -40,7 +39,7 @@ export const Begin: FC<IconProps> = ({icon_type: type, text, id, x ,y}) => {
     }, [textWidth, textHeight])
 
     return (
-        <Group type={type} draggable ref={groupRef}>
+        <Group id={id} draggable ref={groupRef}>
             <Rect 
             ref={rectRef}
             width={WIDTH} 
@@ -62,9 +61,29 @@ export const Begin: FC<IconProps> = ({icon_type: type, text, id, x ,y}) => {
     );
 }
 
-// Condition icon
 
-export const Condition: FC<IconProps> = ({icon_type, text, id, x ,y}) => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const Condition: FC<IconProps> = ({ text, id, x ,y}) => {
     const [textWidth, setTextWidth] = useState(0);
     const [textHeight, setTextHeight] = useState(0);
     const shapeRef = useRef<_shape>(null);

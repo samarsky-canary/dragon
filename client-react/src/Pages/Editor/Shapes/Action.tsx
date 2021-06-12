@@ -3,26 +3,13 @@ import { Group, Rect, Text } from 'react-konva';
 import { Rect as _rect } from 'konva/lib/shapes/Rect';
 import { Text as _text } from 'konva/lib/shapes/Text';
 import { Group as _group } from 'konva/lib/Group';
-
-const EXTRAHEIGHT_SPACE = 20;
-const EXTRAWIDTH_SPACE = 30;
-
-
-type IconProps = {
-    text: string;
-    setTextToManager?: (value: string) => void
-    x?: number;
-    y?: number;
-    parent_id: string;
-    id: string;
-    previous_id: string;
-    debug?: boolean;
-    width: number;
-    height: number;
-}
+import { IconProps } from './Begin';
+import { HEIGHT, WIDTH } from './CONSTRAINTS';
 
 
-export const Action: FC<IconProps> = ({ width, height, text: textFromModel, setTextToManager, x, y, debug, id, parent_id, previous_id }) => {
+
+
+export const Action: FC<IconProps> = ({ text, id, x ,y}) => {
     const [textWidth, setTextWidth] = useState(0);
     const [textHeight, setTextHeight] = useState(0);
     const rectRef = useRef<_rect>(null);
@@ -46,20 +33,15 @@ export const Action: FC<IconProps> = ({ width, height, text: textFromModel, setT
     }, [textWidth, textHeight])
 
     return (
-        <Group 
-        draggable
-        ref={groupRef}
-        onClick={()=> { 
-            if (debug) console.log(`id=${id}\nparent=${parent_id}\nprevious=${previous_id}`)
-            if (setTextToManager) setTextToManager(textFromModel)}}
+        <Group id={id} draggable ref={groupRef}
         >
             <Rect ref={rectRef} 
-            width={width} 
-            height={height} 
+            width={WIDTH} 
+            height={HEIGHT}
             x={x} y={y}
             stroke="black" strokeWidth={1} fill="white" />
             <Text ref={textRef} 
-                text={textFromModel}
+                text={text}
                 x={ x! + (rectRef.current ? rectRef.current.width() / 2 : 0)}
                 y={y}
                 offsetX={textWidth / 2}

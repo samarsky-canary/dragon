@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Layer, Stage, Rect, Line } from 'react-konva';
+import React, { useEffect, useRef, useState } from 'react';
+import { Layer, Stage, Rect } from 'react-konva';
+import {Layer as _layer} from 'konva/lib/Layer';
 import useImage from 'use-image';
 import { DragonModel, InstructionType } from '../../../dragon/dragon.model/dragon.model';
-import { SchemaDTO } from '../../../services/SchemaService';
-import { Action } from '../Shapes/Action';
-import { Comment } from '../Shapes/Comment';
-import { Inserter } from '../Shapes/Inserter';
-import { Primitive } from '../Shapes/Primitive';
 import { Schema } from '../Shapes/Schema';
 
 type Props = {
@@ -167,23 +163,15 @@ export const KonvaCanvas: React.FC<Props> = ({ width, height, model }) => {
         console.log(model?.toJSON())
     }, [model])
 
+    const groupRef = useRef<_layer>(null)
+
     return (
         <Stage width={width} height={700}>
             <Layer>
-                <Rect width={width} вкф height={height} fillPatternImage={grid} stroke="grey"></Rect>
+                <Rect width={width} height={height} fillPatternImage={grid} stroke="grey"></Rect>
             </Layer>
-            <Layer>
-                <Schema model={model}></Schema>
-                {/* {
-                    Array.from(stars.values()).map((value, key) => {
-                        switch (value.type) {
-                            case InstructionType.ACTION:
-                                return <Action width={WITDH} height={HEIGHT} debug={true} x={value.x} y={value.y} key={key} text={value.text} id={value.id} parent_id={value.parent_id} previous_id={value.previous_id} ></Action>
-                            default:
-                                return <Inserter key={key} next_id={""} parent_id={""} x={value.x} y={value.y} />
-                        }
-                    })
-                } */}
+            <Layer ref={groupRef}>
+                <Schema model={model} layerRef={groupRef}/>
             </Layer>
         </Stage>
     )

@@ -34,7 +34,7 @@ export const SchemaControl: React.FC<Props> = ({schema, model}) => {
         <Card>
             <Card.Header>Содержимое иконы</Card.Header>
                 <Form.Group>
-                    <Form.Control as="textarea" rows={1} value={translatedSchema}/>
+                    <Form.Control as="textarea" rows={1} readOnly={true} value={translatedSchema}/>
                 </Form.Group>
             <Card.Header>Управление схемой</Card.Header>
             <Card.Body>
@@ -42,6 +42,7 @@ export const SchemaControl: React.FC<Props> = ({schema, model}) => {
                     <Form.Control
                             type="text"
                             value={schema?.name}
+                            readOnly={true}
                             />
                 </Form.Group>
                 <Button variant="primary btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleSaveAsJavascript(); }}>Скачать</Button>{' '}
@@ -50,7 +51,7 @@ export const SchemaControl: React.FC<Props> = ({schema, model}) => {
             </Card.Body>
             <Form.Group>
                 <Form.Label>Схема в Javascript</Form.Label>
-                <Form.Control as="textarea" rows={20} value={translatedSchema}/>
+                <Form.Control as="textarea" rows={20} readOnly={true} value={translatedSchema}/>
             </Form.Group>
         </Card>
     )

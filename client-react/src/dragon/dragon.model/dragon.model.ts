@@ -16,7 +16,7 @@ export const InstructionType = {
 
 
 
-class DragonInstruction {
+export class DragonInstruction {
     type: string;
     id: string;
     parent: string;
@@ -258,7 +258,11 @@ export class DragonModel {
 
 
     public getInstruction(uuid: string) {
-        return this.containers.get(uuid);
+        if (this.containers.get(uuid)){
+            return this.containers.get(uuid)!;
+        } else {
+            throw new Error("instruction with id not found");
+        }
     }
 
     public Update(uuid: string, text: string) {
