@@ -43,7 +43,10 @@ export class SchemaService {
         throw new Error('Method not implemented.');
     }
     update(id: any, schema: CreateSchemaDto) {
-        throw new Error('Method not implemented.');
+        return this.schemaRepository.save(schema).then(schema=>{
+            if (schema) return schema;
+                throw new NotFoundException("schema not found");
+        });
     }
 
 
