@@ -9,6 +9,7 @@ import { KonvaCanvas } from './KonvaCanvas/KonvaCanvas';
 import ContainerDimensions from 'react-container-dimensions';
 import { IconFieldsEditor } from './Components/IconFieldsEditor';
 import { SchemaControl } from './Components/SchemaControl';
+import { DragonModel } from '../../dragon/dragon.model/dragon.model';
 
 
 const authService: AuthStateService = new AuthStateService().getInstance();
@@ -16,7 +17,14 @@ const schemaService: SchemaService = new SchemaService(authService).getInstance(
 
 export const EditorPage: React.FC = () => {
     const [schema, setSchema] = useState<SchemaDTO>();
+    const [model, setModel] = useState<DragonModel>();
 
+    useEffect(()=>{
+        if (schema) {
+            setModel(DragonModel.restoreFromJSON(schema?.data));
+        }
+
+    },[schema])
 
     /* eslint-disable  @typescript-eslint/no-explicit-any */
     const renderTooltip = (props: any) => (
@@ -39,7 +47,7 @@ export const EditorPage: React.FC = () => {
                         overlay={renderTooltip}
                     >
                         <Card >
-                            <Card.Header>Схемы пользователя:</Card.Header>
+                            <Card.Header>Схемы пользователя: {authService.getUsername()}</Card.Header>
                             <Card.Body>
                                 <ProjectsSidebar schemaService={schemaService} setSchema={setSchema} schema={schema} />
                             </Card.Body>
@@ -51,12 +59,11 @@ export const EditorPage: React.FC = () => {
                 </Col>
                 <Col xs={7}>
                     <ContainerDimensions>
-                        {({ height, width }) => <KonvaCanvas height={height} width={width} schema={schema}/>}
+                        {({ height, width }) => <KonvaCanvas height={height} width={width} model={model}/>}
                     </ContainerDimensions>
                 </Col>
                 <Col xs={2}>
-                    <SchemaControl schema={schema}/>
-                   {/* <IconFieldsEditor text={iconText} setText={setIconText}/> */}
+                    <SchemaControl schema={schema} model={model}/>
                 </Col>
             </Row>
         </Container>

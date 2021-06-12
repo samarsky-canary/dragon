@@ -45,6 +45,14 @@ export class AuthStateService {
         }
     }
 
+    public getUsername() : string {
+        if (AuthStateService._username) {
+            return AuthStateService._username;
+        } else {
+            throw new Error('username is not set');
+        }
+    }
+
 
     public async TokenVerification(token: string) : Promise<boolean> {
         const URL = process.env.REACT_APP_CLIENT_DOMAIN + AuthStateService.BASE_API_PREFIX  + "verify/" + token;

@@ -61,6 +61,16 @@ test(('Replicated schema from JSON comparison'),()=>{
     replicatedSchema.setInstructionsOffset();
     expect(schema.toJSON()).toStrictEqual(replicatedSchema.toJSON());
     expect(replicatedSchema.toJavaScript()).toStrictEqual( schema.toJavaScript());
-    console.log(schema.toJSON())
+});
+
+
+
+test(('Simple schema'),()=>{
+    var replicatedS = new DragonModel();
+    const ref = replicatedS.containers.get(replicatedS.head)!.children[0].id;
+    const Action1 = new DragonActionInstruction(ref);
+    Action1.text = "let b = 10";
+    replicatedS.Insert(Action1);
+    console.log(JSON.stringify(replicatedS.toJSON()))
 });
 

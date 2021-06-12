@@ -15,19 +15,19 @@ type IconProps = {
     y?: number;
     parent_id: string;
     id: string;
-    previous_id: string;
-    debug?: boolean;
-    width: number;
-    height: number;
+    debug?: boolean
 }
 
 
-export const Action: FC<IconProps> = ({ width, height, text: textFromModel, setTextToManager, x, y, debug, id, parent_id, previous_id }) => {
+export const Primitive: FC<IconProps> = ({ text: textFromModel, setTextToManager, x, y, debug, id, parent_id }) => {
     const [textWidth, setTextWidth] = useState(0);
     const [textHeight, setTextHeight] = useState(0);
     const rectRef = useRef<_rect>(null);
     const textRef = useRef<_text>(null);
     const groupRef = useRef<_group>(null);
+
+    const HEIGHT = 40;
+    const WIDTH = HEIGHT * 4;
 
 
     if (groupRef.current && rectRef.current)
@@ -50,12 +50,12 @@ export const Action: FC<IconProps> = ({ width, height, text: textFromModel, setT
         draggable
         ref={groupRef}
         onClick={()=> { 
-            if (debug) console.log(`id=${id}\nparent=${parent_id}\nprevious=${previous_id}`)
+            if (debug) console.log(`id=${id}\nparent=${parent_id}\n`)
             if (setTextToManager) setTextToManager(textFromModel)}}
         >
             <Rect ref={rectRef} 
-            width={width} 
-            height={height} 
+            width={WIDTH} 
+            height={HEIGHT} 
             x={x} y={y}
             stroke="black" strokeWidth={1} fill="white" />
             <Text ref={textRef} 

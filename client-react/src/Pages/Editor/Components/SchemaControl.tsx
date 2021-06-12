@@ -5,34 +5,37 @@ import { DragonModel } from '../../../dragon/dragon.model/dragon.model';
 import { SchemaDTO } from '../../../services/SchemaService';
 
 type Props = {
-    schema : SchemaDTO | undefined
+    schema : SchemaDTO | undefined,
+    model : DragonModel | undefined
 }
 
 
-export const SchemaControl: React.FC<Props> = ({schema}) => {
+export const SchemaControl: React.FC<Props> = ({schema, model}) => {
     const [translatedSchema, setTranslatedSchema] = useState<string>(""); 
 
-    function handleSubmit() {
-        if (schema) {
-            const op = DragonModel.restoreFromJSON(schema.data);
-            const blob = new Blob([op.toJavaScript()],{type: "application/javascript" });
+    function handleSaveAsJavascript() {
+        if (model && schema) {
+            const blob = new Blob([model.toJavaScript()],{type: "application/javascript" });
             FileSaver.saveAs(blob, `${schema.name}.js`);
         } else {
-            return <Modal show={true}>No schema selected</Modal>
+            console.log('No schema selected')
         }
     }
 
-    function handleTranslation() {
-        if (schema) {
-            const op = DragonModel.restoreFromJSON(schema.data);
-            setTranslatedSchema(op.toJavaScript());
+    function handleTranslationToTextbox() {
+        if (model) {
+            setTranslatedSchema(model.toJavaScript());
         } else {
-            return <Modal show={true}>No schema selected</Modal>
+            console.log('No schema selected')
         }
     }
 
     return (
         <Card>
+            <Card.Header>Содержимое иконы</Card.Header>
+                <Form.Group>
+                    <Form.Control as="textarea" rows={1} value={translatedSchema}/>
+                </Form.Group>
             <Card.Header>Управление схемой</Card.Header>
             <Card.Body>
                 <Form.Group>
@@ -41,9 +44,9 @@ export const SchemaControl: React.FC<Props> = ({schema}) => {
                             value={schema?.name}
                             />
                 </Form.Group>
-                <Button variant="primary btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleSubmit(); }}>Скачать</Button>{' '}
-                <Button variant="danger btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleSubmit(); }}>Удалить</Button>{' '}
-                <Button variant="info btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleTranslation(); }}>В JavaScript...</Button>{' '}
+                <Button variant="primary btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleSaveAsJavascript(); }}>Скачать</Button>{' '}
+                <Button variant="danger btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleSaveAsJavascript(); }}>Удалить</Button>{' '}
+                <Button variant="info btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleTranslationToTextbox(); }}>В JavaScript...</Button>{' '}
             </Card.Body>
             <Form.Group>
                 <Form.Label>Схема в Javascript</Form.Label>

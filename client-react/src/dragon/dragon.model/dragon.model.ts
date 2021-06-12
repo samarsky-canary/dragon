@@ -100,7 +100,7 @@ export class DragonCommentInstruction extends DragonInstruction {
     }
 }
 
-class DragonBranchInstruction extends DragonInstruction {
+export class DragonBranchInstruction extends DragonInstruction {
     constructor(parent: string) {
         super(InstructionType.BRANCH, parent);
     }
@@ -141,13 +141,13 @@ export class DragonSwitchInstruction extends DragonInstruction {
     }
 }
 
-class DragonSchemaInstruction extends DragonInstruction {
+export class DragonSchemaInstruction extends DragonInstruction {
     constructor() {
         super(InstructionType.SCHEMA, "")
     }
 }
 
-class DragonPrimitiveIstruction extends DragonInstruction {
+export class DragonPrimitiveIstruction extends DragonInstruction {
     constructor(parent: string) {
         super(InstructionType.PRIMITIVE, parent)
         this.text = "Start";

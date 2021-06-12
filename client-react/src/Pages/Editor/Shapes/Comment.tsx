@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { Group, Rect, Text } from 'react-konva';
+import { Ellipse, Group, Rect, Text } from 'react-konva';
 import { Rect as _rect } from 'konva/lib/shapes/Rect';
 import { Text as _text } from 'konva/lib/shapes/Text';
 import { Group as _group } from 'konva/lib/Group';
@@ -9,26 +9,19 @@ const EXTRAWIDTH_SPACE = 30;
 
 
 type IconProps = {
-    text: string;
-    setTextToManager?: (value: string) => void
-    x?: number;
-    y?: number;
-    parent_id: string;
-    id: string;
-    previous_id: string;
-    debug?: boolean;
-    width: number;
-    height: number;
+    text?: string;
+    setText?: (value: string) => void
+    x: number;
+    y: number;
 }
 
 
-export const Action: FC<IconProps> = ({ width, height, text: textFromModel, setTextToManager, x, y, debug, id, parent_id, previous_id }) => {
+export const Comment: FC<IconProps> = ({ text, x, y }) => {
     const [textWidth, setTextWidth] = useState(0);
     const [textHeight, setTextHeight] = useState(0);
     const rectRef = useRef<_rect>(null);
     const textRef = useRef<_text>(null);
     const groupRef = useRef<_group>(null);
-
 
     if (groupRef.current && rectRef.current)
     groupRef.current.clip({
@@ -49,17 +42,21 @@ export const Action: FC<IconProps> = ({ width, height, text: textFromModel, setT
         <Group 
         draggable
         ref={groupRef}
-        onClick={()=> { 
-            if (debug) console.log(`id=${id}\nparent=${parent_id}\nprevious=${previous_id}`)
-            if (setTextToManager) setTextToManager(textFromModel)}}
+        onClick={()=> {console.log("clicked icon")}}
         >
             <Rect ref={rectRef} 
-            width={width} 
-            height={height} 
+            width={textWidth + EXTRAWIDTH_SPACE} 
+            height={textHeight + EXTRAHEIGHT_SPACE} 
             x={x} y={y}
             stroke="black" strokeWidth={1} fill="white" />
+            <Ellipse
+                radiusX={10}
+                radiusY={10}
+                width={textWidth + EXTRAWIDTH_SPACE} 
+                height={textHeight + EXTRAHEIGHT_SPACE}
+                stroke="black" strokeWidth={1} fill="white" />
             <Text ref={textRef} 
-                text={textFromModel}
+                text={text}
                 x={ x! + (rectRef.current ? rectRef.current.width() / 2 : 0)}
                 y={y}
                 offsetX={textWidth / 2}
