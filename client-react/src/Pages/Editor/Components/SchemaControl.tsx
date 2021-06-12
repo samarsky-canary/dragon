@@ -32,10 +32,6 @@ export const SchemaControl: React.FC<Props> = ({schema, model}) => {
 
     return (
         <Card>
-            <Card.Header>Содержимое иконы</Card.Header>
-                <Form.Group>
-                    <Form.Control as="textarea" rows={1} readOnly={true} value={translatedSchema}/>
-                </Form.Group>
             <Card.Header>Управление схемой</Card.Header>
             <Card.Body>
                 <Form.Group>

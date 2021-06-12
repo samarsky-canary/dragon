@@ -48,6 +48,38 @@ export const Action: FC<IconProps> = ({ text, id, parent, x ,y, model, setModel,
             m.Delete(parent,id);
             setModel(m);
         }
+    }
+
+    // !LEGACY FUNCTION
+    function Updatetext(){
+        if(textRef.current){
+            const textPosition = textRef.current.getAbsolutePosition();
+
+        const areaPosition = {
+          x: textPosition.x + 300,
+          y: textPosition.y,
+        };
+
+        // create textarea and style it
+        const textarea = document.createElement('textarea');
+        document.body.appendChild(textarea);
+
+        textarea.value = textRef.current.text();
+        textarea.style.position = 'absolute';
+        textarea.style.top = areaPosition.y + 'px';
+        textarea.style.left = areaPosition.x + 'px';
+        textarea.style.width = textRef.current.width().toString();
+
+        textarea.focus();
+        textarea.addEventListener('keydown',(e)=>{
+            if (e.keyCode === 13) {
+                textRef.current!.text(textarea.value);
+                model.getInstruction(id).text = textRef.current!.text();
+                document.body.removeChild(textarea);
+              }
+        });
+
+    }
 }
 
 
@@ -70,6 +102,7 @@ export const Action: FC<IconProps> = ({ text, id, parent, x ,y, model, setModel,
                 y={y}
                 offsetX={textWidth / 2}
                 align="center"
+                onDblClick={()=>(Updatetext())}
                 height={rectRef.current ? (rectRef.current.height()) : 0}
                 verticalAlign='middle'
             />

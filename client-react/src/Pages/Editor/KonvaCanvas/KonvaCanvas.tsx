@@ -101,7 +101,7 @@ export const KonvaCanvas: React.FC<Props> = ({ width, height, model, setModel, a
     
 
     useEffect(()=>{
-        console.log('updated')
+        console.log(model.toJSON());
     },[model])
     const groupRef = useRef<_layer>(null)
 
