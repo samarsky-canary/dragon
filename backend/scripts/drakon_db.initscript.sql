@@ -104,8 +104,11 @@ CREATE OR REPLACE function update_scheme() RETURNS trigger AS $registration$
     END;
     $registration$ language  plpgsql;
 
-CREATE TRIGGER register_new_user BEFORE UPDATE ON dragon_scheme
+CREATE TRIGGER update_scheme BEFORE UPDATE ON dragon_scheme
 FOR EACH ROW EXECUTE PROCEDURE update_scheme();
+
+
+
 
 drop procedure if exists delete_user(delete_id uuid);
 CREATE procedure delete_user(delete_id uuid) as
@@ -136,10 +139,10 @@ CREATE TRIGGER delete_user_trg AFTER DELETE ON users EXECUTE FUNCTION  delete_us
 CREATE OR REPLACE function scheme_insert() RETURNS trigger AS $$
     BEGIN
         NEW.id = uuid_generate_v4();
+        NEW.last_changed = current_timestamp;
         return NEW;
     END;
     $$ language  plpgsql;
-
 
 CREATE TRIGGER scheme_insert_trg BEFORE INSERT ON dragon_scheme
 FOR EACH ROW EXECUTE PROCEDURE scheme_insert();

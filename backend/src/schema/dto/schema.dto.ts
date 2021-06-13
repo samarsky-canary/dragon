@@ -8,3 +8,12 @@ export class CreateSchemaDto {
     data: JSON;
     posted_by_id: string;
 }
+
+export class SchemaDto {
+    id: string;
+    name : string;
+    idUser : string
+    data: JSON;
+    posted_by_id: string;
+    last_changed: string;
+}

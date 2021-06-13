@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, ParseUUIDPipe, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt.auth-guard';
-import { CreateSchemaDto } from './dto/schema.dto';
+import { CreateSchemaDto, SchemaDto } from './dto/schema.dto';
 import { SchemaService } from './schema.service';
 
 @Controller('schema')
@@ -32,7 +32,7 @@ export class SchemaController {
 
     @HttpCode(201)
     @Put('/:id')
-    async update(@Param('id') id, @Body() schema: CreateSchemaDto) {
+    async update(@Param('id') id, @Body() schema: SchemaDto) {
       return this.schemaService.update(id, schema)
     }
 
