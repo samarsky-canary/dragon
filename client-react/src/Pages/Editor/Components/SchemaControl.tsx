@@ -1,6 +1,7 @@
 import FileSaver from 'file-saver';
 import React, {KeyboardEvent, KeyboardEventHandler, useEffect, useState} from 'react';
 import { Card, Button, Modal, Form, FormControl } from 'react-bootstrap';
+import { updateTaggedTemplate } from 'typescript';
 import { DragonModel } from '../../../dragon/dragon.model/dragon.model';
 import { SchemaDTO, SchemaService } from '../../../services/SchemaService';
 
@@ -52,6 +53,16 @@ export const SchemaControl: React.FC<Props> = ({schema, setSchema, model, schema
         }
     }
 
+    function UpdateSchema(){
+        if (schema && model) {
+            const updated = schema;
+            updated.data = model.toJSON();
+            schemaService.updateSchema(updated).then(response=>{
+                setSchema(response);
+            })
+        }
+    }
+
 
     return (
         <Card>
@@ -64,6 +75,7 @@ export const SchemaControl: React.FC<Props> = ({schema, setSchema, model, schema
                             onChange={(e)=>(setSchemaName(e.target.value))}
                             />
                 </Form.Group>
+                <Button variant="primary btn-block" disabled={schema === undefined ? true : false} onClick={() => (UpdateSchema())}>Сохранить изменения</Button>{' '}
                 <Button variant="danger btn-block" disabled={schema === undefined ? true : false} onClick={() => (DeleteSelectedSchema())}>Удалить схему</Button>{' '}
                 <Button variant="info btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleTranslationToTextbox(); }}>В JavaScript...</Button>{' '}
                 <Button variant="primary btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleSaveAsJavascript(); }}>Скачать код</Button>{' '}
