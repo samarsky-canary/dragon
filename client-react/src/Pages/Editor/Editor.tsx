@@ -63,7 +63,7 @@ export const EditorPage: React.FC = () => {
                     </ContainerDimensions>
                 </Col>
                 <Col xs={2}>
-                    <SchemaControl schema={schema} model={model}/>
+                    <SchemaControl schemaService={schemaService} setSchema={setSchema} schema={schema} model={model}/>
                 </Col>
             </Row>
         </Container>

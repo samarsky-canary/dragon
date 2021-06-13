@@ -71,6 +71,38 @@ export class SchemaService {
             return undefined;
         });
     }
+
+    public updateSchema(schema: SchemaDTO): Promise<SchemaDTO | undefined> {
+        const headers = {
+            "Authorization" : `Bearer ${SchemaService._authService.getToken()}`
+        }
+        return axios.put<SchemaDTO>(`${BASE_API_PREFIX}/${schema.uuid}`, schema, {
+            headers : headers
+        })
+        .then(response => {
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+            return undefined;
+        });
+    }
+
+    public deleteSchema(id: string): Promise<any> {
+        const headers = {
+            "Authorization" : `Bearer ${SchemaService._authService.getToken()}`
+        }
+        return axios.delete<SchemaDTO>(`${BASE_API_PREFIX}/${id}`, {
+            headers : headers
+        })
+        .then(response => {
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+            return undefined;
+        });
+    }
 }
 
 
