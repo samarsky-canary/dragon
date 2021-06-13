@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Circle } from 'react-konva';
 import { Circle as _circle } from 'konva/lib/shapes/Circle';
-import { DragonActionInstruction, DragonModel } from '../../../dragon/dragon.model/dragon.model';
+import { DragonActionInstruction, DragonCommentInstruction, DragonModel } from '../../../dragon/dragon.model/dragon.model';
 const WIDTH = 15;
 const HEIGHT = 15;
 
@@ -17,6 +17,12 @@ type IconProps = {
 }
 
 
+const Insert={
+    action: 1,
+    comment: 2
+}
+
+
 export const Inserter: FC<IconProps> = (props) => {
     const [active, setActive] = useState<boolean>(false);
     const circleRef = useRef<_circle>(null);
@@ -27,11 +33,26 @@ export const Inserter: FC<IconProps> = (props) => {
     },[props.actionMenuOption])
 
     function InsertInstruction(){
-            const action = new DragonActionInstruction(props.parent);
-            action.text = "action text";
-            const m = DragonModel.restoreFromJSON(props.model.toJSON());
-            m.Insert(action, props.next);
-            props.setModel(m);
+        const m = DragonModel.restoreFromJSON(props.model.toJSON());
+        switch(props.actionMenuOption){
+            case Insert.action:
+            {
+                const action = new DragonActionInstruction(props.parent);
+                action.text = "action text";
+                m.Insert(action, props.next);
+                props.setModel(m);
+            }
+            break;
+            case Insert.comment:
+            {
+                const comment = new DragonCommentInstruction(props.parent);
+                comment.text = "comment text";
+                m.Insert(comment, props.next);
+                props.setModel(m);
+            }
+            break;
+        }
+
     }
 
     return (

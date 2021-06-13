@@ -1,14 +1,15 @@
-import React, { FC, useContext, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { Group, Line, Rect, Text } from 'react-konva';
 import { Rect as _rect } from 'konva/lib/shapes/Rect';
 import { Text as _text } from 'konva/lib/shapes/Text';
+import {Layer as _layer} from 'konva/lib/Layer';
 import { Group as _group } from 'konva/lib/Group';
-import { Begin, Condition } from './Begin';
+import { Begin } from './Begin';
 import { DragonInstruction, DragonModel, InstructionType } from '../../../dragon/dragon.model/dragon.model';
 import { HEIGHT, WIDTH } from './CONSTRAINTS';
 import { Action } from './Action';
-import {Layer as _layer} from 'konva/lib/Layer';
 import { Inserter } from './Inserter';
+import { Comment } from './Comment';
 
 const Shape = {
     BEGIN: "begin",
@@ -114,6 +115,37 @@ export const Schema: FC<IconProps> = ({model, setModel, layerRef, actionMenuOpti
                 }
                 break;
 
+
+                case InstructionType.COMMENT:
+                    {
+                        const prev = temp_node.find((value)=>(value.id === previous))!;
+                        temp_node.push(
+                            {
+                                id: "",
+                                previous: prev,
+                                parent: icon.parent,
+                                text: icon.id,
+                                shape: Shape.INSERTER,
+                                x: prev.x + WIDTH/2,
+                                y: prev.y + HEIGHT + HeightOffset/4,
+                            }
+                        );
+                        temp_node.push(
+                            {
+                                id: icon.id,
+                                previous: prev,
+                                parent: icon.parent,
+                                text: icon.text,
+                                shape: Shape.COMMENT,
+                                x: prev.x,
+                                y: prev.y + HeightOffset,
+                            }
+                        );
+                    }
+                    break;
+
+
+
                 case InstructionType.CONDITION:
                     {
                         const prev = temp_node.find((value)=>(value.id === previous))!;
@@ -181,7 +213,12 @@ export const Schema: FC<IconProps> = ({model, setModel, layerRef, actionMenuOpti
                             strokeWidth={1}
                             points={[value.x + WIDTH/2, value.y, value.previous.x+ WIDTH/2, value.previous.y + HEIGHT]}
                             />
-                        break;
+                        case Shape.COMMENT:
+                            return <Line 
+                            stroke={'black'}
+                            strokeWidth={1}
+                            points={[value.x + WIDTH/2, value.y, value.previous.x+ WIDTH/2, value.previous.y + HEIGHT]}
+                            />
                         case Shape.END:
                             return <Line 
                             stroke={'black'}
@@ -200,6 +237,8 @@ export const Schema: FC<IconProps> = ({model, setModel, layerRef, actionMenuOpti
                             return <Begin key={key} id={value.id} x={value.x} y={value.y} text={value.text} />
                         case Shape.ACTION:
                             return <Action setModel={setModel}  model={model} key={key} id={value.id} parent={value.parent} x={value.x} y={value.y} text={value.text} actionMenuOption={actionMenuOption} />
+                        case Shape.COMMENT:
+                            return <Comment setModel={setModel}  model={model} key={key} id={value.id} parent={value.parent} x={value.x} y={value.y} text={value.text} actionMenuOption={actionMenuOption} />
                         case Shape.INSERTER:
                             return <Inserter setModel={setModel}  model={model} key={key} id={value.id} x={value.x} y={value.y} parent={value.parent} next={value.text} actionMenuOption={actionMenuOption}></Inserter>
                     }

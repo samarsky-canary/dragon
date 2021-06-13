@@ -42,7 +42,7 @@ export const ActionMenu: React.FC<Props> = (props) => {
                         <Image rounded src={action} fluid onClick={()=>{props.setActionMenuOption(ActionMenuOptions.ACTION)}}/>
                     </Button>
                     <Button className="img-button">
-                        <Image rounded src={comment} fluid />
+                        <Image rounded src={comment} onClick={()=>{props.setActionMenuOption(ActionMenuOptions.COMMENT)}}fluid />
                     </Button>
                 </Row>
                 <Row>
