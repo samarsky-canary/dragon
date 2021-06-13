@@ -270,19 +270,22 @@ export class DragonModel {
     }
 
     public getDeepestLeftChild(uuid: string){
+        const icon = this.getInstruction(uuid);
+        let deepest = icon;
+
         function deeper(icon: DragonInstruction){
+            deepest = icon;
             if (icon.children.length > 0){
-                if (icon.children[0].type !== InstructionType.CONDITION && icon.children[0].type !== InstructionType.LOOP) {
+                if (icon.type !== InstructionType.CONDITION && icon.type !== InstructionType.LOOP) {
                     deeper(icon.children[icon.children.length -1])
                 } else {
                     deeper(icon.children[0])
                 }
             }
-            return icon;
         }
-        const icon = this.getInstruction(uuid);
         if (icon) {
-            return deeper(icon)
+            deeper(icon)
+            return deepest;
         } else 
         return undefined;
     }

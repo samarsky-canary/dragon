@@ -100,8 +100,12 @@ export const Schema: FC<IconProps> = ({model, setModel, layerRef, actionMenuOpti
         const from = positionInParent === 0 ? icon.parent : parent?.children[positionInParent - 1].id;
         const previous = model.getInstruction(from);
         if (previous){
-            if (previous.type in [InstructionType.CONDITION, InstructionType.LOOP, InstructionType.SWITCH]){
-                return model.getDeepestLeftChild(from);
+            if ( previous.type === InstructionType.CONDITION ||
+                previous.type === InstructionType.LOOP ||
+                previous.type === InstructionType.SWITCH) 
+            {
+                const deep = model.getDeepestLeftChild(from);
+                return deep;
             }
             return previous;
         }
@@ -190,7 +194,7 @@ export const Schema: FC<IconProps> = ({model, setModel, layerRef, actionMenuOpti
         const temp_nodes: Array<Node> = [];
         parseInstruction(model.getInstruction(model.head)!, temp_nodes);
 
-        // ссылка не предудщую от end выбирается неккоректно, если последняя икона - макро! Исправить на поиск последней в глубину
+        // ссылка не предыдущую от end выбирается неккоректно, если последняя икона - макро! Исправить на поиск последней в глубину
         const end = {
             id: 'end',
             previous: temp_nodes[temp_nodes.length -1],
@@ -232,6 +236,7 @@ export const Schema: FC<IconProps> = ({model, setModel, layerRef, actionMenuOpti
                             strokeWidth={1}
                             points={[value.x + WIDTH/2, value.y, value.previous.x+ WIDTH/2, value.previous.y + HEIGHT]}
                             />
+                        case Shape.BRANCH:
                     }
                 })
             }
