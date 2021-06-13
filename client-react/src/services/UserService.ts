@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { UserDTO } from '../DTO/UserDTO';
 import { AuthStateService } from './AuthStateService';
 
 const BASE_API_PREFIX = "/api/users";
@@ -30,12 +31,4 @@ export class UserService {
         .catch(err => {throw new Error("Unable to get data")}
         )
     }
-}
-
-
-export type UserDTO = 
-{
-    uuid: string;
-    username: string;
-    role : string;
 }
