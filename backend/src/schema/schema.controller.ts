@@ -37,7 +37,12 @@ export class SchemaController {
     }
 
     @Delete('/:id')
-    async delete(@Param() id: number) {
-        return this.schemaService.delete(id);
+    async delete(@Param('id') id) {
+        const deleterRelation = this.schemaService.delete(id);
+        if ((await deleterRelation).affected === 0) {
+            throw new NotFoundException("Schema not found");
+            
+        }
+        return deleterRelation;
     }
 }

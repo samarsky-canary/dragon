@@ -39,9 +39,11 @@ export class SchemaService {
 
 
 
-    delete(id: number) {
-        throw new Error('Method not implemented.');
+    delete(id: string) {
+        return this.schemaRepository.delete(id);
     }
+
+    
     update(id: any, schema: CreateSchemaDto) {
         return this.schemaRepository.save(schema).then(schema=>{
             if (schema) return schema;
