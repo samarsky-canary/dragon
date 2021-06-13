@@ -39,18 +39,18 @@ export const Begin: FC<IconProps> = ({ text, id, x ,y}) => {
     }, [textWidth, textHeight])
 
     return (
-        <Group id={id} draggable ref={groupRef}>
+        <Group id={id} draggable ref={groupRef} width={WIDTH}>
             <Rect 
             ref={rectRef}
-            width={WIDTH} 
+            width={WIDTH/2} 
             height={HEIGHT} 
-            x={x} y={y}
+            x={x+WIDTH/4} y={y}
             cornerRadius={50}
             stroke="black" strokeWidth={1} fill="white" />
             <Text 
             ref={textRef}
             text={text}
-            x={ x! + (rectRef.current ? rectRef.current.width() / 2 : 0)}
+            x={ x + WIDTH/4 + (rectRef.current ? rectRef.current.width() / 2 : 0)}
             y={y}
             offsetX={textWidth / 2}
             align="center"

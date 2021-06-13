@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Circle } from 'react-konva';
 import { Circle as _circle } from 'konva/lib/shapes/Circle';
-import { DragonActionInstruction, DragonCommentInstruction, DragonModel } from '../../../dragon/dragon.model/dragon.model';
+import { DragonActionInstruction, DragonCommentInstruction, DragonModel, DragonOutputInstruction } from '../../../dragon/dragon.model/dragon.model';
 const WIDTH = 15;
 const HEIGHT = 15;
 
@@ -19,7 +19,8 @@ type IconProps = {
 
 const Insert={
     action: 1,
-    comment: 2
+    comment: 2,
+    output: 4
 }
 
 
@@ -47,6 +48,14 @@ export const Inserter: FC<IconProps> = (props) => {
             {
                 const comment = new DragonCommentInstruction(props.parent);
                 comment.text = "comment text";
+                m.Insert(comment, props.next);
+                props.setModel(m);
+            }
+            break;
+            case Insert.output:
+            {
+                const comment = new DragonOutputInstruction(props.parent);
+                comment.text = "output text";
                 m.Insert(comment, props.next);
                 props.setModel(m);
             }

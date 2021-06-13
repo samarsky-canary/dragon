@@ -76,6 +76,7 @@ export class SchemaService {
         const headers = {
             "Authorization" : `Bearer ${SchemaService._authService.getToken()}`
         }
+        schema.last_changed_by_id = SchemaService._authService.getUUID();
         return axios.put<SchemaDTO>(`${BASE_API_PREFIX}/${schema.uuid}`, schema, {
             headers : headers
         })

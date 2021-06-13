@@ -22,7 +22,8 @@ export const NavigationHeader: React.FC = () => {
                     <Nav.Link as={Link} to="/about">О программе</Nav.Link>
                 </Nav>
                 <Form inline>
-                    <Navbar.Brand aria-disabled href="/curators">Willy</Navbar.Brand>
+                    <Navbar.Brand aria-disabled href="/curators">{state.username}</Navbar.Brand>
+                    <Nav.Link as={Link} to="/curators">{state.role}</Nav.Link>
                     <LogoutButton />
                 </Form>
             </Navbar.Collapse>

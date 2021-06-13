@@ -3,6 +3,8 @@ import { Text } from 'konva/lib/shapes/Text';
 import { DragonModel } from "../../../dragon/dragon.model/dragon.model";
 
 
+// NATIVE JS Function for update KonvaObject Text
+
 export function Updatetext(textRef: Text, id: string, model: DragonModel){
     if(textRef){
         const textPosition = textRef.getAbsolutePosition();

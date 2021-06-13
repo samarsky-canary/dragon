@@ -42,39 +42,39 @@ export const ActionMenu: React.FC<Props> = (props) => {
                         <Image rounded src={action} fluid onClick={()=>{props.setActionMenuOption(ActionMenuOptions.ACTION)}}/>
                     </Button>
                     <Button className="img-button">
-                        <Image rounded src={comment} onClick={()=>{props.setActionMenuOption(ActionMenuOptions.COMMENT)}}fluid />
+                        <Image rounded src={comment} onClick={()=>{props.setActionMenuOption(ActionMenuOptions.COMMENT)}} fluid />
                     </Button>
                 </Row>
                 <Row>
                     <Button className="img-button">
-                        <Image rounded src={input} fluid />
+                        <Image rounded src={input} fluid onClick={()=>{props.setActionMenuOption(ActionMenuOptions.INPUT)}}/>
                     </Button>
                     <Button className="img-button">
-                        <Image rounded src={output} fluid />
+                        <Image rounded src={output} fluid onClick={()=>{props.setActionMenuOption(ActionMenuOptions.OUTPUT)}}/>
                     </Button>
                 </Row>
                 <Row>
                     <Button className="img-button">
-                        <Image rounded src={question} fluid />
+                        <Image rounded src={question} fluid onClick={()=>{props.setActionMenuOption(ActionMenuOptions.QUESTION)}}/>
                     </Button>
                     <Button className="img-button">
-                        <Image rounded src={loop} fluid />
+                        <Image rounded src={loop} fluid onClick={()=>{props.setActionMenuOption(ActionMenuOptions.LOOP)}}/>
                     </Button>
                 </Row>
                 <Row>
                     <Button className="img-button">
-                        <Image rounded src={variant} fluid />
+                        <Image rounded src={variant} fluid onClick={()=>{props.setActionMenuOption(ActionMenuOptions.VARIANT)}}/>
                     </Button>
                     <Button className="img-button">
-                        <Image rounded src={pause} fluid />
+                        <Image rounded src={pause} fluid onClick={()=>{props.setActionMenuOption(ActionMenuOptions.PAUSE)}}/>
                     </Button>
                 </Row>
                 <Row>
-                    <Button className="img-button" onClick={()=>{props.setActionMenuOption(ActionMenuOptions.DELETE)}}>
-                        Удалить
+                    <Button className="img-button" variant={'danger'} onClick={()=>{props.setActionMenuOption(ActionMenuOptions.DELETE)}}>
+                        X
                     </Button>
-                    <Button className="img-button" onClick={()=>{props.setActionMenuOption(ActionMenuOptions.RESET)}}>
-                        Сбросить
+                    <Button className="img-button info" variant={'warning'} onClick={()=>{props.setActionMenuOption(ActionMenuOptions.RESET)}}>
+                        R
                     </Button>
                 </Row>
             </Card.Body>
