@@ -76,13 +76,13 @@ export const SchemaControl: React.FC<Props> = ({schema, setSchema, model, schema
                             />
                 </Form.Group>
                 <Button variant="primary btn-block" disabled={schema === undefined ? true : false} onClick={() => (UpdateSchema())}>Сохранить изменения</Button>{' '}
-                <Button variant="danger btn-block" disabled={schema === undefined ? true : false} onClick={() => (DeleteSelectedSchema())}>Удалить схему</Button>{' '}
                 <Button variant="info btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleTranslationToTextbox(); }}>В JavaScript...</Button>{' '}
                 <Button variant="primary btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleSaveAsJavascript(); }}>Скачать код</Button>{' '}
             </Card.Body>
             <Form.Group>
                 <Form.Label>Схема в Javascript</Form.Label>
                 <Form.Control as="textarea" rows={20} readOnly={true} value={translatedSchema}/>
+                <Button variant="danger btn-block" disabled={schema === undefined ? true : false} onClick={() => (DeleteSelectedSchema())}>Удалить схему</Button>{' '}
             </Form.Group>
         </Card>
     )

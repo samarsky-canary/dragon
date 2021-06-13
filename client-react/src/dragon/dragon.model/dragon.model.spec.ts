@@ -1,4 +1,4 @@
-import { DragonActionInstruction, DragonCommentInstruction, DragonConditionInstruction, DragonLoopInstruction, DragonOutputInstruction, DragonModel } from "./dragon.model";
+import { DragonActionInstruction, DragonCommentInstruction, DragonConditionInstruction, DragonLoopInstruction, DragonOutputInstruction, DragonModel, DragonSleepInstruction } from "./dragon.model";
 import equal from "deep-equal";
 
 const schema = new DragonModel();
@@ -46,19 +46,17 @@ test(('Schema Test2'),()=>{
     schema.Insert(output);
 
 
-    const comment = new DragonCommentInstruction(id);
-    comment.text="my sample comment";
+    const comment = new DragonSleepInstruction(id);
+    comment.text="5000";
     schema.Insert(comment);
-
+    console.log(JSON.stringify(schema.toJSON()));
 });
 
 test(('Replicated schema from JSON comparison'),()=>{
-    schema.setInstructionsOffset();
     const str = JSON.stringify(schema);
     const obj = JSON.parse(str);
     var replicatedSchema = new DragonModel();
     replicatedSchema.restoreFromJSON(obj);
-    replicatedSchema.setInstructionsOffset();
     expect(schema.toJSON()).toStrictEqual(replicatedSchema.toJSON());
     expect(replicatedSchema.toJavaScript()).toStrictEqual( schema.toJavaScript());
 });
@@ -71,6 +69,5 @@ test(('Simple schema'),()=>{
     const Action1 = new DragonActionInstruction(ref);
     Action1.text = "let b = 10";
     replicatedS.Insert(Action1);
-    console.log(JSON.stringify(replicatedS.toJSON()))
 });
 

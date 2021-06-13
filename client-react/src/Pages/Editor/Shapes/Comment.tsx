@@ -45,7 +45,7 @@ export const Comment: FC<IconProps> = ({ text, id, parent, x ,y, model, setModel
     function DeleteInstruction(){
         if( actionMenuOption === 9){
             const m = DragonModel.restoreFromJSON(model.toJSON());
-            m.Delete(parent,id);
+            m.DeleteById(id);
             setModel(m);
         }
     }

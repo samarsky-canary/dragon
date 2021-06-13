@@ -28,7 +28,7 @@ export function Updatetext(textRef: Text, id: string, model: DragonModel){
     textarea.addEventListener('keydown',(e)=>{
         if (e.keyCode === 13) {
             textRef!.text(textarea.value);
-            model.getInstruction(id).text = textRef!.text();
+            model.getInstruction(id)!.text = textRef!.text();
             document.body.removeChild(textarea);
           }
     });

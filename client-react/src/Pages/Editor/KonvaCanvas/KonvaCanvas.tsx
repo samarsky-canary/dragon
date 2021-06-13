@@ -111,7 +111,7 @@ export const KonvaCanvas: React.FC<Props> = ({ width, height, model, setModel, a
                 <Rect width={width} height={height} fillPatternImage={grid} stroke="grey"></Rect>
             </Layer>
             <Layer ref={groupRef}>
-            <Schema model={model}  setModel={setModel} layerRef={groupRef} actionMenuOption={actionMenuOption}/>                
+                <Schema model={model}  setModel={setModel} layerRef={groupRef} actionMenuOption={actionMenuOption}/>                
             </Layer>
         </Stage>
     )

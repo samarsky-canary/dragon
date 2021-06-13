@@ -21,7 +21,6 @@ export class DragonInstruction {
     id: string;
     parent: string;
     text: string;
-    offset: number;
     // вложенные инструкции
     children: DragonInstruction[];
 
@@ -31,7 +30,6 @@ export class DragonInstruction {
         this.text = "";
         this.id = uuidv4();
         this.children = [];
-        this.offset = 0;
     }
 
     public setMeta(meta: metadataInterface) {
@@ -186,7 +184,6 @@ export class DragonModel {
 
             case InstructionType.LOOP:
                 instruction.children.forEach(value => {
-                    const branch = value;
                     this.containers.set(value.id, value);
                 })
                 break;
@@ -212,7 +209,6 @@ export class DragonModel {
                 type: value.type,
                 text: value.text,
                 parent: value.parent,
-                offset: value.offset,
                 children: arr
             }
             jsonOjb[key] = iconD;
@@ -223,34 +219,42 @@ export class DragonModel {
     }
 
 
-    private seOffset(instruction: DragonInstruction) {
-        const parent = this.containers.get(instruction.parent);
-        if (parent) {
-            switch (instruction.type) {
-                case InstructionType.BRANCH:
-                    instruction.offset = parent.offset + parent.children.findIndex((value) => { return value === instruction });
-                    break;
-                case InstructionType.PRIMITIVE:
-                    instruction.offset = parent.offset + parent.children.findIndex((value) => { return value === instruction });
-                    break;
-                default:
-                    instruction.offset = parent.offset;
-            }
-        }
-        const children = instruction.children;
-        children.forEach((value) => {
-            this.seOffset(value);
-        })
-    }
-
-    public setInstructionsOffset() {
-        this.seOffset(this.containers.get(this.head)!)
-    }
+    
 
     public Delete(parent: string, uuid: string) {
         this.containers.get(parent)?.Remove(uuid);
         this.containers.delete(uuid);
     }
+
+
+    private RecursiveDelete(parent: DragonInstruction){
+        parent.children.forEach(child=>{
+            this.RecursiveDelete(child);
+            parent.Remove(child.id);
+            this.containers.delete(child.id);
+        })
+    }
+
+    private validate(){
+        this.containers.forEach(instruction=>{
+            const p  = this.containers.get(instruction.parent);
+            if(!p && instruction.type !== 'schema') {
+                this.containers.delete(instruction.id);
+            }
+        })
+    }
+
+    public DeleteById(uuid: string) {
+        const instruction = this.containers.get(uuid);
+        if (instruction) {
+            this.RecursiveDelete(instruction);
+            const p = this.containers.get(instruction.parent)?.Remove(uuid);
+            this.containers.delete(uuid);
+        }
+        this.validate();
+    }
+
+
 
     public Find(uuid: string) {
         return this.containers.get(this.head)?.Find(uuid);
@@ -261,8 +265,26 @@ export class DragonModel {
         if (this.containers.get(uuid)){
             return this.containers.get(uuid)!;
         } else {
-            throw new Error("instruction with id not found");
+            return undefined;
         }
+    }
+
+    public getDeepestLeftChild(uuid: string){
+        function deeper(icon: DragonInstruction){
+            if (icon.children.length > 0){
+                if (icon.children[0].type !== InstructionType.CONDITION && icon.children[0].type !== InstructionType.LOOP) {
+                    deeper(icon.children[icon.children.length -1])
+                } else {
+                    deeper(icon.children[0])
+                }
+            }
+            return icon;
+        }
+        const icon = this.getInstruction(uuid);
+        if (icon) {
+            return deeper(icon)
+        } else 
+        return undefined;
     }
 
     public Update(uuid: string, text: string) {
@@ -400,6 +422,10 @@ export class DragonModel {
                     code = code.replace(`[${instruction.id}]`, `console.log(${instruction.text});`);
                 break;
 
+            case InstructionType.SLEEP:
+                if (instruction.text !== "")
+                    code = code.replace(`[${instruction.id}]`,  `await new Promise(resolve => setTimeout(resolve, ${instruction.text}));`);
+                break;
             // Condition SCOPES if {inner} else {inner2}
             case InstructionType.CONDITION:
                 {
@@ -455,7 +481,6 @@ type metadataInterface = {
     id?: string;
     type: string;
     parent: string;
-    offset: number;
     text: string;
     children: Array<string>
 }

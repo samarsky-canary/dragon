@@ -47,7 +47,7 @@ export const Action: FC<IconProps> = ({ text, id, parent, x ,y, model, setModel,
     function DeleteInstruction(){
         if( actionMenuOption === 9){
             const m = DragonModel.restoreFromJSON(model.toJSON());
-            m.Delete(parent,id);
+            m.DeleteById(id);
             setModel(m);
         }
     }
@@ -107,6 +107,55 @@ export const Action: FC<IconProps> = ({ text, id, parent, x ,y, model, setModel,
             </Group>
             break;
 
+            case ShapeType.SLEEP:
+                element = <Group>
+                <Rect ref={rectRef} 
+                width={WIDTH} 
+                height={HEIGHT}
+                x={x} y={y}
+                />
+                <Shape
+                    sceneFunc={(context, shape) => {
+                    context.beginPath();
+                    context.moveTo(x, y);
+                    context.lineTo(x + WIDTH, y);
+                    context.lineTo(x + WIDTH -30, y + HEIGHT);
+                    context.lineTo(x + 30, y + HEIGHT);
+                    context.closePath();
+                    // (!) Konva specific method, it is very important
+                    context.fillStrokeShape(shape);
+                    }}
+                    fill="white"
+                    stroke={actionMenuOption === 9? "red" : 'black'}
+                    strokeWidth={actionMenuOption === 9? 4 : 2}
+                />
+            </Group>
+            break;
+
+            case ShapeType.CONDITION:
+                element = <Group>
+                <Rect ref={rectRef} 
+                width={WIDTH} 
+                height={HEIGHT}
+                x={x} y={y}
+                />
+                <Shape
+                    sceneFunc={(context, shape) => {
+                    context.beginPath();
+                    context.moveTo(x, y + HEIGHT/2);
+                    context.lineTo(x + WIDTH/2, y);
+                    context.lineTo(x + WIDTH, y + HEIGHT/2);
+                    context.lineTo(x + WIDTH/2, y + HEIGHT);
+                    context.closePath();
+                    // (!) Konva specific method, it is very important
+                    context.fillStrokeShape(shape);
+                    }}
+                    fill="white"
+                    stroke={actionMenuOption === 9? "red" : 'black'}
+                    strokeWidth={actionMenuOption === 9? 4 : 2}
+                />
+            </Group>
+            break;
 
             
         default:

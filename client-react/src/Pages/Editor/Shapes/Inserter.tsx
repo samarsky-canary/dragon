@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Circle } from 'react-konva';
 import { Circle as _circle } from 'konva/lib/shapes/Circle';
-import { DragonActionInstruction, DragonCommentInstruction, DragonModel, DragonOutputInstruction } from '../../../dragon/dragon.model/dragon.model';
+import { DragonActionInstruction, DragonCommentInstruction, DragonConditionInstruction, DragonModel, DragonOutputInstruction, DragonSleepInstruction } from '../../../dragon/dragon.model/dragon.model';
 const WIDTH = 15;
 const HEIGHT = 15;
 
@@ -20,7 +20,9 @@ type IconProps = {
 const Insert={
     action: 1,
     comment: 2,
-    output: 4
+    output: 4,
+    if: 5,
+    sleep: 8,
 }
 
 
@@ -60,6 +62,22 @@ export const Inserter: FC<IconProps> = (props) => {
                 props.setModel(m);
             }
             break;
+            case Insert.if:
+            {
+                const condition = new DragonConditionInstruction(props.parent);
+                condition.text = "condition";
+                m.Insert(condition, props.next);
+                props.setModel(m);
+            }
+            break;
+            case Insert.sleep:
+            {
+                const sleep = new DragonSleepInstruction(props.parent);
+                sleep.text = "100";
+                m.Insert(sleep, props.next);
+                props.setModel(m);
+            }
+            break;
         }
 
     }
@@ -73,5 +91,21 @@ export const Inserter: FC<IconProps> = (props) => {
             height={HEIGHT}
             x={props.x} y={props.y}
             stroke="black" strokeWidth={1} fill="lightgreen" />
+    );
+}
+
+
+
+export const BranchDing: FC<IconProps> = (props) => {
+
+    return (
+            <Circle 
+            draggable={true}
+            width={WIDTH}
+            height={HEIGHT}
+            x={props.x} y={props.y}
+            offsetY={-20}
+            offsetX={-80}
+            stroke="black" strokeWidth={1} fill="red" />
     );
 }
