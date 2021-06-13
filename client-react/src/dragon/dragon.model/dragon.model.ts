@@ -16,7 +16,7 @@ export const InstructionType = {
 
 
 
-class DragonInstruction {
+export class DragonInstruction {
     type: string;
     id: string;
     parent: string;
@@ -98,7 +98,7 @@ export class DragonCommentInstruction extends DragonInstruction {
     }
 }
 
-class DragonBranchInstruction extends DragonInstruction {
+export class DragonBranchInstruction extends DragonInstruction {
     constructor(parent: string) {
         super(InstructionType.BRANCH, parent);
     }
@@ -118,10 +118,9 @@ export class DragonConditionInstruction extends DragonInstruction {
 }
 
 export class DragonLoopInstruction extends DragonInstruction {
-    constructor(parent: string, restore?:boolean) {
+    constructor(parent: string, restore?: boolean) {
         super(InstructionType.LOOP, parent);
-        if (restore)
-        {
+        if (restore) {
             return
         }
         this.Add(new DragonBranchInstruction(this.id));
@@ -140,13 +139,13 @@ export class DragonSwitchInstruction extends DragonInstruction {
     }
 }
 
-class DragonSchemaInstruction extends DragonInstruction {
+export class DragonSchemaInstruction extends DragonInstruction {
     constructor() {
         super(InstructionType.SCHEMA, "")
     }
 }
 
-class DragonPrimitiveIstruction extends DragonInstruction {
+export class DragonPrimitiveIstruction extends DragonInstruction {
     constructor(parent: string) {
         super(InstructionType.PRIMITIVE, parent)
         this.text = "Start";
@@ -185,7 +184,6 @@ export class DragonModel {
 
             case InstructionType.LOOP:
                 instruction.children.forEach(value => {
-                    const branch = value;
                     this.containers.set(value.id, value);
                 })
                 break;
@@ -220,10 +218,43 @@ export class DragonModel {
 
     }
 
+
+    
+
     public Delete(parent: string, uuid: string) {
         this.containers.get(parent)?.Remove(uuid);
         this.containers.delete(uuid);
     }
+
+
+    private RecursiveDelete(parent: DragonInstruction){
+        parent.children.forEach(child=>{
+            this.RecursiveDelete(child);
+            parent.Remove(child.id);
+            this.containers.delete(child.id);
+        })
+    }
+
+    private validate(){
+        this.containers.forEach(instruction=>{
+            const p  = this.containers.get(instruction.parent);
+            if(!p && instruction.type !== 'schema') {
+                this.containers.delete(instruction.id);
+            }
+        })
+    }
+
+    public DeleteById(uuid: string) {
+        const instruction = this.containers.get(uuid);
+        if (instruction) {
+            this.RecursiveDelete(instruction);
+            const p = this.containers.get(instruction.parent)?.Remove(uuid);
+            this.containers.delete(uuid);
+        }
+        this.validate();
+    }
+
+
 
     public Find(uuid: string) {
         return this.containers.get(this.head)?.Find(uuid);
@@ -231,7 +262,32 @@ export class DragonModel {
 
 
     public getInstruction(uuid: string) {
-        return this.containers.get(uuid);
+        if (this.containers.get(uuid)){
+            return this.containers.get(uuid)!;
+        } else {
+            return undefined;
+        }
+    }
+
+    public getDeepestLeftChild(uuid: string){
+        const icon = this.getInstruction(uuid);
+        let deepest = icon;
+
+        function deeper(icon: DragonInstruction){
+            deepest = icon;
+            if (icon.children.length > 0){
+                if (icon.type !== InstructionType.CONDITION && icon.type !== InstructionType.LOOP) {
+                    deeper(icon.children[icon.children.length -1])
+                } else {
+                    deeper(icon.children[0])
+                }
+            }
+        }
+        if (icon) {
+            deeper(icon)
+            return deepest;
+        } else 
+        return undefined;
     }
 
     public Update(uuid: string, text: string) {
@@ -250,7 +306,6 @@ export class DragonModel {
         val.id = instruction_meta.id!;
         val.text = instruction_meta.text;
         val.parent = instruction_meta.parent;
-
         this.containers.set(val.id, val);
         if (val.parent) {
             this.containers.get(val.parent)?.children.push(val);
@@ -265,7 +320,7 @@ export class DragonModel {
 
         switch (instruction.type) {
             case InstructionType.SCHEMA:
-                    this.castInstruction(new DragonSchemaInstruction(), instruction);
+                this.castInstruction(new DragonSchemaInstruction(), instruction);
                 break;
 
             case InstructionType.PRIMITIVE:
@@ -315,7 +370,7 @@ export class DragonModel {
         })
     }
 
-    static restoreFromJSON(schema: any){
+    static restoreFromJSON(schema: any) {
         const restored = new DragonModel();
         restored.restoreFromJSON(schema);
         return restored;
@@ -370,6 +425,10 @@ export class DragonModel {
                     code = code.replace(`[${instruction.id}]`, `console.log(${instruction.text});`);
                 break;
 
+            case InstructionType.SLEEP:
+                if (instruction.text !== "")
+                    code = code.replace(`[${instruction.id}]`,  `await new Promise(resolve => setTimeout(resolve, ${instruction.text}));`);
+                break;
             // Condition SCOPES if {inner} else {inner2}
             case InstructionType.CONDITION:
                 {

@@ -1,7 +1,16 @@
 import axios from 'axios';
 import { DragonModel } from '../dragon/dragon.model/dragon.model';
-import { loginResponseDTO } from '../DTO/IloginResponseDTO';
+import { CreateSchemaDTO } from '../DTO/CreateSchemaDTO';
 import { AuthStateService } from './AuthStateService';
+
+export type SchemaDTO = {
+    uuid: string;
+    name: string;
+    idUser: string;
+    data: JSON;
+    last_changed: string;
+    last_changed_by_id: string;
+}
 
 const BASE_API_PREFIX = "/api/schema";
 
@@ -10,11 +19,15 @@ export class SchemaService {
     private static _authService : AuthStateService;
     private static _schema: DragonModel | undefined;
 
-
-
-
     constructor(authService : AuthStateService){
         SchemaService._authService = authService.getInstance();
+    }
+    public setModel(model: DragonModel){
+        SchemaService._schema = model;
+    }
+
+    public getModel() {
+        return SchemaService._schema;
     }
 
     public getInstance(): SchemaService {
@@ -61,22 +74,37 @@ export class SchemaService {
             return undefined;
         });
     }
-}
 
+    public updateSchema(schema: SchemaDTO): Promise<SchemaDTO | undefined> {
+        const headers = {
+            "Authorization" : `Bearer ${SchemaService._authService.getToken()}`
+        }
+        schema.last_changed_by_id = SchemaService._authService.getUUID();
+        return axios.put<SchemaDTO>(`${BASE_API_PREFIX}/${schema.uuid}`, schema, {
+            headers : headers
+        })
+        .then(response => {
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+            return undefined;
+        });
+    }
 
-export type CreateSchemaDTO = {
-    name: string;
-    idUser: string;
-    data: JSON;
-    last_changed_by_id: string;
-}
-
-
-export type SchemaDTO = {
-    uuid: string;
-    name: string;
-    idUser: string;
-    data: JSON;
-    last_changed: string;
-    last_changed_by_id: string;
+    public deleteSchema(id: string): Promise<any> {
+        const headers = {
+            "Authorization" : `Bearer ${SchemaService._authService.getToken()}`
+        }
+        return axios.delete<SchemaDTO>(`${BASE_API_PREFIX}/${id}`, {
+            headers : headers
+        })
+        .then(response => {
+            return response.data;
+        })
+        .catch(err => {
+            console.log(err);
+            return undefined;
+        });
+    }
 }

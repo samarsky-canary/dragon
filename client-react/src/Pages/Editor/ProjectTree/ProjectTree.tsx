@@ -3,7 +3,6 @@ import {Button, ListGroup } from 'react-bootstrap';
 import { UserContext } from '../../../context/user.provider';
 import { AuthStateService } from '../../../services/AuthStateService';
 import { SchemaService, SchemaDTO } from '../../../services/SchemaService';
-import './ProjectsSidebar.scss'
 
 type Props = {
     schemaService: SchemaService,
@@ -11,7 +10,7 @@ type Props = {
     schema : SchemaDTO | undefined;
 }
 
-export const ProjectsSidebar: FC<Props> = ({ schemaService, setSchema, schema }) => {
+export const ProjectTree: FC<Props> = ({ schemaService, setSchema, schema }) => {
     const { state } = useContext(UserContext);
     const [schemas, setSchemas] = useState<SchemaDTO[]>([]);
 
@@ -19,7 +18,7 @@ export const ProjectsSidebar: FC<Props> = ({ schemaService, setSchema, schema })
     const CreateSchema = async ()=> {
         const generatedSchema = await schemaService.createNewSchema(state.uuid!);
         if (generatedSchema) {
-                schema = generatedSchema;
+                setSchema(generatedSchema);
         }
     }
 
@@ -30,7 +29,7 @@ export const ProjectsSidebar: FC<Props> = ({ schemaService, setSchema, schema })
                 .then(schemas => setSchemas(schemas))
                 .catch(_err => console.log(_err))
         }
-    }, []);
+    }, [schema]);
 
     return (
         <ListGroup>

@@ -8,7 +8,7 @@ const user = {
 }
 
 const authStateService = new AuthStateService().getInstance();
-const projectService = new SchemaService(authStateService).getInstance();
+const schemaService = new SchemaService(authStateService).getInstance();
 var UUID : string;
 
 test(('Willy login'),()=>{
@@ -20,9 +20,9 @@ test(('Willy login'),()=>{
 
 test("Get user schemas",async ()=>{
     authStateService.Authentificate(user.username, user.password)
-    const res = await projectService.getUserSchemas(UUID)
+    const res = await schemaService.getUserSchemas(UUID)
     .then(response => {
-        Promise.resolve(response[0].idUser);
+        expect(response).toBeDefined();
     })
 })
 
