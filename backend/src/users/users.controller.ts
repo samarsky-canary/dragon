@@ -3,6 +3,7 @@ import { identity } from "rxjs";
 import { JwtAuthGuard } from "src/auth/jwt.auth-guard";
 import { LocalAuthGuard } from "src/auth/local.auth-guard";
 import { CreateUserDto } from "./dto/create-user.dto";
+import { UserDto } from "./dto/user.dto";
 import { UsersService } from "./users.service";
 
 @Controller('users')
@@ -12,25 +13,38 @@ export class UsersController
     // injected service in constructor
     constructor (private usersService : UsersService) {}
 
+
+    @Get('nonpriveleged')
+    async getAllNonPrivelegd() : Promise<UserDto[]> {
+        const users = await this.usersService.findAllNonPrivelegedUsers();
+        return users.map(user=>{
+            delete user.password;
+            return user;
+        })
+    }
+
+
     @Get('/:id')
-    async findOneById(@Param('id', ParseUUIDPipe) id: string): Promise<any> {
+    async findOneById(@Param('id', new ParseUUIDPipe({version: '4'})) id: string): Promise<any> {
         return this.usersService.findOneById(id);
     }
 
+
+
+
     @Put("/:id")
-    async update(@Param('id', ParseUUIDPipe) id: string, @Body() payload:CreateUserDto){
+    async update(@Param('id', new ParseUUIDPipe({version: '4'})) id: string, @Body() payload:CreateUserDto){
         return this.usersService.update(id, payload);
     }
 
 
     @Get()
-    async GetLoggedUserInfo(@Headers('Authorization') token: string): Promise<any> {
-        const parsedToken = token.split(' ')[1];
+    async GetLoggedUserInfo(): Promise<any> {
         return this.usersService.findAll();
     }
 
     @Delete('/:id')
-    async deleteUserByID(@Param('id', new ParseUUIDPipe()) id: string) {
+    async deleteUserByID(@Param('id', new ParseUUIDPipe({version: '4'})) id: string) {
         return this.usersService.delete(id);
     }
 }

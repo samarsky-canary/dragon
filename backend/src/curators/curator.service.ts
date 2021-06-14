@@ -24,11 +24,7 @@ export class CuratorService {
     }
 
     async findStudents(id_curator: number) {
-        throw NotImplementedException;
-    }
-
-    async findCurators(id_user: number) {
-        throw NotImplementedException;
+        return this.CuratorRepository.find({where: {uuid_curator: id_curator}})
     }
 
     async update(id: number, payload: CuratorDto) {

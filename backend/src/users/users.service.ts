@@ -19,6 +19,11 @@ export class UsersService {
         return this.usersRepository.find();
     }
 
+
+    async findAllNonPrivelegedUsers() : Promise <User[]> {
+        return this.usersRepository.find({where: {role: "USER" }});
+    }
+
     async getUseInfo(token : string) {
     //     return await this.jwtService.verifyAsync(token, {secret: this.configService.get<string>('SECRET_KEY')})
     // .then(payload=> 
@@ -53,7 +58,7 @@ export class UsersService {
         .then(user => {
             return (user) 
             ? Promise.resolve(user)
-            : Promise.reject("User not found")
+            : Promise.reject("Пользователь не найден")
         })
         .catch(err => Promise.reject(new NotFoundException(err)));
     }

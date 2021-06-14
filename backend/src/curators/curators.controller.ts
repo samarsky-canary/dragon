@@ -20,6 +20,11 @@ export class CuratorsController {
         return this.curatorService.findOneById(id);
     }
 
+    @Get('relations/:id')
+    async getCuratorRelations(@Param('id') id : number) : Promise<CuratorDto[]> {
+        return this.curatorService.findStudents(id);
+    }
+
     @Post('create')
     async createRelations(@Body() curatorObject: CuratorDto) {
         return this.curatorService.create(curatorObject);
