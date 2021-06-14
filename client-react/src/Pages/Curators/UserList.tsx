@@ -1,21 +1,21 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { ListGroup } from 'react-bootstrap';
+import { Card, Form, ListGroup } from 'react-bootstrap';
 import { UserDTO } from '../../DTO/UserDTO';
 import { UserService } from '../../services/UserService';
 import './UserList.scss';
 
 type Props = {
-    filter: string;
     userService: UserService;
     selectedUser: string;
     selectUser: (value: string) => void;
 }
 
 
-export const UserList : React.FC<Props> = ({filter, userService, selectedUser, selectUser}) => {
+export const UserList : React.FC<Props> = ({userService, selectedUser, selectUser}) => {
     const [users, setUsers] = useState<UserDTO[]>([]);
+    const [filter, setFilter] = useState<string>('');
 
     function filterUser(user: UserDTO) {
         return user.username.match(`^${filter}`);
@@ -28,7 +28,18 @@ export const UserList : React.FC<Props> = ({filter, userService, selectedUser, s
     },[])
 
     return (
-        <ListGroup className="user-list">
+        <Card >
+        <Card.Header>Список пользователей:</Card.Header>
+        <Card.Body>
+            <Form.Group>
+                <Form.Control
+                    type="text"
+                    value={filter}
+                    placeholder="Начните вводить имя"
+                    onChange={(e) => (setFilter(e.target.value))}
+                />
+            </Form.Group>
+            <ListGroup className="user-list">
             {
                 users.filter(filterUser).map((user, key) => 
                 (<ListGroup.Item
@@ -38,5 +49,7 @@ export const UserList : React.FC<Props> = ({filter, userService, selectedUser, s
                     >{user.username}</ListGroup.Item>))
             }
         </ListGroup>
+        </Card.Body>
+    </Card>
     )
 }
