@@ -36,7 +36,7 @@ export const Login: React.FC<Props> = ({ setRegisterData }) => {
             });
         }
         else {
-            setErrorMessage(response.statusText);
+            setErrorMessage(response.statusText.replace("QueryFailedError:",''));
             setErrorHidden(false);
         }
     }
@@ -51,7 +51,7 @@ export const Login: React.FC<Props> = ({ setRegisterData }) => {
             });
         }
         else {
-            setErrorMessage(response.statusText);
+            setErrorMessage(response.statusText.replace("QueryFailedError:",''));
             setErrorHidden(false);
         }
     }

@@ -36,13 +36,15 @@ export class SchemaService {
         }
         return SchemaService._instance;
     }
-
-    public async getUserSchemas(user_id : string) : Promise<SchemaDTO[]> {
-        const headers = {
+    private setTokenBearer(){
+        return {
             "Authorization" : `Bearer ${SchemaService._authService.getToken()}`
         }
+    }
+
+    public async getUserSchemas(user_id : string) : Promise<SchemaDTO[]> {
         return axios.get<Array<SchemaDTO>>(`${BASE_API_PREFIX}/user/${user_id}`, {
-            headers : headers,
+            headers : this.setTokenBearer(),
         })
         .then(response => {
             return response.data;
@@ -54,9 +56,6 @@ export class SchemaService {
 
 
     public async createNewSchema(user_id: string) : Promise<SchemaDTO | undefined> {
-        const headers = {
-            "Authorization" : `Bearer ${SchemaService._authService.getToken()}`
-        }
         const schema: CreateSchemaDTO = {
             name: "NewSchema",
             idUser: user_id,
@@ -64,7 +63,7 @@ export class SchemaService {
             data: new DragonModel().toJSON()
         }
         return axios.post<SchemaDTO>(`${BASE_API_PREFIX}/create`, schema, {
-            headers : headers
+            headers : this.setTokenBearer()
         })
         .then(response => {
             return response.data;
@@ -76,12 +75,9 @@ export class SchemaService {
     }
 
     public updateSchema(schema: SchemaDTO): Promise<SchemaDTO | undefined> {
-        const headers = {
-            "Authorization" : `Bearer ${SchemaService._authService.getToken()}`
-        }
         schema.last_changed_by_id = SchemaService._authService.getUUID();
         return axios.put<SchemaDTO>(`${BASE_API_PREFIX}/${schema.uuid}`, schema, {
-            headers : headers
+            headers : this.setTokenBearer()
         })
         .then(response => {
             return response.data;
@@ -93,11 +89,8 @@ export class SchemaService {
     }
 
     public deleteSchema(id: string): Promise<any> {
-        const headers = {
-            "Authorization" : `Bearer ${SchemaService._authService.getToken()}`
-        }
         return axios.delete<SchemaDTO>(`${BASE_API_PREFIX}/${id}`, {
-            headers : headers
+            headers : this.setTokenBearer()
         })
         .then(response => {
             return response.data;

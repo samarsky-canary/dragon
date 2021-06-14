@@ -7,7 +7,6 @@ import { ProjectTree } from './ProjectTree/ProjectTree';
 import './Editor.scss'
 import { KonvaCanvas } from './KonvaCanvas/KonvaCanvas';
 import ContainerDimensions from 'react-container-dimensions';
-import { IconFieldsEditor } from './Components/IconFieldsEditor';
 import { SchemaControl } from './Components/SchemaControl';
 import { DragonModel } from '../../dragon/dragon.model/dragon.model';
 

@@ -17,7 +17,7 @@ export const NavigationHeader: React.FC = () => {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
                     <Nav.Link as={Link} to="/">Редактор</Nav.Link>
-                    <Nav.Link as={Link} to="/curators">Курирование</Nav.Link>
+                    <Nav.Link as={Link} disabled={state.role === 'USER'} to="/curators">Курирование</Nav.Link>
                     <Nav.Link as={Link} to="/docs">Документация</Nav.Link>
                     <Nav.Link as={Link} to="/about">О программе</Nav.Link>
                 </Nav>

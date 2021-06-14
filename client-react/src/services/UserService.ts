@@ -20,15 +20,27 @@ export class UserService {
     }
 
 
-    public getUserinfoById(uuid: string) : Promise<UserDTO> {
-        const headers = {
+    private setTokenBearer(){
+        return {
             "Authorization" : `Bearer ${UserService._authService.getToken()}`
         }
+    }
+    public getUserinfoById(uuid: string) : Promise<UserDTO> {
         return axios.get(`${BASE_API_PREFIX}/${uuid}`,{
-            headers: headers
+            headers: this.setTokenBearer()
         })
         .then(response => response.data)
         .catch(err => {throw new Error("Unable to get data")}
         )
+    }
+
+    public GetUnprevilegedUsers() : Promise<UserDTO[]> {
+        const headers = {
+            "Authorization" : `Bearer ${UserService._authService.getToken()}`
+        }
+        return axios.get(`${BASE_API_PREFIX}/nonpriveleged`, {
+            headers: this.setTokenBearer()
+        })
+        .then(response => response.data);
     }
 }
