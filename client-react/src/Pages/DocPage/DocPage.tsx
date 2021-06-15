@@ -18,6 +18,9 @@ export const DocPage: FC = () => {
             .catch(err => console.log(err));
     });
 
+    useEffect(() => {
+        document.title = "Документация"
+    },[]);
 
     return (
         <Container>

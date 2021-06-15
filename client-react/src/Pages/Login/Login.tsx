@@ -59,7 +59,7 @@ export const Login: React.FC<Props> = ({ setRegisterData }) => {
 
     useEffect(() => {
         document.title = "Вход и регистрация"
-    });
+    },[]);
 
     return (
         <div className="background-div bg-dark text-white">
