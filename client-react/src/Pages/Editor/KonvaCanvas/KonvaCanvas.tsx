@@ -106,11 +106,11 @@ export const KonvaCanvas: React.FC<Props> = ({ width, height, model, setModel, a
     const groupRef = useRef<_layer>(null)
 
     return (
-        <Stage width={width} height={700}>
+        <Stage width={width} height={800}>
             <Layer>
                 <Rect width={width} height={height} fillPatternImage={grid} stroke="grey"></Rect>
             </Layer>
-            <Layer ref={groupRef}>
+            <Layer draggable ref={groupRef}>
                 <Schema model={model}  setModel={setModel} layerRef={groupRef} actionMenuOption={actionMenuOption}/>                
             </Layer>
         </Stage>
