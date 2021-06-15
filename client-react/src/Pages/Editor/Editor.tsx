@@ -65,6 +65,9 @@ export const EditorPage: React.FC = () => {
                     <SchemaControl schemaService={schemaService} setSchema={setSchema} schema={schema} model={model}/>
                 </Col>
             </Row>
+            <Row className="footer">
+
+            </Row>
         </Container>
     );
 }
