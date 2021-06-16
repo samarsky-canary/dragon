@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { loginResponseDTO } from '../DTO/IloginResponseDTO';
+import { UserDTO } from '../DTO/UserDTO';
 
 export class AuthStateService {
     private static _instance: AuthStateService;
@@ -16,12 +17,12 @@ export class AuthStateService {
         AuthStateService._username = username;
         AuthStateService._accessToken = access_token;
     }
-    constructor(){
+    constructor() {
         // empty constructor
     }
 
     public getInstance(): AuthStateService {
-        if (!AuthStateService._instance){
+        if (!AuthStateService._instance) {
             AuthStateService._instance = new AuthStateService();
         }
         return AuthStateService._instance;
@@ -29,7 +30,7 @@ export class AuthStateService {
 
 
 
-    public getToken() : string {
+    public getToken(): string {
         if (AuthStateService._accessToken) {
             return AuthStateService._accessToken;
         } else {
@@ -37,7 +38,16 @@ export class AuthStateService {
         }
     }
 
-    public getUUID() : string {
+    public getRole() : string {
+        if (AuthStateService._role) {
+            return AuthStateService._role;
+        } else {
+            throw new Error("token is undefined");
+
+        }
+    }
+
+    public getUUID(): string {
         if (AuthStateService._uuid) {
             return AuthStateService._uuid;
         } else {
@@ -45,7 +55,7 @@ export class AuthStateService {
         }
     }
 
-    public getUsername() : string {
+    public getUsername(): string {
         if (AuthStateService._username) {
             return AuthStateService._username;
         } else {
@@ -54,16 +64,26 @@ export class AuthStateService {
     }
 
 
-    public async TokenVerification(token: string) : Promise<boolean> {
-        const URL = process.env.REACT_APP_CLIENT_DOMAIN + AuthStateService.BASE_API_PREFIX  + "verify/" + token;
+    public setUsername(name: string) {
+        AuthStateService._username = name;
+        if (AuthStateService._username) {
+            return AuthStateService._username;
+        } else {
+            throw new Error('username is not set');
+        }
+    }
+
+
+    public async TokenVerification(token: string): Promise<boolean> {
+        const URL = process.env.REACT_APP_CLIENT_DOMAIN + AuthStateService.BASE_API_PREFIX + "verify/" + token;
         return await axios.get(URL).then(() => {
             return true
-        }).catch(()=> {
+        }).catch(() => {
             return false
         });
     }
 
-    public async  Authentificate (username:string, password:string) : Promise<ResponsePayload> {
+    public async Authentificate(username: string, password: string): Promise<ResponsePayload> {
         // here works proxy!!! 
         const URL = process.env.REACT_APP_CLIENT_DOMAIN + AuthStateService.BASE_API_PREFIX + "login";
 
@@ -87,7 +107,7 @@ export class AuthStateService {
         }
     }
 
-    public async RegisterUser(username:string, password:string) : Promise<ResponsePayload> {
+    public async RegisterUser(username: string, password: string): Promise<ResponsePayload> {
         const URL = process.env.REACT_APP_CLIENT_DOMAIN + AuthStateService.BASE_API_PREFIX + "signup";
         try {
             const response = await axios.post<loginResponseDTO>(URL, { username, password });
@@ -108,15 +128,30 @@ export class AuthStateService {
         }
     }
 
-    public Logout() : void {
-            AuthStateService._accessToken = AuthStateService._role = AuthStateService._uuid = "";
+    public Logout(): void {
+        AuthStateService._accessToken = AuthStateService._role = AuthStateService._uuid = "";
     }
-    
 
+    public async DeleteRegistrationData(uuid: string) {
+        try {
+            return await axios.delete(AuthStateService.BASE_API_PREFIX + "/delete", {
+                headers: {
+                    "Authorization": `Bearer ${AuthStateService._instance.getToken()}`,
+                    "uuid": uuid
+                }
+            });
+        } catch (err) {
+            const responseData: ResponsePayload = { status: err.status, statusText: err.message };
+            if (err.response) {
+                responseData.statusText = err.response.data.message;
+            }
+            return responseData;
+        }
+    }
 }
 
 type ResponsePayload = {
     status: number;
     statusText: string;
-    body?: loginResponseDTO 
+    body?: loginResponseDTO
 };

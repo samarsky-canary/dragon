@@ -49,21 +49,5 @@ export class SchemaService {
             if (schema) return schema;
                 throw new NotFoundException("schema not found");
         });
-    }
-
-
-
-
-
-    
-    // async findByUserId(userUuid : string) : Promise<Schema[]> {
-    //     const schemes =this.schemaRepository.find({where: {uuid: userUuid}});
-    //     return schemes;
-    // }
-
-    // async findBySchemaId(userUuid: string) : Promise<Schema> {
-    //     const schema = this.schemaRepository.findOne(userUuid);
-    //     return schema;
-    // }
-    
+    }    
 }

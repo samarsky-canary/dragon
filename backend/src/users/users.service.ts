@@ -19,6 +19,10 @@ export class UsersService {
         return this.usersRepository.find();
     }
 
+    async findByIds(users: string[]) : Promise <User[]> {
+        return this.usersRepository.findByIds(users);
+    }
+
 
     async findAllNonPrivelegedUsers() : Promise <User[]> {
         return this.usersRepository.find({where: {role: "USER" }});
@@ -71,12 +75,18 @@ export class UsersService {
     }
 
 
-    async update(id: string, payload: CreateUserDto) {
-        return this.usersRepository.findOne(id);
+    async update(payload: UserDto) {
+        return this.usersRepository.update(payload.uuid,payload);
     }
 
     
     async delete(uuid: string) : Promise<DeleteResult> {
         return await this.usersRepository.delete(uuid);
+    }
+
+    async remove(user_id: string)  {
+        return this.usersRepository.findOne(user_id).then(user =>{
+            return  this.usersRepository.remove(user);
+        });
     }
 }

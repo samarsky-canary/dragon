@@ -1,7 +1,7 @@
 import {IsNotEmpty, IsString, IsUUID} from 'class-validator'
 import { User } from 'src/users/db/user.entity';
 import { ManyToOne } from 'typeorm';
-export class CuratorDto {
+export class CreateCuratorDto {
 
     @IsNotEmpty()
     @IsUUID()

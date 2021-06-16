@@ -10,7 +10,7 @@ const initialTokenState : loginResponseDTO = {
 
 
 export type UserAction = {
-    type :'LOGIN' | 'LOGOUT' | 'SIGNUP';
+    type :'LOGIN' | 'LOGOUT' | 'SIGNUP' | 'UPDATE';
     payload: loginResponseDTO
 }
 
@@ -23,6 +23,10 @@ const userReducer = (state : loginResponseDTO, action : UserAction) :loginRespon
       case "LOGOUT":
         localStorage.clear();
         return initialTokenState
+      case "UPDATE":
+        localStorage.clear();
+        localStorage.setItem('user', JSON.stringify(action.payload));
+        return action.payload;
       default:
         return state;
     }

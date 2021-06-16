@@ -5,11 +5,13 @@ import { Card, Form, ListGroup } from 'react-bootstrap';
 import { UserDTO } from '../../DTO/UserDTO';
 import { UserService } from '../../services/UserService';
 import './UserList.scss';
+import Select from 'react-dropdown-select';
+
 
 type Props = {
     userService: UserService;
-    selectedUser: string;
-    selectUser: (value: string) => void;
+    selectedUser: UserDTO;
+    selectUser: (value: UserDTO) => void;
 }
 
 
@@ -23,32 +25,30 @@ export const UserList : React.FC<Props> = ({userService, selectedUser, selectUse
 
 
     useEffect(()=>{
-        userService.GetUnprevilegedUsers()
+        userService.GetAllUsers()
         .then(users => setUsers(users)) 
     },[])
 
+
+    function setUser(values: UserDTO[]) {
+        if (values.length){
+            selectUser(values[0]);
+        }
+    }
+
     return (
         <Card >
-        <Card.Header>Список пользователей:</Card.Header>
         <Card.Body>
-            <Form.Group>
-                <Form.Control
-                    type="text"
-                    value={filter}
-                    placeholder="Начните вводить имя"
-                    onChange={(e) => (setFilter(e.target.value))}
-                />
-            </Form.Group>
-            <ListGroup className="user-list">
-            {
-                users.filter(filterUser).map((user, key) => 
-                (<ListGroup.Item
-                    key={key}
-                    action variant={user.uuid === selectedUser ? `info` : ''}
-                    onClick={()=>(selectUser(user.uuid))}
-                    >{user.username}</ListGroup.Item>))
-            }
-        </ListGroup>
+        <Select
+        options={users}
+        multi={false}
+        searchBy={'username'}
+        labelField={"username"}
+        valueField={"uuid"}
+        values={users}
+        onChange={(value) => setUser(value)}
+        />
+
         </Card.Body>
     </Card>
     )

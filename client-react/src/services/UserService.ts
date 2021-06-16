@@ -43,4 +43,33 @@ export class UserService {
         })
         .then(response => response.data);
     }
+
+    
+    public GetAllUsers() : Promise<UserDTO[]> {
+        const headers = {
+            "Authorization" : `Bearer ${UserService._authService.getToken()}`
+        }
+        return axios.get(`${BASE_API_PREFIX}`, {
+            headers: this.setTokenBearer()
+        })
+        .then(response => response.data);
+    }
+
+    public async UpdateData(user: UserDTO) {
+
+            return axios.put(BASE_API_PREFIX + "/update", user, {
+                headers: {
+                    "Authorization": `Bearer ${UserService._authService.getToken()}`,
+                }
+            })
+            .then(response => {
+                UserService._authService.setUsername(user.username);
+                return response.data
+            });
+    }
 }
+
+type ResponsePayload = {
+    status: number;
+    statusText: string;
+};

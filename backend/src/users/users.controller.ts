@@ -32,9 +32,9 @@ export class UsersController
 
 
 
-    @Put("/:id")
-    async update(@Param('id', new ParseUUIDPipe({version: '4'})) id: string, @Body() payload:CreateUserDto){
-        return this.usersService.update(id, payload);
+    @Put("/update")
+    async update(@Body() payload:UserDto){
+        return this.usersService.update(payload);
     }
 
 
