@@ -3,6 +3,8 @@ import { Alert, Button, Container, Form } from 'react-bootstrap';
 import './Login.scss';
 import { AuthStateService } from '../../services/AuthStateService';
 import { UserAction } from '../../context/user.provider';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+
 
 const greet = "DRAKON IDE";
 const authStateService = new AuthStateService().getInstance();
@@ -36,7 +38,11 @@ export const Login: React.FC<Props> = ({ setRegisterData }) => {
             });
         }
         else {
-            setErrorMessage(response.statusText.replace("QueryFailedError:",''));
+            if (response.statusText){
+                setErrorMessage(response.statusText.replace("QueryFailedError:",''));
+            } else {
+                setErrorMessage("No response")
+            }
             setErrorHidden(false);
         }
     }
@@ -51,7 +57,11 @@ export const Login: React.FC<Props> = ({ setRegisterData }) => {
             });
         }
         else {
-            setErrorMessage(response.statusText.replace("QueryFailedError:",''));
+            if (response.statusText){
+                setErrorMessage(response.statusText.replace("QueryFailedError:",''));
+            } else {
+                setErrorMessage("No response")
+            }
             setErrorHidden(false);
         }
     }
@@ -81,7 +91,7 @@ export const Login: React.FC<Props> = ({ setRegisterData }) => {
                             placeholder="Пароль" 
                             value={password}
                             onChange={e => { setPasswordValue(e.target.value) }} />
-                        <img className="img-fluid" src={process.env.PUBLIC_URL + '/icons/eye.ico'} onClick={togglePasswordVisiblity}></img>
+                            <VisibilityIcon onClick={togglePasswordVisiblity}/>
                         <Alert hidden={errorHidden} variant="danger">{errorMessage}</Alert>
                     </Form.Group>
                     <Button variant="info btn-block" onKeyPress={(e) => { if (e.key === "Enter") handleLoginSubmit() }} onClick={(e) => { handleLoginSubmit(e); }}>Вход</Button>

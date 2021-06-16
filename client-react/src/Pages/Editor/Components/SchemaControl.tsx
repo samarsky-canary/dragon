@@ -4,6 +4,10 @@ import { Card, Button, Modal, Form, FormControl } from 'react-bootstrap';
 import { updateTaggedTemplate } from 'typescript';
 import { DragonModel } from '../../../dragon/dragon.model/dragon.model';
 import { SchemaDTO, SchemaService } from '../../../services/SchemaService';
+import Delete from '@material-ui/icons/Delete';
+import CodeIcon from '@material-ui/icons/Code';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import SaveIcon from '@material-ui/icons/Save';
 
 type Props = {
     schema : SchemaDTO | undefined,
@@ -75,14 +79,14 @@ export const SchemaControl: React.FC<Props> = ({schema, setSchema, model, schema
                             onChange={(e)=>(setSchemaName(e.target.value))}
                             />
                 </Form.Group>
-                <Button variant="primary btn-block" disabled={schema === undefined ? true : false} onClick={() => (UpdateSchema())}>Сохранить изменения</Button>{' '}
-                <Button variant="info btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleTranslationToTextbox(); }}>В JavaScript...</Button>{' '}
-                <Button variant="primary btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleSaveAsJavascript(); }}>Скачать код</Button>{' '}
+                <Button variant="primary btn-block" disabled={schema === undefined ? true : false} onClick={() => (UpdateSchema())}><SaveIcon/>Сохранить изменения</Button>{' '}
+                <Button variant="info btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleTranslationToTextbox(); }}><CodeIcon/>В JavaScript...</Button>{' '}
+                <Button variant="primary btn-block" disabled={schema === undefined ? true : false} onClick={() => { handleSaveAsJavascript(); }}><GetAppIcon/>Скачать код</Button>{' '}
             </Card.Body>
             <Form.Group>
                 <Form.Label>Схема в Javascript</Form.Label>
                 <Form.Control as="textarea" rows={20} readOnly={true} value={translatedSchema}/>
-                <Button variant="danger btn-block" disabled={schema === undefined ? true : false} onClick={() => (DeleteSelectedSchema())}>Удалить схему</Button>{' '}
+                <Button variant="danger btn-block" disabled={schema === undefined ? true : false} onClick={() => (DeleteSelectedSchema())}><Delete/>Удалить схему</Button>{' '}
             </Form.Group>
         </Card>
     )

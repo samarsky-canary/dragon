@@ -3,6 +3,7 @@ import {Button, ListGroup } from 'react-bootstrap';
 import { UserContext } from '../../../context/user.provider';
 import { AuthStateService } from '../../../services/AuthStateService';
 import { SchemaService, SchemaDTO } from '../../../services/SchemaService';
+import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 
 type Props = {
     schemaService: SchemaService,
@@ -41,7 +42,7 @@ export const ProjectTree: FC<Props> = ({ schemaService, setSchema, schema }) => 
                     {scheme.name}
                 </ListGroup.Item>
             ))}
-            <ListGroup.Item onClick={()=> CreateSchema()} as={Button} variant="warning">Создать схему</ListGroup.Item>
+            <ListGroup.Item onClick={()=> CreateSchema()} as={Button} variant="warning"><CreateNewFolderIcon/>Создать схему</ListGroup.Item>
         </ListGroup>
     )
 }

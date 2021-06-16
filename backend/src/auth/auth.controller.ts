@@ -1,7 +1,8 @@
 import { Param } from '@nestjs/common';
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, Res, UseGuards } from '@nestjs/common';
+import { Body, Headers, Controller, Get, HttpCode, HttpStatus, Post, Delete, Request, Res, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './jwt.auth-guard';
 import {LocalAuthGuard} from "./local.auth-guard";
 
 
@@ -33,6 +34,13 @@ export class AuthController {
     @Get('verify/:token')
     async verify(@Param('token')token: string) {
         return this.authService.verifyToken(token)
+    }
+
+    @HttpCode(HttpStatus.OK)
+    @UseGuards(JwtAuthGuard)
+    @Delete('delete')
+    async deleteUser(@Headers() req ) {
+        return this.authService.DeleteAcccout(req.authorization, req.uuid);
     }
 
 }
