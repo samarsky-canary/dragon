@@ -22,10 +22,6 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-// function deleteAccout() {
-    
-// }
-
 type Props = {
     authService: AuthStateService
 }
