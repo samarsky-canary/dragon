@@ -94,7 +94,7 @@ export const AccountControl: React.FC<Props> = ({authService}) => {
             alignItems="center"
         >
             <Paper square={false} elevation={2}>
-                <TextField inputRef={oldRef} id="outlined-basic" label="Введите старое имя" variant="outlined" value={old} onChange={(e)=>{setOld(e.target.value)}}/>
+                <TextField error={false} inputRef={oldRef} id="outlined-basic" label="Введите старое имя" variant="outlined" value={old} onChange={(e)=>{setOld(e.target.value)}}/>
                 <TextField id="outlined-basic" label="Введите новое имя" variant="outlined" value={newName} onChange={(e)=>{setNew(e.target.value)}}/>
                 <Button variant="outlined" color="secondary" onClick={(e)=>(renameUser())}>
                     Изменить имя

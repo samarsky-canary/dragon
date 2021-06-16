@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Res, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, Put, Res, UseGuards, ValidationPipe } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt.auth-guard';
 import { CuratorService } from './curator.service';
-import { CuratorDto } from './dto/create-curator.dto';
+import { CreateCuratorDto } from './dto/create-curator.dto';
+import { CuratorDto } from './dto/curatorDTO';
 
 
 //@UseGuards(JwtAuthGuard)
@@ -21,23 +22,30 @@ export class CuratorsController {
     }
 
     @Get('relations/:id')
-    async getCuratorRelations(@Param('id') id : number) : Promise<CuratorDto[]> {
+    async getByCuratorId(@Param('id', new ParseUUIDPipe({version: '4'})) id: string) : Promise<CreateCuratorDto[]> {
         return this.curatorService.findStudents(id);
     }
 
+
     @Post('create')
-    async createRelations(@Body() curatorObject: CuratorDto) {
+    async createRelations(@Body() curatorObject: CreateCuratorDto) {
         return this.curatorService.create(curatorObject);
     }
 
-    @HttpCode(201)
-    @Put('/:id')
-    async update(@Param('id') id, @Body() payload:CuratorDto) {
-      return this.curatorService.update(id, payload)
+    @Put()
+    async update(@Body() payload: CuratorDto) {
+      return this.curatorService.update(payload);
     }
+
+    // @Delete('relation/:id')
+    // async removeRelationByUser(@Body() payload:CuratorDto) {
+    //     return this.curatorService.deletebyUserId(user_id);
+    // }
 
     @Delete('/:id')
     async removeRelation(@Param() relationId: number) {
         return this.curatorService.delete(relationId);
     }
+
+
 }
