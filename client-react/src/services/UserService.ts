@@ -64,9 +64,22 @@ export class UserService {
             })
             .then(response => {
                 UserService._authService.setUsername(user.username);
+                UserService._authService.setRole(user.role);
                 return response.data
             });
     }
+
+    public async UpdateUserRole(user: UserDTO) {
+
+        return axios.put(BASE_API_PREFIX + "/update", user, {
+            headers: {
+                "Authorization": `Bearer ${UserService._authService.getToken()}`,
+            }
+        })
+        .then(response => {
+            return response.data
+        });
+}
 }
 
 type ResponsePayload = {

@@ -74,17 +74,15 @@ export class AuthService {
         yourself = token.sub === user;
         this.usersService.findByIds([token.sub, user])
           .then(users => {
-            if (users[0] === undefined)
-              Promise.reject(new UnauthorizedException("Токен не валиден"))
             if (!yourself) {
-              if (users[1] === undefined)
-                Promise.reject(new NotFoundException("Пользователя не существует"));
-              // Пользователь не может удалять другого пользователя
-              if (users[0].role === "USER" && users[0].uuid !== users[1].uuid)
-                Promise.reject(new NotFoundException("Недостаточно прав"))
-              // Куратор может удалять только простых пользователей
-              if (users[0].role === "CURATOR" && users[1].role !== "USER")
-                Promise.reject(new NotFoundException("Недостаточно прав"))
+              const who = users.find(value => value.uuid === token.sub);
+              const whom = users.find(value => value.uuid === user);
+              if (!whom.role)
+                return Promise.reject(new NotFoundException("Пользователя не существует"));
+              if (who.role !== 'ADMIN')
+                return Promise.reject(new NotFoundException("Вы не админ"));
+              if (whom.role === 'ADMIN')
+                return Promise.reject(new NotFoundException("Админа может удалить только суперадмин"));
             }
             return this.usersService.remove(user);
           })

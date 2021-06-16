@@ -19,11 +19,11 @@ export const EditorPage: React.FC = () => {
     const [model, setModel] = useState<DragonModel>(new DragonModel());
     const [actionMenuOption, setActionMenuOption] = useState<number>(0);
 
-    useEffect(()=>{
+    useEffect(() => {
         if (schema) {
             setModel(DragonModel.restoreFromJSON(schema?.data));
         }
-    },[schema])
+    }, [schema])
 
     /* eslint-disable  @typescript-eslint/no-explicit-any */
     const renderTooltip = (props: any) => (
@@ -54,15 +54,15 @@ export const EditorPage: React.FC = () => {
                     </OverlayTrigger>
                 </Col>
                 <Col xs={1}>
-                    <ActionMenu setActionMenuOption={setActionMenuOption}/>
+                    <ActionMenu setActionMenuOption={setActionMenuOption} />
                 </Col>
                 <Col xs={7}>
                     <ContainerDimensions>
-                        {({ height, width }) => <KonvaCanvas height={height} width={width} setModel={setModel} model={model} actionMenuOption={actionMenuOption}/>}
+                        {({ height, width }) => <KonvaCanvas height={height} width={width} setModel={setModel} model={model} actionMenuOption={actionMenuOption} />}
                     </ContainerDimensions>
                 </Col>
                 <Col xs={2}>
-                    <SchemaControl schemaService={schemaService} setSchema={setSchema} schema={schema} model={model}/>
+                    <SchemaControl schemaService={schemaService} setSchema={setSchema} schema={schema} model={model} />
                 </Col>
             </Row>
             <Row className="footer">

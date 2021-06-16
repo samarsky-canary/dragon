@@ -73,6 +73,15 @@ export class AuthStateService {
         }
     }
 
+    public setRole(role: string) {
+        AuthStateService._role = role;
+        if (AuthStateService._role) {
+            return AuthStateService._role;
+        } else {
+            throw new Error('role is not set');
+        }
+    }
+
 
     public async TokenVerification(token: string): Promise<boolean> {
         const URL = process.env.REACT_APP_CLIENT_DOMAIN + AuthStateService.BASE_API_PREFIX + "verify/" + token;

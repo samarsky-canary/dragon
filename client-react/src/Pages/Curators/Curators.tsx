@@ -50,7 +50,7 @@ export const Curators: React.FC = () => {
                     <UserList userService={userService} selectedUser={selectedUser} selectUser={selectUser}></UserList>
                 </Col>
                 <Col xs={8}>
-                    <UserCard setFavorites={setFavorites} favorites={favorites} curatorService={curatorService} selectedUser={selectedUser} ></UserCard>
+                    <UserCard setFavorites={setFavorites} favorites={favorites} userService={userService} curatorService={curatorService} selectedUser={selectedUser} ></UserCard>
                 </Col>
             </Row>
         </Container>
