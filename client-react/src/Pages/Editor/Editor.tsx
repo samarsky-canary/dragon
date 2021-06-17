@@ -9,6 +9,9 @@ import { KonvaCanvas } from './KonvaCanvas/KonvaCanvas';
 import ContainerDimensions from 'react-container-dimensions';
 import { SchemaControl } from './Components/SchemaControl';
 import { DragonModel } from '../../dragon/dragon.model/dragon.model';
+import { ProjectTreeCurator } from './Components/ProjectTreeCurator';
+import { StudentsSelector } from './Components/StudentsSelector';
+import { UserDTO } from '../../DTO/UserDTO';
 
 
 const authService: AuthStateService = new AuthStateService().getInstance();
@@ -18,6 +21,7 @@ export const EditorPage: React.FC = () => {
     const [schema, setSchema] = useState<SchemaDTO>();
     const [model, setModel] = useState<DragonModel>(new DragonModel());
     const [actionMenuOption, setActionMenuOption] = useState<number>(0);
+    const [user, selectUser] = useState<UserDTO>()
 
     useEffect(() => {
         if (schema) {
@@ -52,6 +56,12 @@ export const EditorPage: React.FC = () => {
                             </Card.Body>
                         </Card>
                     </OverlayTrigger>
+                    <Card hidden={authService.getRole() === "USER"}>
+                        <Card.Body>
+                            <StudentsSelector selectUser={selectUser} />
+                            <ProjectTreeCurator student={user} schemaService={schemaService} setSchema={setSchema} schema={schema} />
+                        </Card.Body>
+                    </Card>
                 </Col>
                 <Col xs={1}>
                     <ActionMenu setActionMenuOption={setActionMenuOption} />

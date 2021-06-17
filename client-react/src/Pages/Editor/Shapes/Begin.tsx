@@ -61,28 +61,6 @@ export const Begin: FC<IconProps> = ({ text, id, x ,y}) => {
     );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export const Condition: FC<IconProps> = ({ text, id, x ,y}) => {
     const [textWidth, setTextWidth] = useState(0);
     const [textHeight, setTextHeight] = useState(0);
