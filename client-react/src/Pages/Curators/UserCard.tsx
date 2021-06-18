@@ -3,7 +3,7 @@ import { Favorite, FavoriteBorder } from '@material-ui/icons';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Row } from 'react-bootstrap';
+import { ConfirmDialog } from '../../components/ConfirmDialog';
 import { RelationDTO } from '../../DTO/relationDTO';
 import { UserDTO } from '../../DTO/UserDTO';
 import { AuthStateService } from '../../services/AuthStateService';
@@ -25,6 +25,8 @@ export const UserCard: React.FC<Props> = ({ selectedUser, favorites, curatorServ
     const [favorite, setFavorite] = useState<boolean>(false);
     const [relationName, setRelationName] = useState<string>('');
     const [role, setRole] = useState<string>('USER');
+    const [dialog, openDialog] = useState<boolean>(false);
+
 
     useEffect(() => {
         const relation = favorites.find((value) => (value.uuid_user === selectedUser.uuid));
@@ -57,9 +59,6 @@ export const UserCard: React.FC<Props> = ({ selectedUser, favorites, curatorServ
         }
     }, [relationName])
 
-    function changeRelationName(e: React.ChangeEvent<HTMLInputElement>) {
-        e.preventDefault();
-    }
 
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setRole(event.target.value as string);
@@ -72,11 +71,12 @@ export const UserCard: React.FC<Props> = ({ selectedUser, favorites, curatorServ
         }
     };
 
-    const DeleteUserButtonHandle = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const DeleteUserButtonHandle = () => {
         if (selectedUser.role !== "ADMIN") {
             const auth = new AuthStateService().getInstance();
             auth.DeleteRegistrationData(selectedUser.uuid);
         }
+        openDialog(false);
     };
 
     return (
@@ -107,14 +107,15 @@ export const UserCard: React.FC<Props> = ({ selectedUser, favorites, curatorServ
                         <MenuItem value={"CURATOR"}>Куратор</MenuItem>
                         <MenuItem value={"ADMIN"}>Админ</MenuItem>
                     </Select>
-                    <Button 
-                        hidden={authService.getRole() !== 'ADMIN'}                    
-                    variant="outlined" color="secondary" onClick={SetRoleButtonHandle} >
+                    <Button
+                        hidden={authService.getRole() !== 'ADMIN'}
+                        variant="outlined" color="secondary" onClick={SetRoleButtonHandle} >
                         Установить роль
                     </Button>
-                    <Button 
+                    <ConfirmDialog setActive={openDialog} active={dialog} title={"Удалить аккаунт?"} message={"Это действие впоследствии отменить невозможно!"} handleOK={DeleteUserButtonHandle} ></ConfirmDialog>
+                    <Button
                         hidden={authService.getRole() !== 'ADMIN'}
-                    variant="outlined" color="secondary" onClick={DeleteUserButtonHandle} >
+                        variant="outlined" color="secondary" onClick={() => openDialog(true)} >
                         Удалить пользователя
                     </Button>
                 </Card>
