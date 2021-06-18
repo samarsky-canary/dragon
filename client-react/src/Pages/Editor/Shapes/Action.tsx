@@ -143,9 +143,11 @@ export const Action: FC<IconProps> = ({ text, id, parent, x ,y, model, setModel,
                     sceneFunc={(context, shape) => {
                     context.beginPath();
                     context.moveTo(x, y + HEIGHT/2);
-                    context.lineTo(x + WIDTH/2, y);
+                    context.lineTo(x + WIDTH/4, y);
+                    context.lineTo(x + WIDTH - WIDTH/4, y);
                     context.lineTo(x + WIDTH, y + HEIGHT/2);
-                    context.lineTo(x + WIDTH/2, y + HEIGHT);
+                    context.lineTo(x + WIDTH - WIDTH/4, y + HEIGHT);
+                    context.lineTo(x + WIDTH/4, y + HEIGHT);
                     context.closePath();
                     // (!) Konva specific method, it is very important
                     context.fillStrokeShape(shape);
