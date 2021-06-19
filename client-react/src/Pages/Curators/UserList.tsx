@@ -45,7 +45,7 @@ export const UserList : React.FC<Props> = ({userService, selectedUser, selectUse
         searchBy={'username'}
         labelField={"username"}
         valueField={"uuid"}
-        values={users}
+        values={users.slice(0,1)}
         onChange={(value) => setUser(value)}
         />
 

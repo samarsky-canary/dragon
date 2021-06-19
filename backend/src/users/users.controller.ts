@@ -34,7 +34,7 @@ export class UsersController
 
     @Put("/update")
     async update(@Body() payload:UserDto){
-        return this.usersService.update(payload);
+        return this.usersService.update(payload.uuid, payload);
     }
 
 

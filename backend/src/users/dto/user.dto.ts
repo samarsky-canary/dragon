@@ -1,4 +1,4 @@
-import {IsEmail, IsNotEmpty, IsString} from 'class-validator'
+import {IsEmail, IsNotEmpty, IsString, Matches} from 'class-validator'
 import { Curator } from 'src/curators/db/curator.entity';
 import { OneToMany } from 'typeorm';
 export class UserDto {
@@ -18,4 +18,13 @@ export class UserDto {
     @IsNotEmpty()
     @IsEmail()
     email: string;
+
+
+    @IsString()
+    @IsNotEmpty()
+    @Matches(
+        /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/,
+        { message: 'Weak password' },
+    )
+    readonly password: string;
 }

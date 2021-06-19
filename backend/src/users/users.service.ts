@@ -47,7 +47,7 @@ export class UsersService {
         return this.usersRepository.findOne({where: {email: email}})
         .then(user => {
             return (user) 
-            ? Promise.resolve({username: user.username, role: user.role, uuid: user.uuid, email: user.email})
+            ? Promise.resolve(user)
             : Promise.reject("User not found")
         })
     }
@@ -57,7 +57,7 @@ export class UsersService {
         return this.usersRepository.findOne(id)
         .then(user => {
             return (user) 
-            ? Promise.resolve({username: user.username, role: user.role, uuid: user.uuid, email: user.email})
+            ? Promise.resolve(user)
             : Promise.reject("User not found")
         })
         .catch(err => Promise.reject(new NotFoundException(err)));
@@ -83,8 +83,8 @@ export class UsersService {
     }
 
 
-    async update(payload: UserDto) {
-        return this.usersRepository.update(payload.uuid,payload);
+    async update(userid: string, payload: Partial<UserDto>) {
+        return this.usersRepository.update({uuid: userid},payload);
     }
 
     

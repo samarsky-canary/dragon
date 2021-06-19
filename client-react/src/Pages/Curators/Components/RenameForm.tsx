@@ -23,18 +23,9 @@ export const RenameForm: React.FC<Props> = ({ authService }) => {
 
 
     function renameUser() {
-        console.log(authService.getUsername());
         if (old === authService.getUsername()) {
             if (newName.length >= 6) {
-                const role = state.role!;
-                const uuid = state.uuid!;
-                const email = state.email!;
-                userService.UpdateData({
-                    username: newName,
-                    role: role,
-                    uuid: uuid,
-                    email: email,
-                });
+                userService.RenameUser(newName);
                 dispatch({
                     type: "UPDATE",
                     payload: {
@@ -45,11 +36,12 @@ export const RenameForm: React.FC<Props> = ({ authService }) => {
                         email: state.email
                     }
                 })
-            }
-            setNotifyMessage("Имя пользователя успешно изменено!");
-            setVisible(!visible)
+                setNotifyMessage("Имя пользователя успешно изменено!");
+                setVisible(!visible)
+            } else
+                setNotifyMessage("Новое имя пользователя короче 6 символов!");
         } else {
-            setNotifyMessage("Проверьте ввод! Старое имя должно совпадать (включая регистр). Новое должно содержать только буквы и цифры и быть не короче 6 символов");
+            setNotifyMessage("Проверьте ввод! Старое имя введено некорректно!");
         }
         openNotifyDialog(true);
     }

@@ -28,7 +28,7 @@ export const Curators: React.FC = () => {
     const [favorites, setFavorites] = useState<RelationDTO[]>([]);
 
     useEffect(() => {
-        document.title = "Управление студентами"
+        document.title = "Управление"
     },[]);
 
     useEffect(()=>{
