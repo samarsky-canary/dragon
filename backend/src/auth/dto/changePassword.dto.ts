@@ -1,8 +1,8 @@
 import { IsString, IsNotEmpty, Matches, IsUUID } from "class-validator";
 
 export class ChangePasswordDto {
-    @IsUUID()
-    readonly userid: string;
+    @IsString()
+    readonly username: string;
 
     @IsString()
     @IsNotEmpty()

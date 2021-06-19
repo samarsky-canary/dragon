@@ -97,8 +97,8 @@ export class AuthService {
   
   async changePassword(changePasswordDto: ChangePasswordDto): Promise<boolean> {
     const password = await this.cryptoService.hashPassword(changePasswordDto.newPassword);
-
-    await this.userService.update(changePasswordDto.userid, { password });
+    const user = await this.userService.findOneByName(changePasswordDto.username);
+    await this.userService.update(user.uuid, { password });
     return true;
 }
 

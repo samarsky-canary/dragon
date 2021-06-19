@@ -170,6 +170,23 @@ export class AuthStateService {
             return responseData;
         }
     }
+
+    public async changePassword(oldPassword: string, newPassword: string) {
+        const body = {
+            username: this.getUsername(),
+            password: oldPassword,
+            newPassword: newPassword
+        }
+        try {
+            return await axios.patch(AuthStateService.BASE_API_PREFIX + "/changePassword", body );
+        } catch (err) {
+            const responseData: ResponsePayload = { status: err.status, statusText: err.message };
+            if (err.response) {
+                responseData.statusText = err.response.data.message;
+            }
+            return responseData;
+        }
+    }
 }
 
 type ResponsePayload = {
