@@ -6,7 +6,6 @@ import { RelationDTO } from '../../DTO/relationDTO';
 import { UserDTO } from '../../DTO/UserDTO';
 import { AuthStateService } from '../../services/AuthStateService';
 import { CuratorService } from '../../services/CuratorService';
-import { SchemaService } from '../../services/SchemaService';
 import { UserService } from '../../services/UserService';
 import { AccountControl } from './AccountControl';
 import { UserCard } from './UserCard';

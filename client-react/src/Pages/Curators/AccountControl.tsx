@@ -1,28 +1,28 @@
-import { Button, createStyles, Grid, makeStyles, Paper, TextField, Theme } from '@material-ui/core';
+import { Button, Container, createStyles, Grid, makeStyles, Paper, TextField, Theme } from '@material-ui/core';
 import React, { useContext } from 'react';
-import { useRef } from 'react';
 import { useState } from 'react';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
-import { NotifyDialog } from '../../components/NotifyDialog';
 import { UserContext } from '../../context/user.provider';
 import { AuthStateService } from '../../services/AuthStateService';
-import { UserService } from '../../services/UserService';
+import { ChangePassword } from './Components/ChangePassword';
+import { RenameForm } from './Components/RenameForm';
 
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            display: 'flex',
-            flexWrap: 'wrap',
-            '& > *': {
-                margin: theme.spacing(1),
-                width: theme.spacing(16),
-                height: theme.spacing(16),
-            },
-        },
-    }),
-);
-
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        marginTop: theme.spacing(2),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    form: {
+        width: '100%',
+        marginTop: theme.spacing(3),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+}));
 
 type Props = {
     authService: AuthStateService
@@ -31,16 +31,10 @@ type Props = {
 
 
 export const AccountControl: React.FC<Props> = ({ authService }) => {
-    const userService = new UserService(authService).getInstance();
-    const classes = useStyles();
     const { state, dispatch } = useContext(UserContext);
-    const [old, setOld] = useState('');
-    const [newName, setNew] = useState('');
-    const [dialog, openDialog] = useState<boolean>(false);
-    const [notifyDialog, openNotifyDialog] = useState<boolean>(false);
-    const oldRef = useRef<any>(null);
-    const  [notifyMessage, setNotifyMessage] = useState("");
 
+    const [dialog, openDialog] = useState<boolean>(false);
+    const classes = useStyles();
     function handleLogout() {
         dispatch({
             type: "LOGOUT",
@@ -53,62 +47,38 @@ export const AccountControl: React.FC<Props> = ({ authService }) => {
         })
     }
 
-
     function deleteAccount() {
         handleLogout()
         authService.DeleteRegistrationData(authService.getUUID());
         openDialog(false);
     }
 
-    function renameUser() {
-        if (old === authService.getUsername()) {
-            if (newName.length >= 6) {
-                const role = state.role!;
-                const uuid = state.uuid!;
-                userService.UpdateData({
-                    username: newName,
-                    role: role,
-                    uuid: uuid
-                });
-                dispatch({
-                    type: "UPDATE",
-                    payload: {
-                        username: newName,
-                        role: state.role,
-                        uuid: state.uuid,
-                        access_token: state.access_token
-                    }
-                })
-            }
-            setNotifyMessage("Имя пользователя успешно изменено!");
-        } else {
-            setNotifyMessage("Проверьте ввод! Старое имя должно совпадать (включая регистр). Новое должно содержать только буквы и цифры и быть не короче 6 символов");
-            oldRef.current!.focus();
-        }
-        openNotifyDialog(true);
-    }
+
 
     return (
-        <Grid
-            container
-            direction="column"
-            justify="center"
-            alignItems="center"
-        >
-            <Paper square={false} elevation={2}>
-                <TextField error={false} inputRef={oldRef} id="outlined-basic" label="Введите старое имя" variant="outlined" value={old} onChange={(e) => { setOld(e.target.value) }} />
-                <TextField id="outlined-basic" label="Введите новое имя" variant="outlined" value={newName} onChange={(e) => { setNew(e.target.value) }} />
-                <NotifyDialog message={notifyMessage} active={notifyDialog} setActive={openNotifyDialog} />
-                <Button variant="outlined" color="secondary" onClick={(e) => (renameUser())}>
-                    Изменить имя
-                </Button>
-            </Paper>
-            <Paper>
-                <ConfirmDialog setActive={openDialog} active={dialog} title={"Удалить аккаунт?"} message={"Это действие впоследствии отменить невозможно!"} handleOK={deleteAccount} ></ConfirmDialog>
-                <Button variant="outlined" color="secondary" onClick={(e) => (openDialog(true))} >
-                    Удалить аккаунт
-                </Button>
-            </Paper>
-        </Grid>
+        <Container component="main" maxWidth="xs">
+            <form className={classes.form}>
+                <Grid container spacing={2}>
+                    <RenameForm authService={authService}/>
+                    <ChangePassword authService={authService}/>
+                    <ConfirmDialog
+                        setActive={openDialog}
+                        active={dialog}
+                        title={"Удалить аккаунт?"}
+                        message={"Это действие впоследствии отменить невозможно!"}
+                        handleOK={deleteAccount}
+                    />
+                    <Grid item xs={12} sm={12}>
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            color="secondary"
+                            onClick={(e) => (openDialog(true))} >
+                            Удалить аккаунт
+                        </Button>
+                    </Grid>
+                </Grid>
+            </form>
+        </Container>
     )
 }
