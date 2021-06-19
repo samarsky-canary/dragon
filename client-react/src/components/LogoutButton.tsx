@@ -17,7 +17,8 @@ export const LogoutButton : React.FC = () => {
                 access_token: undefined,
                 role : undefined,
                 username: undefined,
-                uuid: undefined
+                uuid: undefined,
+                email: undefined,
             }
         })
     }

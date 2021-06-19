@@ -27,10 +27,12 @@ export const ChangePassword: React.FC<Props> = ({ authService }) => {
             if (newName.length >= 6) {
                 const role = state.role!;
                 const uuid = state.uuid!;
+                const email = state.email!;
                 userService.UpdateData({
                     username: newName,
                     role: role,
-                    uuid: uuid
+                    uuid: uuid,
+                    email: email,
                 });
                 dispatch({
                     type: "UPDATE",
@@ -38,7 +40,8 @@ export const ChangePassword: React.FC<Props> = ({ authService }) => {
                         username: newName,
                         role: state.role,
                         uuid: state.uuid,
-                        access_token: state.access_token
+                        access_token: state.access_token,
+                        email: state.email
                     }
                 })
             }

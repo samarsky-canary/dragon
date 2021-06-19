@@ -1,4 +1,4 @@
-import {IsNotEmpty, IsString} from 'class-validator'
+import {IsEmail, IsNotEmpty, IsString} from 'class-validator'
 import { Curator } from 'src/curators/db/curator.entity';
 import { OneToMany } from 'typeorm';
 export class UserDto {
@@ -14,4 +14,8 @@ export class UserDto {
 
     @IsString()
     role: string;
+
+    @IsNotEmpty()
+    @IsEmail()
+    email: string;
 }

@@ -23,14 +23,17 @@ export const RenameForm: React.FC<Props> = ({ authService }) => {
 
 
     function renameUser() {
+        console.log(authService.getUsername());
         if (old === authService.getUsername()) {
             if (newName.length >= 6) {
                 const role = state.role!;
                 const uuid = state.uuid!;
+                const email = state.email!;
                 userService.UpdateData({
                     username: newName,
                     role: role,
-                    uuid: uuid
+                    uuid: uuid,
+                    email: email,
                 });
                 dispatch({
                     type: "UPDATE",
@@ -38,7 +41,8 @@ export const RenameForm: React.FC<Props> = ({ authService }) => {
                         username: newName,
                         role: state.role,
                         uuid: state.uuid,
-                        access_token: state.access_token
+                        access_token: state.access_token,
+                        email: state.email
                     }
                 })
             }

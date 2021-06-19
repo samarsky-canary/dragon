@@ -8,6 +8,7 @@ import { IViewUser } from "../users/interfaces/user.interface";
 import { JwtService } from '@nestjs/jwt';
 import { CryptoService } from './bcrypt.service';
 import { ConfigService } from '@nestjs/config';
+import { ForgotPasswordDTO } from './dto/forgotPassword.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -21,6 +22,7 @@ export class AuthService {
   async signUp(user: CreateUserDto): Promise<any> {
     const newUser = new User();
     newUser.username = user.username;
+    newUser.email = user.email;
     newUser.password = await this.cryptoService.hashPassword(user.password);
     newUser.role = UserRole.USER;
     return this.usersService.create(newUser)
@@ -48,6 +50,7 @@ export class AuthService {
       username: user.username,
       uuid: user.uuid,
       role: user.role,
+      email: user.email
     }
   }
 
@@ -89,5 +92,10 @@ export class AuthService {
       }).catch((err: Error) => {
         Promise.reject(new UnauthorizedException(err.message))
       })
+  }
+
+
+  async ForgotPassword(payload: ForgotPasswordDTO) {
+    const user = this.usersService.findOneByEmail(payload.email);
   }
 }

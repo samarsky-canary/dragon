@@ -8,14 +8,16 @@ export class AuthStateService {
     private static _role: string | undefined;
     private static _uuid: string | undefined;
     private static _username: string | undefined;
+    private static _email: string | undefined;
     private static BASE_API_PREFIX = "/api/auth/";
 
 
-    public setMeta(uuid: string, role: string, username: string, access_token: string) {
+    public setMeta(uuid: string, role: string, username: string, access_token: string, email: string) {
         AuthStateService._uuid = uuid;
         AuthStateService._role = role;
         AuthStateService._username = username;
         AuthStateService._accessToken = access_token;
+        AuthStateService._email = email;
     }
     constructor() {
         // empty constructor
@@ -63,6 +65,14 @@ export class AuthStateService {
         }
     }
 
+    public getEmail(): string {
+        if (AuthStateService._email) {
+            return AuthStateService._email;
+        } else {
+            throw new Error('email is not set');
+        }
+    }
+
 
     public setUsername(name: string) {
         AuthStateService._username = name;
@@ -101,7 +111,8 @@ export class AuthStateService {
             AuthStateService._accessToken = response.data.access_token;
             AuthStateService._role = response.data.role;
             AuthStateService._uuid = response.data.uuid;
-            AuthStateService._username = response.data.uuid;
+            AuthStateService._username = response.data.username;
+            AuthStateService._email = response.data.email;
             return {
                 status: response.status,
                 statusText: response.statusText,
@@ -116,13 +127,15 @@ export class AuthStateService {
         }
     }
 
-    public async RegisterUser(username: string, password: string): Promise<ResponsePayload> {
+    public async RegisterUser(username: string, password: string, email: string): Promise<ResponsePayload> {
         const URL = process.env.REACT_APP_CLIENT_DOMAIN + AuthStateService.BASE_API_PREFIX + "signup";
         try {
-            const response = await axios.post<loginResponseDTO>(URL, { username, password });
+            const response = await axios.post<loginResponseDTO>(URL, { username, password, email });
             AuthStateService._accessToken = response.data.access_token;
             AuthStateService._role = response.data.role;
             AuthStateService._uuid = response.data.uuid;
+            AuthStateService._email = response.data.email;
+            AuthStateService._username = response.data.username;
             return {
                 status: response.status,
                 statusText: response.statusText,

@@ -22,6 +22,7 @@ export const Curators: React.FC = () => {
         username: "",
         role : "",
         uuid: "",
+        email: "",
     }
     const [selectedUser, selectUser] = useState<UserDTO>(INITIAL_VALUE);
     const [favorites, setFavorites] = useState<RelationDTO[]>([]);

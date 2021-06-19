@@ -24,7 +24,7 @@ const App: React.FC = () => {
       const as = new AuthStateService().getInstance();
       if (as.TokenVerification(foundUser.access_token))
       {
-          as.setMeta(foundUser.uuid, foundUser.role, foundUser.username, foundUser.access_token)
+          as.setMeta(foundUser.uuid, foundUser.role, foundUser.username, foundUser.access_token, foundUser.email)
           dispatch({
             type: "LOGIN",
             payload: foundUser

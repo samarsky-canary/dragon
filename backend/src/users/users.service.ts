@@ -43,13 +43,21 @@ export class UsersService {
     }
 
 
+    async findOneByEmail(email: string) : Promise<UserDto> {
+        return this.usersRepository.findOne({where: {email: email}})
+        .then(user => {
+            return (user) 
+            ? Promise.resolve({username: user.username, role: user.role, uuid: user.uuid, email: user.email})
+            : Promise.reject("User not found")
+        })
+    }
 
 
     async findOneById(id: string) : Promise<UserDto>{
         return this.usersRepository.findOne(id)
         .then(user => {
             return (user) 
-            ? Promise.resolve({username: user.username, role: user.role, uuid: user.uuid})
+            ? Promise.resolve({username: user.username, role: user.role, uuid: user.uuid, email: user.email})
             : Promise.reject("User not found")
         })
         .catch(err => Promise.reject(new NotFoundException(err)));
