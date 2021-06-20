@@ -114,7 +114,7 @@ export const UserCard: React.FC<Props> = ({ selectedUser, favorites, curatorServ
             <Grid item xs={12} sm={6}>
                 <Button
                     fullWidth
-                    hidden={authService.getRole() !== 'ADMIN'}
+                    hidden={authService.getRole() !== 'ADMIN' || authService.getUUID() === selectedUser.uuid}
                     variant="contained" color="primary" 
                     onClick={SetRoleButtonHandle} >
                     Установить роль

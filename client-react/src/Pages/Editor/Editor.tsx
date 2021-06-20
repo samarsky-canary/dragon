@@ -12,10 +12,12 @@ import { DragonModel } from '../../dragon/dragon.model/dragon.model';
 import { ProjectTreeCurator } from './Components/ProjectTreeCurator';
 import { StudentsSelector } from './Components/StudentsSelector';
 import { UserDTO } from '../../DTO/UserDTO';
+import { UserService } from '../../services/UserService';
 
 
 const authService: AuthStateService = new AuthStateService().getInstance();
 const schemaService: SchemaService = new SchemaService(authService).getInstance();
+const userService: UserService= new UserService(authService).getInstance();
 
 export const EditorPage: React.FC = () => {
     const [schema, setSchema] = useState<SchemaDTO>();
@@ -72,7 +74,7 @@ export const EditorPage: React.FC = () => {
                     </ContainerDimensions>
                 </Col>
                 <Col xs={2}>
-                    <SchemaControl schemaService={schemaService} setSchema={setSchema} schema={schema} model={model} />
+                    <SchemaControl userService={userService} schemaService={schemaService} setSchema={setSchema} schema={schema} model={model} />
                 </Col>
             </Row>
             <Row className="footer">

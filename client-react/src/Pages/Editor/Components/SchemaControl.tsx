@@ -8,18 +8,23 @@ import Delete from '@material-ui/icons/Delete';
 import CodeIcon from '@material-ui/icons/Code';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import SaveIcon from '@material-ui/icons/Save';
+import { UserService } from '../../../services/UserService';
 
 type Props = {
     schema : SchemaDTO | undefined,
     model : DragonModel | undefined,
     setSchema: (value: SchemaDTO | undefined) => void,
     schemaService: SchemaService
+    userService: UserService
 }
 
 
-export const SchemaControl: React.FC<Props> = ({schema, setSchema, model, schemaService}) => {
+export const SchemaControl: React.FC<Props> = ({schema, setSchema, model, schemaService, userService}) => {
     const [translatedSchema, setTranslatedSchema] = useState<string>(""); 
     const [schemaName, setSchemaName] = useState<string>(schema? schema.name : '');
+    const [username, setUsername] = useState<string>('');
+
+
 
 
     function handleSaveAsJavascript() {
@@ -31,8 +36,10 @@ export const SchemaControl: React.FC<Props> = ({schema, setSchema, model, schema
         }
     }
     useEffect(()=>{
-        if(schema)
+        if(schema) {
             setSchemaName(schema.name)
+            userService.getUserinfoById(schema.last_changed_by_id).then(user=> setUsername(user.username))
+        }
     },[schema])
 
     useEffect(()=>{
@@ -70,7 +77,8 @@ export const SchemaControl: React.FC<Props> = ({schema, setSchema, model, schema
 
     return (
         <Card>
-            <Card.Header>Управление схемой</Card.Header>
+            <Card.Header>{schema?.last_changed}</Card.Header>
+            <Card.Header>Последнее изменение: {username}</Card.Header>
             <Card.Body>
                 <Form.Group>
                     <Form.Control
