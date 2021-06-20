@@ -79,7 +79,12 @@ export const Login: React.FC<Props> = ({ setRegisterData }) => {
     function handleAuthentificationButton(e?: React.MouseEvent<HTMLElement, globalThis.MouseEvent>) {
         e?.preventDefault();
         if (values.registrationForm) {
-            return handleSignupSubmit();
+            if (values.password === values.repeatPassword) {
+                return handleSignupSubmit();
+            } else {
+                setErrorMessage("Пароли не совпадают")
+                setErrorHidden(false);
+            }
         } else {
             return handleLoginSubmit()
         }
