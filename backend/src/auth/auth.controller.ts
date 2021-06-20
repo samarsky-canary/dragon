@@ -1,9 +1,10 @@
 import { Param } from '@nestjs/common';
-import { Body, Headers, Controller, Get, HttpCode, HttpStatus, Post, Delete, Request, Res, UseGuards } from '@nestjs/common';
+import { Body, Headers, Controller, Get, Patch, HttpCode, HttpStatus, Post, Delete, Request, Res, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { AuthService } from './auth.service';
+import { ChangePasswordDto } from './dto/changePassword.dto';
 import { JwtAuthGuard } from './jwt.auth-guard';
-import {LocalAuthGuard} from "./local.auth-guard";
+import { LocalAuthGuard } from "./local.auth-guard";
 
 
 interface JwtPayload {
@@ -12,14 +13,14 @@ interface JwtPayload {
 
 @Controller('auth')
 export class AuthController {
-    constructor (private readonly authService : AuthService) {}
+    constructor(private readonly authService: AuthService) { }
 
 
     @HttpCode(HttpStatus.CREATED)
     @Post('signup')
-    public async signup(@Body() user : CreateUserDto) {
+    public async signup(@Body() user: CreateUserDto) {
         const createdUser = await this.authService.signUp(user);
-        const {password, ...response} = createdUser;
+        const { password, ...response } = createdUser;
         return response;
     }
 
@@ -32,15 +33,23 @@ export class AuthController {
 
     @HttpCode(HttpStatus.OK)
     @Get('verify/:token')
-    async verify(@Param('token')token: string) {
+    async verify(@Param('token') token: string) {
         return this.authService.verifyToken(token)
     }
 
     @HttpCode(HttpStatus.OK)
     @UseGuards(JwtAuthGuard)
     @Delete('delete')
-    async deleteUser(@Headers() req ) {
+    async deleteUser(@Headers() req) {
         return this.authService.DeleteAcccout(req.authorization, req.uuid);
+    }
+
+    @Patch('/changePassword')
+    @UseGuards(LocalAuthGuard)
+    async changePassword(
+        @Body() changePasswordDto: ChangePasswordDto,
+    ): Promise<boolean> {
+        return this.authService.changePassword(changePasswordDto);
     }
 
 }

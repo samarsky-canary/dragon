@@ -6,6 +6,7 @@ const initialTokenState : loginResponseDTO = {
     role : undefined,
     username : undefined,
     uuid : undefined,
+    email : undefined,
 }
 
 

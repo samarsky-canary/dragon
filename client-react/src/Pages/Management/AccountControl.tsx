@@ -42,7 +42,8 @@ export const AccountControl: React.FC<Props> = ({ authService }) => {
                 access_token: undefined,
                 role: undefined,
                 username: undefined,
-                uuid: undefined
+                uuid: undefined,
+                email: undefined,
             }
         })
     }

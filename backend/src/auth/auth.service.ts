@@ -8,10 +8,12 @@ import { IViewUser } from "../users/interfaces/user.interface";
 import { JwtService } from '@nestjs/jwt';
 import { CryptoService } from './bcrypt.service';
 import { ConfigService } from '@nestjs/config';
+import { ForgotPasswordDTO } from './dto/forgotPassword.dto';
+import { ChangePasswordDto } from './dto/changePassword.dto';
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
+    private userService: UsersService,
     private jwtService: JwtService,
     private cryptoService: CryptoService,
     private readonly configService: ConfigService,
@@ -21,9 +23,10 @@ export class AuthService {
   async signUp(user: CreateUserDto): Promise<any> {
     const newUser = new User();
     newUser.username = user.username;
+    newUser.email = user.email;
     newUser.password = await this.cryptoService.hashPassword(user.password);
     newUser.role = UserRole.USER;
-    return this.usersService.create(newUser)
+    return this.userService.create(newUser)
       .then(user => {
         return this.createToken(user);
       });
@@ -32,7 +35,7 @@ export class AuthService {
 
 
   async logIn(username: string, password: string): Promise<IViewUser | undefined> {
-    return await this.usersService.findOneByName(username)
+    return await this.userService.findOneByName(username)
       .then(async user => {
         return await this.cryptoService.checkPassword(password, user.password)
           ? Promise.resolve(user)
@@ -48,6 +51,7 @@ export class AuthService {
       username: user.username,
       uuid: user.uuid,
       role: user.role,
+      email: user.email
     }
   }
 
@@ -60,7 +64,7 @@ export class AuthService {
   }
 
   async verify(payload) {
-    return await this.usersService.findOneById(payload.sub)
+    return await this.userService.findOneById(payload.sub)
       .then(signedUser => Promise.resolve(signedUser))
       .catch(err => Promise.reject(new UnauthorizedException("Invalid Authorization")))
   }
@@ -72,7 +76,7 @@ export class AuthService {
     return Promise.resolve(this.jwtService.decode(token))
       .then(token => {
         yourself = token.sub === user;
-        this.usersService.findByIds([token.sub, user])
+        this.userService.findByIds([token.sub, user])
           .then(users => {
             if (!yourself) {
               const who = users.find(value => value.uuid === token.sub);
@@ -84,10 +88,21 @@ export class AuthService {
               if (whom.role === 'ADMIN')
                 return Promise.reject(new NotFoundException("Админа может удалить только суперадмин"));
             }
-            return this.usersService.remove(user);
+            return this.userService.remove(user);
           })
       }).catch((err: Error) => {
         Promise.reject(new UnauthorizedException(err.message))
       })
+  }
+  
+  async changePassword(changePasswordDto: ChangePasswordDto): Promise<boolean> {
+    const password = await this.cryptoService.hashPassword(changePasswordDto.newPassword);
+    const user = await this.userService.findOneByName(changePasswordDto.username);
+    await this.userService.updatePassword(user.uuid, { password });
+    return true;
+}
+
+  async ForgotPassword(payload: ForgotPasswordDTO) {
+    const user = this.userService.findOneByEmail(payload.email);
   }
 }

@@ -30,7 +30,6 @@ export const ProjectTreeCurator: FC<Props> = ({ schemaService, setSchema, schema
             {schemas.map((scheme) => (
                 <ListGroup.Item
                     key={scheme.uuid}
-                    placeholder="Начните ввод"
                     action variant={scheme.uuid === schema?.uuid ? `info` : ''}
                     onClick={() => setSchema(scheme)}>
                     {scheme.name}

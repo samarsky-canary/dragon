@@ -34,7 +34,7 @@ export class UsersController
 
     @Put("/update")
     async update(@Body() payload:UserDto){
-        return this.usersService.update(payload);
+        return this.usersService.update(payload.uuid, payload);
     }
 
 
@@ -45,6 +45,6 @@ export class UsersController
 
     @Delete('/:id')
     async deleteUserByID(@Param('id', new ParseUUIDPipe({version: '4'})) id: string) {
-        return this.usersService.delete(id);
+        return this.usersService.remove(id);
     }
 }

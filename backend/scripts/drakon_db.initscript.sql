@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS curators (
     id_curator uuid,
     id_user uuid,
     relation_name text,
-    foreign key (id_curator) references users (id),
-    foreign key (id_user) references users (id),
+    foreign key (id_curator) references users (id) ON DELETE CASCADE,
+    foreign key (id_user) references users (id) ON DELETE CASCADE,
     UNIQUE (id_curator, id_user)
 );
 
@@ -96,8 +96,8 @@ CREATE TABLE IF NOT EXISTS dragon_scheme (
     data jsonb,
     last_changed timestamp,
     last_changed_by_id uuid,
-    foreign key (id_user) references users (id),
-    foreign key (last_changed_by_id) references users (id)
+    foreign key (id_user) references users (id) ON DELETE CASCADE ,
+    foreign key (last_changed_by_id) references users (id) ON DELETE SET NULL
 );
 
 CREATE OR REPLACE function update_scheme() RETURNS trigger AS $registration$
@@ -148,5 +148,4 @@ CREATE OR REPLACE function scheme_insert() RETURNS trigger AS $$
 
 CREATE TRIGGER scheme_insert_trg BEFORE INSERT ON dragon_scheme
 FOR EACH ROW EXECUTE PROCEDURE scheme_insert();
-
 

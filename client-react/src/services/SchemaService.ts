@@ -49,7 +49,7 @@ export class SchemaService {
         .then(response => {
             return response.data;
         })
-        .catch(err => {
+        .catch(() => {
             throw new Error("unable to get schemas");
         })
     }

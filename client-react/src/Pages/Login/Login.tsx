@@ -18,6 +18,7 @@ type Props = {
 export const Login: React.FC<Props> = ({ setRegisterData }) => {
     const [username, setusername] = useState<string>("");
     const [password, setPasswordValue] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
 
     const [passwordShown, setPasswordShown] = useState(false);
     const [errorHidden, setErrorHidden] = useState(true);
@@ -38,8 +39,8 @@ export const Login: React.FC<Props> = ({ setRegisterData }) => {
             });
         }
         else {
-            if (response.statusText){
-                setErrorMessage(response.statusText.replace("QueryFailedError:",''));
+            if (response.statusText) {
+                setErrorMessage(response.statusText.replace("QueryFailedError:", ''));
             } else {
                 setErrorMessage("No response")
             }
@@ -49,7 +50,7 @@ export const Login: React.FC<Props> = ({ setRegisterData }) => {
 
     const handleSignupSubmit = async (e?: React.MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
         e?.preventDefault();
-        const response = await authStateService.RegisterUser(username, password);
+        const response = await authStateService.RegisterUser(username, password, email);
         if (response.status === 201 && response.body) {
             setRegisterData({
                 type: "LOGIN",
@@ -57,8 +58,8 @@ export const Login: React.FC<Props> = ({ setRegisterData }) => {
             });
         }
         else {
-            if (response.statusText){
-                setErrorMessage(response.statusText.replace("QueryFailedError:",''));
+            if (response.statusText) {
+                setErrorMessage(response.statusText);
             } else {
                 setErrorMessage("No response")
             }
@@ -69,7 +70,7 @@ export const Login: React.FC<Props> = ({ setRegisterData }) => {
 
     useEffect(() => {
         document.title = "Вход и регистрация"
-    },[]);
+    }, []);
 
     return (
         <div className="background-div bg-dark text-white">
@@ -84,17 +85,33 @@ export const Login: React.FC<Props> = ({ setRegisterData }) => {
                             value={username}
                             onChange={e => { setusername(e.target.value) }} />
                     </Form.Group>
+                    <Form.Group controlId="email">
+                        <Form.Label>Почта</Form.Label>
+                        <Form.Control
+                            type="email"
+                            placeholder="email"
+                            value={email}
+                            onChange={e => { setEmail(e.target.value) }} />
+                    </Form.Group>
                     <Form.Group controlId="password">
                         <Form.Label>Пароль</Form.Label>
-                        <Form.Control 
-                            type={passwordShown ? "text" : "password"} 
-                            placeholder="Пароль" 
+                        <Form.Control
+                            type={passwordShown ? "text" : "password"}
+                            placeholder="Пароль"
                             value={password}
                             onChange={e => { setPasswordValue(e.target.value) }} />
-                            <VisibilityIcon onClick={togglePasswordVisiblity}/>
+                        <VisibilityIcon onClick={togglePasswordVisiblity} />
                         <Alert hidden={errorHidden} variant="danger">{errorMessage}</Alert>
                     </Form.Group>
-                    <Button variant="info btn-block" onKeyPress={(e) => { if (e.key === "Enter") handleLoginSubmit() }} onClick={(e) => { handleLoginSubmit(e); }}>Вход</Button>
+                    <Button
+                        variant="info btn-block"
+                        onKeyPress={(e) => {
+                            if (e.key === "Enter")
+                                handleLoginSubmit()
+                        }} onClick={(e) => { handleLoginSubmit(e); }}
+                    >
+                        Вход
+                    </Button>
                     <Button variant="warning btn-block mt-2" onClick={(e) => { handleSignupSubmit(e) }}>Регистрация</Button>
                 </Form>
             </Container >

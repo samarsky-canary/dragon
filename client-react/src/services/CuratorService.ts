@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { CreateRelationDTO } from '../DTO/CreateRelationDTO';
 import { RelationDTO } from '../DTO/relationDTO';
-import { UserDTO } from '../DTO/UserDTO';
 import { AuthStateService } from './AuthStateService';
 
 const BASE_API_PREFIX = "/api/curators";

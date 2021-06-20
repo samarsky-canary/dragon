@@ -11,7 +11,7 @@ type Props = {
 
 
 
-export const ChangePassword: React.FC<Props> = ({ authService }) => {
+export const RenameForm: React.FC<Props> = ({ authService }) => {
     const userService = new UserService(authService).getInstance();
 
     const [old, setOld] = useState('');
@@ -25,27 +25,24 @@ export const ChangePassword: React.FC<Props> = ({ authService }) => {
     function renameUser() {
         if (old === authService.getUsername()) {
             if (newName.length >= 6) {
-                const role = state.role!;
-                const uuid = state.uuid!;
-                userService.UpdateData({
-                    username: newName,
-                    role: role,
-                    uuid: uuid
-                });
+                console.log(authService.getUsername())
+                userService.RenameUser(newName);
                 dispatch({
                     type: "UPDATE",
                     payload: {
                         username: newName,
                         role: state.role,
                         uuid: state.uuid,
-                        access_token: state.access_token
+                        access_token: state.access_token,
+                        email: state.email
                     }
                 })
-            }
-            setNotifyMessage("Пароль успешно изменено!");
-            setVisible(!visible)
+                setNotifyMessage("Имя пользователя успешно изменено!");
+                setVisible(!visible)
+            } else
+                setNotifyMessage("Новое имя пользователя короче 6 символов!");
         } else {
-            setNotifyMessage("Проверьте ввод");
+            setNotifyMessage("Проверьте ввод! Старое имя введено некорректно!");
         }
         openNotifyDialog(true);
     }
@@ -60,25 +57,14 @@ export const ChangePassword: React.FC<Props> = ({ authService }) => {
                     variant="contained"
                     color="primary"
                     onClick={(e) => (setVisible(!visible))}>
-                    Изменить пароль
+                    Изменить имя пользователя
                 </Button>
             </Grid>
             <Grid hidden={visible} item xs={12} sm={6}>
-                <TextField
-                    error={false}
-                    id="outlined-basic"
-                    label="Старый пароль"
-                    variant="outlined"
-                    value={old}
-                    onChange={(e) => { setOld(e.target.value) }} />
+                <TextField error={false} id="outlined-basic" label="Введите старое имя" variant="outlined" value={old} onChange={(e) => { setOld(e.target.value) }} />
             </Grid>
             <Grid hidden={visible} item xs={12} sm={6}>
-                <TextField
-                    id="outlined-basic"
-                    label="Новый пароль"
-                    variant="outlined"
-                    value={newName}
-                    onChange={(e) => { setNew(e.target.value) }} />
+                <TextField id="outlined-basic" label="Введите новое имя" variant="outlined" value={newName} onChange={(e) => { setNew(e.target.value) }} />
             </Grid>
             <Grid hidden={visible} item xs={12} sm={6}>
                 <Button
@@ -86,7 +72,7 @@ export const ChangePassword: React.FC<Props> = ({ authService }) => {
                     variant="contained"
                     color="secondary"
                     onClick={(e) => (renameUser())}>
-                    Изменить пароль
+                    Изменить имя
                 </Button>
             </Grid>
             <Grid hidden={visible} item xs={12} sm={6}>

@@ -3,4 +3,5 @@ export interface loginResponseDTO {
     access_token: string | undefined;
     uuid: string | undefined;
     role: string | undefined;
+    email: string | undefined;
 }
