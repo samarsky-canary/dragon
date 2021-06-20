@@ -40,7 +40,7 @@ export const UserManagement: React.FC<Props> = ({ authService }) => {
     return (
         <Container maxWidth="xs">
             <form className={classes.form}>
-                <Grid container spacing={2}>
+                <Grid hidden={authService.getRole() === 'USER'} container spacing={2}>
                     <Grid item xs={12} sm={12}>
                         <Typography variant="h4" align="center">
                             Администрирование

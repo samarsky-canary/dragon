@@ -7,7 +7,6 @@ import { AuthStateService } from '../../services/AuthStateService';
 import { ChangePassword } from './Components/ChangePassword';
 import { RenameForm } from './Components/RenameForm';
 
-
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(2),
@@ -21,6 +20,14 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
+    },
+    dangerButton: {
+        borderColor: theme.palette.error.dark,
+        color: theme.palette.error.dark,
+        '&:hover': {
+            backgroundColor: theme.palette.error.main,
+            color: "white"
+        },
     },
 }));
 
@@ -60,8 +67,8 @@ export const AccountControl: React.FC<Props> = ({ authService }) => {
         <Container component="main" maxWidth="xs">
             <form className={classes.form}>
                 <Grid container spacing={2}>
-                    <RenameForm authService={authService}/>
-                    <ChangePassword authService={authService}/>
+                    <RenameForm authService={authService} />
+                    <ChangePassword authService={authService} />
                     <ConfirmDialog
                         setActive={openDialog}
                         active={dialog}
@@ -72,9 +79,11 @@ export const AccountControl: React.FC<Props> = ({ authService }) => {
                     <Grid item xs={12} sm={12}>
                         <Button
                             fullWidth
-                            variant="contained"
+                            variant="outlined"
                             color="secondary"
-                            onClick={(e) => (openDialog(true))} >
+                            onClick={(e) => (openDialog(true))} 
+                            className={classes.dangerButton}
+                            >
                             Удалить аккаунт
                         </Button>
                     </Grid>
