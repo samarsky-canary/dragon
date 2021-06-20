@@ -1,4 +1,4 @@
-import { Button, Checkbox, FormControlLabel, Grid, MenuItem, Select, TextField } from '@material-ui/core';
+import { Button, Checkbox, FormControlLabel, Grid, makeStyles, MenuItem, Select, TextField } from '@material-ui/core';
 import { Favorite, FavoriteBorder } from '@material-ui/icons';
 import React from 'react';
 import { useEffect } from 'react';
@@ -12,6 +12,15 @@ import { UserService } from '../../services/UserService';
 
 const authService: AuthStateService = new AuthStateService().getInstance();
 
+const useStyles = makeStyles((theme) => ({
+    dangerButton: {
+        backgroundColor: theme.palette.error.dark,
+        '&:hover': {
+            backgroundColor: theme.palette.error.main,
+        },
+    },
+}
+));
 
 type Props = {
     selectedUser: UserDTO;
@@ -26,7 +35,7 @@ export const UserCard: React.FC<Props> = ({ selectedUser, favorites, curatorServ
     const [relationName, setRelationName] = useState<string>('');
     const [role, setRole] = useState<string>('USER');
     const [dialog, openDialog] = useState<boolean>(false);
-
+    const classes = useStyles();
 
     useEffect(() => {
         const relation = favorites.find((value) => (value.uuid_user === selectedUser.uuid));
@@ -102,9 +111,10 @@ export const UserCard: React.FC<Props> = ({ selectedUser, favorites, curatorServ
             <Grid item xs={12} sm={6}>
                 <Select
                     fullWidth
-                    hidden={authService.getRole() !== 'ADMIN'}
+                    disabled={authService.getRole() !== 'ADMIN'}
                     value={role}
                     onChange={handleChange}
+                    variant="outlined"
                 >
                     <MenuItem value={"USER"}>Пользователь</MenuItem>
                     <MenuItem value={"CURATOR"}>Куратор</MenuItem>
@@ -114,9 +124,10 @@ export const UserCard: React.FC<Props> = ({ selectedUser, favorites, curatorServ
             <Grid item xs={12} sm={6}>
                 <Button
                     fullWidth
-                    hidden={authService.getRole() !== 'ADMIN' || authService.getUUID() === selectedUser.uuid}
-                    variant="contained" color="primary" 
-                    onClick={SetRoleButtonHandle} >
+                    disabled={authService.getRole() !== 'ADMIN' || authService.getUUID() === selectedUser.uuid}
+                    variant="contained" color="primary"
+                    onClick={SetRoleButtonHandle} 
+                    >
                     Установить роль
                 </Button>
             </Grid>
@@ -126,7 +137,9 @@ export const UserCard: React.FC<Props> = ({ selectedUser, favorites, curatorServ
                 <Button
                     fullWidth
                     hidden={authService.getRole() !== 'ADMIN'}
-                    variant="contained" color="secondary" onClick={() => openDialog(true)} >
+                    variant="contained" color="secondary" onClick={() => openDialog(true)}
+                    className={classes.dangerButton}
+                >
                     Удалить пользователя
                 </Button>
             </Grid>

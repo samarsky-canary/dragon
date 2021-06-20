@@ -22,13 +22,26 @@ const App: React.FC = () => {
     if (loggedInUser) {
       const foundUser = JSON.parse(loggedInUser);
       const as = new AuthStateService().getInstance();
-      if (as.TokenVerification(foundUser.access_token)) {
-        as.setMeta(foundUser.uuid, foundUser.role, foundUser.username, foundUser.access_token, foundUser.email)
-        dispatch({
-          type: "LOGIN",
-          payload: foundUser
-        });
-      }
+      as.TokenVerification(foundUser.access_token).then(isLogged => {
+        if (isLogged) {
+          as.setMeta(foundUser.uuid, foundUser.role, foundUser.username, foundUser.access_token, foundUser.email)
+          dispatch({
+            type: "LOGIN",
+            payload: foundUser
+          });
+        } else {
+          dispatch({
+            type: "LOGOUT",
+            payload: {
+              access_token: undefined,
+              role: undefined,
+              username: undefined,
+              uuid: undefined,
+              email: undefined,
+            }
+          })
+        }
+      })
     }
   }, []);
 
