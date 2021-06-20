@@ -30,14 +30,11 @@ export class UserService {
             headers: this.setTokenBearer()
         })
             .then(response => response.data)
-            .catch(err => { throw new Error("Unable to get data") }
+            .catch(() => { throw new Error("Unable to get data") }
             )
     }
 
     public GetUnprevilegedUsers(): Promise<UserDTO[]> {
-        const headers = {
-            "Authorization": `Bearer ${UserService._authService.getToken()}`
-        }
         return axios.get(`${BASE_API_PREFIX}/nonpriveleged`, {
             headers: this.setTokenBearer()
         })
@@ -46,9 +43,6 @@ export class UserService {
 
 
     public GetAllUsers(): Promise<UserDTO[]> {
-        const headers = {
-            "Authorization": `Bearer ${UserService._authService.getToken()}`
-        }
         return axios.get(`${BASE_API_PREFIX}`, {
             headers: this.setTokenBearer()
         })

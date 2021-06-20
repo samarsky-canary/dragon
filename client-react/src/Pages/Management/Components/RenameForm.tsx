@@ -25,6 +25,7 @@ export const RenameForm: React.FC<Props> = ({ authService }) => {
     function renameUser() {
         if (old === authService.getUsername()) {
             if (newName.length >= 6) {
+                console.log(authService.getUsername())
                 userService.RenameUser(newName);
                 dispatch({
                     type: "UPDATE",

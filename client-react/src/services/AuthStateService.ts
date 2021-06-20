@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { loginResponseDTO } from '../DTO/IloginResponseDTO';
-import { UserDTO } from '../DTO/UserDTO';
 
 export class AuthStateService {
     private static _instance: AuthStateService;

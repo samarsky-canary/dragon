@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Card, Form, ListGroup } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { UserDTO } from '../../DTO/UserDTO';
 import { UserService } from '../../services/UserService';
 import './UserList.scss';
@@ -16,7 +16,7 @@ type Props = {
 }
 
 
-export const UserList : React.FC<Props> = ({userService, selectedUser, selectUser}) => {
+export const UserList: React.FC<Props> = ({ userService, selectedUser, selectUser }) => {
     const [users, setUsers] = useState<UserDTO[]>([]);
     const [filter, setFilter] = useState<string>('');
 
@@ -25,18 +25,18 @@ export const UserList : React.FC<Props> = ({userService, selectedUser, selectUse
     }
 
 
-    useEffect(()=>{
+    useEffect(() => {
         userService.GetAllUsers()
-        .then(users => setUsers(users)) 
-    },[])
+            .then(users => setUsers(users))
+    }, [])
 
 
     function setUser(values: UserDTO[]) {
-        if (values.length){
+        if (values.length) {
             selectUser(values[0]);
         }
     }
-    const noDataRenderer = ()=>{
+    const noDataRenderer = () => {
         return (
             <Typography variant="h6">
                 Пользователи не найдены
@@ -46,20 +46,20 @@ export const UserList : React.FC<Props> = ({userService, selectedUser, selectUse
 
     return (
         <Card >
-        <Card.Body>
-        <Select
-        options={users}
-        multi={false}
-        searchBy={'username'}
-        labelField={"username"}
-        valueField={"uuid"}
-        placeholder={"Начните вводить имя пользователя"}
-        noDataRenderer={noDataRenderer}
-        values={[]}
-        onChange={(value) => setUser(value)}
-        />
+            <Card.Body>
+                <Select
+                    options={users}
+                    multi={false}
+                    searchBy={'username'}
+                    labelField={"username"}
+                    valueField={"uuid"}
+                    placeholder={"Начните вводить имя пользователя"}
+                    noDataRenderer={noDataRenderer}
+                    values={[]}
+                    onChange={(value) => setUser(value)}
+                />
 
-        </Card.Body>
-    </Card>
+            </Card.Body>
+        </Card>
     )
 }

@@ -1,14 +1,13 @@
 import React, { useContext } from 'react';
-import { Navbar, Nav, Form, ModalTitle } from 'react-bootstrap';
-import { Label } from 'react-konva';
+import { Navbar, Nav, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../context/user.provider';
 import { LogoutButton } from './LogoutButton';
 
 
 
-export const NavigationHeader: React.FC = () => {
-  const { state, dispatch } = useContext(UserContext)
+export const NavigationFooter: React.FC = () => {
+  const { state } = useContext(UserContext)
     
     return (
         <Navbar fixed="bottom" bg="dark" variant="dark" expand="lg">

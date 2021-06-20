@@ -87,6 +87,10 @@ export class UsersService {
         return this.usersRepository.update({uuid: userid},payload);
     }
 
+    async updatePassword(userid: string, payload: Partial<CreateUserDto>) {
+        return this.usersRepository.update({uuid: userid},payload);
+    }
+
     
     async delete(uuid: string) : Promise<DeleteResult> {
         return await this.usersRepository.delete(uuid);
