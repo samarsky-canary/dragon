@@ -7,7 +7,7 @@ import { NotFoundPage } from './Pages/NotFound/NotFound';
 import { NavigationHeader } from './components/NavigationHeader';
 import { DocPage } from './Pages/DocPage/DocPage';
 import { UserContext } from './context/user.provider';
-import { Curators } from './Pages/Curators/Curators';
+import { ManagementPage } from './Pages/Management/Management';
 import { About } from './Pages/About/About';
 import { AuthStateService } from './services/AuthStateService';
 
@@ -46,7 +46,7 @@ const App: React.FC = () => {
             <DocPage />
           </Route>
           <Route exact path="/curators">
-            <Curators />
+            <ManagementPage />
           </Route>
           <Route exact path="/about">
             <About/>

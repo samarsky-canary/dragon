@@ -6,6 +6,7 @@ import { UserDTO } from '../../DTO/UserDTO';
 import { UserService } from '../../services/UserService';
 import './UserList.scss';
 import Select from 'react-dropdown-select';
+import { Typography } from '@material-ui/core';
 
 
 type Props = {
@@ -35,6 +36,13 @@ export const UserList : React.FC<Props> = ({userService, selectedUser, selectUse
             selectUser(values[0]);
         }
     }
+    const noDataRenderer = ()=>{
+        return (
+            <Typography variant="h6">
+                Пользователи не найдены
+            </Typography>
+        )
+    }
 
     return (
         <Card >
@@ -45,7 +53,9 @@ export const UserList : React.FC<Props> = ({userService, selectedUser, selectUse
         searchBy={'username'}
         labelField={"username"}
         valueField={"uuid"}
-        values={users.slice(0,1)}
+        placeholder={"Начните вводить имя пользователя"}
+        noDataRenderer={noDataRenderer}
+        values={[]}
         onChange={(value) => setUser(value)}
         />
 

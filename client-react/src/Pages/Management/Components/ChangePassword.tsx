@@ -59,7 +59,7 @@ export const ChangePassword: React.FC<Props> = ({ authService }) => {
             openNotifyDialog(true);
             return
         }
-        setNotifyMessage("Слабый пароль. Пароль состоит из букв латинского алфавита, не менее 6 символов, 1 заглавную и 1 прописную букву");
+        setNotifyMessage("Слабый пароль. Пароль должен состоять из букв латинского алфавита, не менее 6 символов, 1 заглавную и 1 прописную букву");
         openNotifyDialog(true);
     }
 

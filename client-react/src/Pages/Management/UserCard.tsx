@@ -80,46 +80,56 @@ export const UserCard: React.FC<Props> = ({ selectedUser, favorites, curatorServ
     };
 
     return (
-        <Container >
-            <Grid>
-                <Card>
-                    <Typography>{selectedUser.username}</Typography>
-                    <Typography>{selectedUser.role}</Typography>
-                    <FormControlLabel
-                        disabled={selectedUser.role !== "USER"}
-                        control={<Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} checked={favorite} onChange={(e) => (favoriteCheck(e))} />}
-                        label="Курируемый"
-                        value={favorite}
-                    />
-                    <TextField
-                        disabled={!favorite}
-                        label="Название отношения"
-                        variant="outlined"
-                        value={relationName}
-                        onChange={e => (setRelationName(e.target.value))}
-                    />
-                    <Select
-                        hidden={authService.getRole() !== 'ADMIN'}
-                        value={role}
-                        onChange={handleChange}
-                    >
-                        <MenuItem value={"USER"}>Пользователь</MenuItem>
-                        <MenuItem value={"CURATOR"}>Куратор</MenuItem>
-                        <MenuItem value={"ADMIN"}>Админ</MenuItem>
-                    </Select>
-                    <Button
-                        hidden={authService.getRole() !== 'ADMIN'}
-                        variant="outlined" color="secondary" onClick={SetRoleButtonHandle} >
-                        Установить роль
-                    </Button>
-                    <ConfirmDialog setActive={openDialog} active={dialog} title={"Удалить аккаунт?"} message={"Это действие впоследствии отменить невозможно!"} handleOK={DeleteUserButtonHandle} ></ConfirmDialog>
-                    <Button
-                        hidden={authService.getRole() !== 'ADMIN'}
-                        variant="outlined" color="secondary" onClick={() => openDialog(true)} >
-                        Удалить пользователя
-                    </Button>
-                </Card>
+        <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+                <FormControlLabel
+                    disabled={selectedUser.role !== "USER"}
+                    control={<Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} checked={favorite} onChange={(e) => (favoriteCheck(e))} />}
+                    label="Курируемый"
+                    value={favorite}
+                />
             </Grid>
-        </Container>
+            <Grid item xs={12} sm={6}>
+                <TextField
+                    disabled={!favorite}
+                    label="Название отношения"
+                    variant="outlined"
+                    value={relationName}
+                    onChange={e => (setRelationName(e.target.value))}
+                />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+                <Select
+                    fullWidth
+                    hidden={authService.getRole() !== 'ADMIN'}
+                    value={role}
+                    onChange={handleChange}
+                >
+                    <MenuItem value={"USER"}>Пользователь</MenuItem>
+                    <MenuItem value={"CURATOR"}>Куратор</MenuItem>
+                    <MenuItem value={"ADMIN"}>Админ</MenuItem>
+                </Select>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                <Button
+                    fullWidth
+                    hidden={authService.getRole() !== 'ADMIN'}
+                    variant="contained" color="primary" 
+                    onClick={SetRoleButtonHandle} >
+                    Установить роль
+                </Button>
+            </Grid>
+
+            <Grid item xs={12} sm={12}>
+                <ConfirmDialog setActive={openDialog} active={dialog} title={"Удалить аккаунт?"} message={"Это действие впоследствии отменить невозможно!"} handleOK={DeleteUserButtonHandle} ></ConfirmDialog>
+                <Button
+                    fullWidth
+                    hidden={authService.getRole() !== 'ADMIN'}
+                    variant="contained" color="secondary" onClick={() => openDialog(true)} >
+                    Удалить пользователя
+                </Button>
+            </Grid>
+        </Grid>
     )
 }
