@@ -6,6 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config",
+    "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed -s CreateAdmin",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -15,9 +17,8 @@
     "start:prod": "node dist/main",
     "start:dev:dockerdb": "./scripts/docker-db.sh",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-
-    "typeorm:run" : "ts-node $(yarn bin typeorm) migration:run",
-    "typeorm:revert" : "ts-node $(yarn bin typeorm) migration:revert"
+    "typeorm:run": "ts-node $(yarn bin typeorm) migration:run",
+    "typeorm:revert": "ts-node $(yarn bin typeorm) migration:revert"
   },
   "dependencies": {
     "@nestjs/common": "^7.5.1",
@@ -28,11 +29,13 @@
     "@nestjs/platform-express": "^7.5.1",
     "@nestjs/serve-static": "^2.1.4",
     "@nestjs/typeorm": "^7.1.5",
+    "@types/faker": "^5.5.6",
     "@types/uuid": "^8.3.0",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "express": "^4.17.1",
+    "faker": "^5.5.3",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
@@ -41,6 +44,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.3",
     "typeorm": "^0.2.31",
+    "typeorm-seeding": "^1.6.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
