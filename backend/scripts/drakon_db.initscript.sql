@@ -7,7 +7,8 @@ create table users(
     id uuid PRIMARY KEY,
     username text NOT NULL UNIQUE,
     role text,
-    password text NOT NULL
+    password text NOT NULL,
+    email text NOT NULL
     );
 
 
@@ -148,4 +149,3 @@ CREATE OR REPLACE function scheme_insert() RETURNS trigger AS $$
 
 CREATE TRIGGER scheme_insert_trg BEFORE INSERT ON dragon_scheme
 FOR EACH ROW EXECUTE PROCEDURE scheme_insert();
-
