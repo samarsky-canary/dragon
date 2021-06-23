@@ -39,7 +39,7 @@ export const ChangePassword: React.FC<Props> = ({ authService }) => {
     async function changePassword() {
         setNotifyMessage("")
         if (values.newPassword !== values.Repeatpassword) {
-            setNotifyMessage("Пароли не совпадают. Повторите пароль в соответсующем поле ввода.")
+            setNotifyMessage("Пароли не совпадают. Повторите пароль в соответствующем поле ввода.")
             openNotifyDialog(true);
             return;
         } else if (values.newPassword === "" || values.Repeatpassword === "") {
@@ -59,7 +59,7 @@ export const ChangePassword: React.FC<Props> = ({ authService }) => {
             openNotifyDialog(true);
             return
         }
-        setNotifyMessage("Слабый пароль. Пароль должен состоять из букв латинского алфавита, не менее 6 символов, 1 заглавную и 1 прописную букву");
+        setNotifyMessage("Слабый пароль. Пароль должен состоять из букв латинского алфавита, содержать хотя бы 1 заглавную и 1 прописную букву или цифру. Длина не менее 6 символов");
         openNotifyDialog(true);
     }
 

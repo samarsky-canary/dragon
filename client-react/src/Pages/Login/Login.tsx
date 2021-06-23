@@ -103,7 +103,7 @@ export const Login: React.FC<Props> = ({ setRegisterData }) => {
             if (response.statusText) {
                 setErrorMessage(response.statusText.replace("QueryFailedError:", ''));
             } else {
-                setErrorMessage("No response")
+                setErrorMessage("Нет ответа от сервера")
             }
             setErrorHidden(false);
         }
@@ -121,7 +121,7 @@ export const Login: React.FC<Props> = ({ setRegisterData }) => {
             if (response.statusText) {
                 setErrorMessage(response.statusText);
             } else {
-                setErrorMessage("No response")
+                setErrorMessage("Нет ответа от сервера")
             }
             setErrorHidden(false);
         }

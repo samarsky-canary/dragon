@@ -84,7 +84,7 @@ export class AuthService {
               if (!whom.role)
                 return Promise.reject(new NotFoundException("Пользователя не существует"));
               if (who.role !== 'ADMIN')
-                return Promise.reject(new NotFoundException("Вы не админ"));
+                return Promise.reject(new NotFoundException("Вы не администратор"));
               if (whom.role === 'ADMIN')
                 return Promise.reject(new NotFoundException("Админа может удалить только суперадмин"));
             }

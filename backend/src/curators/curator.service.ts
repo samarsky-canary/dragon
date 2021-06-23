@@ -19,7 +19,7 @@ export class CuratorService {
         return await this.CuratorRepository.findOne(id).then(
             user => {
                 if (user) return user;
-                throw new NotFoundException("Relation not found");
+                throw new NotFoundException("Отношения не существует");
             } 
         )
     }
@@ -45,7 +45,7 @@ export class CuratorService {
     async delete(id: number) : Promise<DeleteResult>{
         const deleterRelation = this.CuratorRepository.delete(id);
         if ((await deleterRelation).affected === 0) {
-            throw new NotFoundException("Relation not found");
+            throw new NotFoundException("Отношения не существует");
         }
         return deleterRelation;
     }

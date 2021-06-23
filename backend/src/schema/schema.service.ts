@@ -20,7 +20,7 @@ export class SchemaService {
         return await this.schemaRepository.findOne(id).then(
             schema => {
                 if (schema) return schema;
-                throw new NotFoundException("schema not found");
+                throw new NotFoundException("Схема не найдена");
             }  
         )
     }
@@ -47,7 +47,7 @@ export class SchemaService {
     update(id: any, schema: CreateSchemaDto) {
         return this.schemaRepository.save(schema).then(schema=>{
             if (schema) return schema;
-                throw new NotFoundException("schema not found");
+                throw new NotFoundException("Схема не найдена");
         });
     }    
 }

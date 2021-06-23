@@ -48,7 +48,7 @@ export class UsersService {
         .then(user => {
             return (user) 
             ? Promise.resolve(user)
-            : Promise.reject("User not found")
+            : Promise.reject("Пользователь не найден")
         })
     }
 
@@ -58,7 +58,7 @@ export class UsersService {
         .then(user => {
             return (user) 
             ? Promise.resolve(user)
-            : Promise.reject("User not found")
+            : Promise.reject("Пользователь не найден")
         })
         .catch(err => Promise.reject(new NotFoundException(err)));
     }
