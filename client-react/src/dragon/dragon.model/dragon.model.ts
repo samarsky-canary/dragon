@@ -5,6 +5,7 @@ export const InstructionType = {
     PRIMITIVE: "primitive",
     ACTION: "action",
     CONDITION: "condition",
+    LIMITER: "limiter",
     BRANCH: "branch",
     INPUT: "input",
     OUTPUT: "output",
@@ -114,6 +115,15 @@ export class DragonConditionInstruction extends DragonInstruction {
         this.Add(new DragonBranchInstruction(this.id));
         //else
         this.Add(new DragonBranchInstruction(this.id));
+    }
+}
+
+export class DragonLimiterInstruction extends DragonInstruction {
+    constructor(parent: string, restore?: boolean) {
+        super(InstructionType.LIMITER, parent);
+        if (restore) {
+            return;
+        }
     }
 }
 
@@ -422,7 +432,7 @@ export class DragonModel {
 
             case InstructionType.INPUT:
                 if (instruction.text !== "")
-                    code = code.replace(`[${instruction.id}]`, `console.log(${instruction.text});`);
+                    code = code.replace(`[${instruction.id}]`, `// Not implemented input for(${instruction.text});`);
                 break;
 
             case InstructionType.SLEEP:

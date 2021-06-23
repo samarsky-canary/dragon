@@ -1,6 +1,8 @@
-import React, {useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Layer, Stage, Rect } from 'react-konva';
-import {Layer as _layer} from 'konva/lib/Layer';
+import { Layer as _layer } from 'konva/lib/Layer';
+import { Stage as _stage } from 'konva/lib/Stage';
+import { Rect as _rect } from 'konva/lib/shapes/Rect';
 import useImage from 'use-image';
 import { DragonModel } from '../../../dragon/dragon.model/dragon.model';
 import { Schema } from '../Shapes/Schema';
@@ -98,20 +100,28 @@ function updateLine(rect1: any, rect2: any, line: any) {
 
 export const KonvaCanvas: React.FC<Props> = ({ width, height, model, setModel, actionMenuOption }) => {
     const [grid] = useImage("./grid.gif");
-    
+
+    useEffect(() => {
+        console.log(model.toJSON());
+    }, [model])
+    const groupRef = useRef<_layer>(null)
+    const stageRef = useRef<_stage>(null);
+    const backgroundRef = useRef<_rect>(null);
 
     useEffect(()=>{
-        console.log(model.toJSON());
-    },[model])
-    const groupRef = useRef<_layer>(null)
+        if (stageRef.current)
+        stageRef.current!.on('dragmove', ()=>{
+            if (backgroundRef.current) {
+                backgroundRef.current.absolutePosition({x:0, y: 0});
+            }
+        })
+    })
 
     return (
-        <Stage width={width} height={800}>
-            <Layer>
-                <Rect width={width} height={height} fillPatternImage={grid} stroke="grey"></Rect>
-            </Layer>
+        <Stage ref={stageRef} draggable width={width} height={800}>
             <Layer draggable ref={groupRef}>
-                <Schema model={model}  setModel={setModel} layerRef={groupRef} actionMenuOption={actionMenuOption}/>                
+                <Rect ref={backgroundRef} width={width} height={height} fillPatternImage={grid} stroke="grey"></Rect>
+                <Schema model={model} setModel={setModel} layerRef={groupRef} actionMenuOption={actionMenuOption} />
             </Layer>
         </Stage>
     )
