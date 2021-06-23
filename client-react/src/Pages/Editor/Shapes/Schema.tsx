@@ -128,7 +128,7 @@ export const Schema: FC<IconProps> = ({model, setModel, layerRef, actionMenuOpti
                         id: icon.id,
                         previous: temp_nodes.find(value=>(value.id===icon.parent))!,
                         parent: icon.parent,
-                        text: "Старт",
+                        text: icon!.text,
                         shape: Shape.BEGIN,
                         x: StartPoint.x,
                         y: StartPoint.y
@@ -244,9 +244,9 @@ export const Schema: FC<IconProps> = ({model, setModel, layerRef, actionMenuOpti
                 nodes.map((value, key)=>{
                     switch (value.shape) {
                         case Shape.BEGIN:
-                            return <Begin key={key} id={value.id} x={value.x} y={value.y} text={value.text} />
+                            return <Begin model={model} key={key} id={value.id} x={value.x} y={value.y} text={value.text} />
                         case Shape.END:
-                            return <Begin key={key} id={value.id} x={value.x} y={value.y} text={value.text} />
+                            return <Begin model={model} key={key} id={value.id} x={value.x} y={value.y} text={value.text} />
                         case Shape.COMMENT:
                         case Shape.ACTION:
                         case Shape.OUTPUT:

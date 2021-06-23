@@ -5,17 +5,20 @@ import { Rect as _rect } from 'konva/lib/shapes/Rect';
 import { Group as _group } from 'konva/lib/Group';
 import { Shape as _shape} from 'konva/lib/Shape';
 import { HEIGHT, WIDTH } from './CONSTRAINTS';
+import { Updatetext } from './Functions';
+import { DragonModel } from '../../../dragon/dragon.model/dragon.model';
 
 
 export type IconProps = {
     text: string,
     x: number,
     y: number,
-    id: string
+    id: string,
+    model: DragonModel
 }
 
 
-export const Begin: FC<IconProps> = ({ text, id, x ,y}) => {
+export const Begin: FC<IconProps> = ({ text, id, x ,y, model}) => {
     const [textWidth, setTextWidth] = useState(0);
     const [textHeight, setTextHeight] = useState(0);
     const rectRef = useRef<_rect>(null);
@@ -54,6 +57,7 @@ export const Begin: FC<IconProps> = ({ text, id, x ,y}) => {
             y={y}
             offsetX={textWidth / 2}
             align="center"
+            onDblClick={()=>(Updatetext(textRef.current!,id, model))}
             height={rectRef.current ? (rectRef.current.height()) : 0}
             verticalAlign='middle'
             />
@@ -61,7 +65,7 @@ export const Begin: FC<IconProps> = ({ text, id, x ,y}) => {
     );
 }
 
-export const Condition: FC<IconProps> = ({ text, id, x ,y}) => {
+export const Condition: FC<IconProps> = ({ text, id, x ,y, model}) => {
     const [textWidth, setTextWidth] = useState(0);
     const [textHeight, setTextHeight] = useState(0);
     const shapeRef = useRef<_shape>(null);
@@ -108,6 +112,7 @@ export const Condition: FC<IconProps> = ({ text, id, x ,y}) => {
             y={HEIGHT/2}
             offsetX={textWidth / 2}
             align="center"
+            onDblClick={()=>(Updatetext(textRef.current!,id, model))}
             height={shapeRef.current ? (shapeRef.current.height()) : 0}
             verticalAlign='middle'
             />
