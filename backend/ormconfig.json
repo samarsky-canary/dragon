@@ -5,7 +5,7 @@
     "username": "sacanary",
     "password": "2233",
     "database": "drakon_db",
-    "entities": ["dist/**/*.entity{.ts,.js}"],
+    "entities": ["**/**.entity{.ts,.js}"],
     "synchronize": false,
     "logging": false,
     "retryAttempts": 1,
