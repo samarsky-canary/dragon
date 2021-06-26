@@ -169,7 +169,7 @@ export const Schema: FC<IconProps> = ({model, setModel, layerRef, actionMenuOpti
                 temp_nodes.push(
                     {
                         id: icon.id,
-                        previous: prev,
+                        previous: temp_nodes.find(value=>value.id===icon.parent)!,
                         parent: icon.parent,
                         text: '',
                         shape: Shape.BRANCH,
@@ -234,9 +234,14 @@ export const Schema: FC<IconProps> = ({model, setModel, layerRef, actionMenuOpti
                             return <Line 
                             stroke={'black'}
                             strokeWidth={1}
-                            points={[value.x + WIDTH/2, value.y, value.previous.x+ WIDTH/2, value.previous.y + HEIGHT]}
+                            points={[value.x + WIDTH/2, value.y, value.previous.x+ WIDTH/2, value.previous.y + HEIGHT/2]}
                             />
                         case Shape.BRANCH:
+                            return <Line 
+                            stroke={'black'}
+                            strokeWidth={1}
+                            points={[value.x + WIDTH/2, value.y + HEIGHT/2, value.previous.x+ WIDTH/2, value.previous.y + HEIGHT/2]}
+                            />
                     }
                 })
             }

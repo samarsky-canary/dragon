@@ -93,7 +93,7 @@ export const SchemaControl: React.FC<Props> = ({schema, setSchema, model, schema
             </Card.Body>
             <Form.Group>
                 <Form.Label>Схема в Javascript</Form.Label>
-                <Form.Control as="textarea" rows={20} readOnly={true} value={translatedSchema}/>
+                <Form.Control as="textarea" rows={schema == undefined ? 20 : 15} readOnly={true} value={translatedSchema}/>
                 <Button variant="danger btn-block" disabled={schema === undefined ? true : false} onClick={() => (DeleteSelectedSchema())}><Delete/>Удалить схему</Button>{' '}
             </Form.Group>
         </Card>

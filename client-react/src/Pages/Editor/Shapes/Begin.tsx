@@ -38,11 +38,12 @@ export const Begin: FC<IconProps> = ({ text, id, x ,y, model}) => {
         if (textRef.current) {
             setTextWidth(textRef.current.width());
             setTextHeight(textRef.current.height());
+            textRef.current.setText(text);
         }
     }, [textWidth, textHeight])
 
     return (
-        <Group id={id} draggable ref={groupRef} width={WIDTH}>
+        <Group id={id} ref={groupRef} width={WIDTH}>
             <Rect 
             ref={rectRef}
             width={WIDTH/2} 
@@ -89,7 +90,7 @@ export const Condition: FC<IconProps> = ({ text, id, x ,y, model}) => {
     }, [textWidth, textHeight])
 
     return (
-        <Group draggable ref={groupRef}>
+        <Group ref={groupRef}>
             <Shape
             sceneFunc={(context, shape) => {
               context.beginPath();
