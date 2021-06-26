@@ -42,6 +42,14 @@ export const Begin: FC<IconProps> = ({ text, id, x ,y, model}) => {
         }
     }, [textWidth, textHeight])
 
+        
+    useEffect(() => {
+        if (textRef.current) {
+            setTextWidth(textRef.current.width());
+            setTextHeight(textRef.current.height());
+        }
+    }, [text])
+
     return (
         <Group id={id} ref={groupRef} width={WIDTH}>
             <Rect 
@@ -86,6 +94,14 @@ export const Condition: FC<IconProps> = ({ text, id, x ,y, model}) => {
         if (textRef.current) {
             setTextWidth(textRef.current.width());
             setTextHeight(textRef.current.height());
+        }
+    }, [textWidth, textHeight])
+
+    useEffect(() => {
+        if (textRef.current) {
+            setTextWidth(textRef.current.width());
+            setTextHeight(textRef.current.height());
+            textRef.current.setText(text);
         }
     }, [textWidth, textHeight])
 

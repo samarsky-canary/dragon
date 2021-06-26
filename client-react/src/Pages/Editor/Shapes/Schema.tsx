@@ -58,7 +58,6 @@ export const Schema: FC<IconProps> = ({ model, setModel, layerRef, actionMenuOpt
     if (!model) return null;
     // const konvaRefs = new Map<string, React.MutableRefObject<undefined>>();
     const groupRef = useRef<_group>(null)
-
     const INITIAL_STATE = parseModel(model);
     const [nodes, setNodes] = useState<Array<Node>>(INITIAL_STATE);
 

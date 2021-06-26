@@ -28,6 +28,11 @@ export const Action: FC<IconProps> = ({ text, id, parent, x ,y, model, setModel,
     const textRef = useRef<_text>(null);
     const groupRef = useRef<_group>(null);
 
+    useEffect(()=>{
+        groupRef.current?._clearCaches();
+        textRef.current?._clearCaches()
+        textRef.current?._clearCaches()
+    })
 
     if (groupRef.current && rectRef.current)
     groupRef.current.clip({
@@ -43,6 +48,14 @@ export const Action: FC<IconProps> = ({ text, id, parent, x ,y, model, setModel,
             setTextHeight(textRef.current.height());
         }
     }, [textWidth, textHeight])
+
+    
+    useEffect(() => {
+        if (textRef.current) {
+            setTextWidth(textRef.current.width());
+            setTextHeight(textRef.current.height());
+        }
+    }, [text])
 
     function DeleteInstruction(){
         if( actionMenuOption === 9){
