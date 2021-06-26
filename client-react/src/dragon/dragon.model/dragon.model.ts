@@ -405,7 +405,7 @@ export class DragonModel {
         const offset = '\t'.repeat(deep);
         switch (instruction.type) {
             case InstructionType.SCHEMA:
-                code = `[${instruction.children[0].id}]\n`;
+                code = `[${instruction.children[0].id}]`;
                 code = this.parseInstruction(instruction.children[0], code, ++deep);
                 break;
 
@@ -447,7 +447,7 @@ export class DragonModel {
                 if (instruction.text !== "") {
                     code = code.replace(`[${instruction.id}]`,  `await new Promise(resolve => setTimeout(resolve, ${instruction.text}));`);
                     if (code.startsWith('function', 0))
-                        code = code.replace(`function`,  `await function`);
+                        code = code.replace(`function`,  `async function`);
                 }
                 break;
             // Condition SCOPES if {inner} else {inner2}
@@ -455,9 +455,9 @@ export class DragonModel {
                 {
                     const arrayOfChildren: string[] = [];
                     instruction.children.forEach((value) => {
-                        arrayOfChildren.push(`\t[${value.id}]\n`);
+                        arrayOfChildren.push(`[${value.id}]`);
                     })
-                    const generatedCode = `if (${instruction.text}) {\n\t${arrayOfChildren[0]}\t} else {\n\t${arrayOfChildren[1]}\t}`
+                    const generatedCode = `if (${instruction.text}) {\n${arrayOfChildren[0]}} else {\n${arrayOfChildren[1]}}`
                     code = code.replace(`[${instruction.id}]`, generatedCode);
                     instruction.children.forEach((value) => {
                         code = this.parseInstruction(value, code, ++deep);
@@ -479,7 +479,7 @@ export class DragonModel {
                 {
                     let stringOfChildren = "";
                     instruction.children.forEach((value) => {
-                        stringOfChildren += `[${value.id}]\n`;
+                        stringOfChildren += `\t[${value.id}]\n`;
                     })
                     const generatedCode = stringOfChildren;
                     code = code.replace(`[${instruction.id}]`, generatedCode);
