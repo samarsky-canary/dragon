@@ -200,7 +200,7 @@ export const Login: React.FC<Props> = ({ setRegisterData }) => {
                             fullWidth
                             name="password"
                             label="Повторите пароль"
-                            id="password"
+                            id="repeat-password"
                             type={values.showPassword ? 'text' : 'password'}
                             autoComplete="current-password"
                             onChange={e => {

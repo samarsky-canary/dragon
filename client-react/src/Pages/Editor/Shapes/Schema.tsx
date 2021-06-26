@@ -117,7 +117,6 @@ export const Schema: FC<IconProps> = ({ model, setModel, layerRef, actionMenuOpt
         const parent = model.getInstruction(icon.parent);
         const from = getPrevious(icon, parent);
         const prev = temp_nodes.find((value) => (value.id === from?.id))!;
-        console.log(icon.type)
         switch (icon.type) {
             case InstructionType.SCHEMA:
                 break;
@@ -237,7 +236,6 @@ export const Schema: FC<IconProps> = ({ model, setModel, layerRef, actionMenuOpt
     function parseModel(model: DragonModel) {
         const temp_nodes: Array<Node> = [];
         parseInstruction(model.getInstruction(model.head)!, temp_nodes);
-        console.log("SEPARATE")
         // ссылка не предыдущую от end выбирается неккоректно, если последняя икона - макро! Исправить на поиск последней в глубину
         const end = {
             id: 'end',
