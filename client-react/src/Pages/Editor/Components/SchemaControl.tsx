@@ -24,9 +24,6 @@ export const SchemaControl: React.FC<Props> = ({schema, setSchema, model, schema
     const [schemaName, setSchemaName] = useState<string>(schema? schema.name : '');
     const [username, setUsername] = useState<string>('');
 
-
-
-
     function handleSaveAsJavascript() {
         if (model && schema) {
             const blob = new Blob([model.toJavaScript()],{type: "application/javascript" });
@@ -38,7 +35,8 @@ export const SchemaControl: React.FC<Props> = ({schema, setSchema, model, schema
     useEffect(()=>{
         if(schema) {
             setSchemaName(schema.name)
-            userService.getUserinfoById(schema.last_changed_by_id).then(user=> setUsername(user.username))
+            if (schema.last_changed_by_id)
+                userService.getUserinfoById(schema.last_changed_by_id).then(user=> setUsername(user.username))
         }
     },[schema])
 
@@ -77,8 +75,10 @@ export const SchemaControl: React.FC<Props> = ({schema, setSchema, model, schema
 
     return (
         <Card>
-            <Card.Header>{schema?.last_changed}</Card.Header>
-            <Card.Header>Последнее изменение: {username}</Card.Header>
+            <div hidden ={schema === undefined}>
+            <Card.Header>Время изменения: {schema?.last_changed?  schema?.last_changed.replace('T', " ") : " "}</Card.Header>
+            <Card.Header>Последнее изменение: {schema ? username : ""}</Card.Header>
+            </div>
             <Card.Body>
                 <Form.Group>
                     <Form.Control

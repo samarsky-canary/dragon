@@ -436,8 +436,11 @@ export class DragonModel {
                 break;
 
             case InstructionType.SLEEP:
-                if (instruction.text !== "")
+                if (instruction.text !== "") {
                     code = code.replace(`[${instruction.id}]`,  `await new Promise(resolve => setTimeout(resolve, ${instruction.text}));`);
+                    if (code.startsWith('function', 0))
+                        code = code.replace(`function`,  `await function`);
+                }
                 break;
             // Condition SCOPES if {inner} else {inner2}
             case InstructionType.CONDITION:

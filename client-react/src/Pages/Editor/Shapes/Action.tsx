@@ -167,7 +167,6 @@ export const Action: FC<IconProps> = ({ text, id, parent, x ,y, model, setModel,
     return (
         <Group 
         id={id} 
-        draggable 
         ref={groupRef}
         onClick={(()=>(DeleteInstruction()))}
         >
