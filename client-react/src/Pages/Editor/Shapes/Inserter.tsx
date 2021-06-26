@@ -10,7 +10,7 @@ type IconProps = {
     y: number;
     id: string;
     parent: string;
-    next: string;
+    next: string | undefined;
     actionMenuOption: number;
     model: DragonModel;
     setModel: (value: DragonModel) => void;
@@ -106,6 +106,6 @@ export const BranchDing: FC<IconProps> = (props) => {
             x={props.x} y={props.y}
             offsetY={-20}
             offsetX={-80}
-            stroke="black" strokeWidth={1} fill="red" />
+            />
     );
 }

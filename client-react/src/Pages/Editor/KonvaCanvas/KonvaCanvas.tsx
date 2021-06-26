@@ -100,10 +100,6 @@ function updateLine(rect1: any, rect2: any, line: any) {
 
 export const KonvaCanvas: React.FC<Props> = ({ width, height, model, setModel, actionMenuOption }) => {
     const [grid] = useImage("./grid.gif");
-
-    useEffect(() => {
-        console.log(model.toJSON());
-    }, [model])
     const groupRef = useRef<_layer>(null)
     const stageRef = useRef<_stage>(null);
     const backgroundRef = useRef<_rect>(null);

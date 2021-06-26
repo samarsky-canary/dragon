@@ -43,7 +43,7 @@ type IconProps = {
 
 interface Node {
     id: string;
-    previous: Node;
+    previous: Node | undefined;
     parent: string;
     text: string;
     shape: string;
@@ -117,7 +117,7 @@ export const Schema: FC<IconProps> = ({model, setModel, layerRef, actionMenuOpti
         const parent = model.getInstruction(icon.parent);
         const from = getPrevious(icon, parent);
         const prev = temp_nodes.find((value)=>(value.id === from?.id))!;
-
+        console.log(icon.type)
         switch(icon.type){
             case InstructionType.SCHEMA:
             break;
@@ -166,6 +166,7 @@ export const Schema: FC<IconProps> = ({model, setModel, layerRef, actionMenuOpti
                 const parent_node = temp_nodes.find(value=>value.id === parent?.id)!;
                 const branchOffset = parent?.children.findIndex(value=>(value.id === icon.id));
                 const altbranchOffset = branchOffset === 0 ? 0 : WidthOffset;
+                const {x, y} = {x: parent_node.x + WIDTH*branchOffset! + altbranchOffset, y: parent_node.y};
                 temp_nodes.push(
                     {
                         id: icon.id,
@@ -173,12 +174,40 @@ export const Schema: FC<IconProps> = ({model, setModel, layerRef, actionMenuOpti
                         parent: icon.parent,
                         text: '',
                         shape: Shape.BRANCH,
-                        x: parent_node.x + WIDTH*branchOffset! + altbranchOffset,
-                        y: parent_node.y,
+                        x: x,
+                        y: y,
                     }
                 );
+                temp_nodes.push(
+                    {
+                        id: "",
+                        previous: undefined,
+                        parent: icon.parent,
+                        text: icon.id,
+                        shape: Shape.INSERTER,
+                        x: x + WIDTH/2,
+                        y: y + HeightOffset/4 + HEIGHT/2,
+                    }
+                )
             }
             break;
+            case InstructionType.LIMITER:
+            {
+                const prev = model.getDeepestLeftChild(icon.parent)!;
+                const parent_node = temp_nodes.find(value=>value.id === prev.id)!;
+                temp_nodes.push(
+                    {
+                        id: icon.id,
+                        previous: temp_nodes.find(value=>value.id===icon.parent)!,
+                        parent: icon.parent,
+                        text: '',
+                        shape: Shape.BRANCH,
+                        x: parent_node.x,
+                        y: parent_node.y + HeightOffset/2,
+                    }
+                );
+            }    
+                break;
         default:
             break;
         }
@@ -193,7 +222,7 @@ export const Schema: FC<IconProps> = ({model, setModel, layerRef, actionMenuOpti
     function parseModel(model: DragonModel) {
         const temp_nodes: Array<Node> = [];
         parseInstruction(model.getInstruction(model.head)!, temp_nodes);
-
+        console.log("SEPARATE")
         // ссылка не предыдущую от end выбирается неккоректно, если последняя икона - макро! Исправить на поиск последней в глубину
         const end = {
             id: 'end',
@@ -234,13 +263,13 @@ export const Schema: FC<IconProps> = ({model, setModel, layerRef, actionMenuOpti
                             return <Line 
                             stroke={'black'}
                             strokeWidth={1}
-                            points={[value.x + WIDTH/2, value.y, value.previous.x+ WIDTH/2, value.previous.y + HEIGHT/2]}
+                            points={[value.x + WIDTH/2, value.y, value.previous!.x+ WIDTH/2, value.previous!.y + HEIGHT/2]}
                             />
                         case Shape.BRANCH:
                             return <Line 
                             stroke={'black'}
                             strokeWidth={1}
-                            points={[value.x + WIDTH/2, value.y + HEIGHT/2, value.previous.x+ WIDTH/2, value.previous.y + HEIGHT/2]}
+                            points={[value.x + WIDTH/2, value.y + HEIGHT/2, value.previous!.x+ WIDTH/2, value.previous!.y + HEIGHT/2]}
                             />
                     }
                 })

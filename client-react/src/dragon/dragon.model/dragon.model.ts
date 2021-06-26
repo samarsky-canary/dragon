@@ -115,6 +115,8 @@ export class DragonConditionInstruction extends DragonInstruction {
         this.Add(new DragonBranchInstruction(this.id));
         //else
         this.Add(new DragonBranchInstruction(this.id));
+        // limiter
+        this.Add(new DragonLimiterInstruction(this.id));
     }
 }
 
@@ -187,8 +189,10 @@ export class DragonModel {
                 {
                     const ifInstruction = instruction.children[0];
                     const elseInstruction = instruction.children[1];
+                    const limiter = instruction.children[2];
                     this.containers.set(ifInstruction.id, ifInstruction);
                     this.containers.set(elseInstruction.id, elseInstruction);
+                    this.containers.set(limiter.id, limiter);
                 }
                 break;
 
@@ -371,6 +375,10 @@ export class DragonModel {
 
             case InstructionType.SWITCH:
                 this.castInstruction(new DragonSwitchInstruction(instruction.parent), instruction);
+                break;
+
+            case InstructionType.LIMITER:
+                this.castInstruction(new DragonLimiterInstruction(instruction.parent), instruction);
                 break;
 
         }
