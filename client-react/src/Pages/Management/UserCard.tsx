@@ -4,6 +4,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
+import { NotifyDialog } from '../../components/NotifyDialog';
 import { RelationDTO } from '../../DTO/relationDTO';
 import { UserDTO } from '../../DTO/UserDTO';
 import { AuthStateService } from '../../services/AuthStateService';
@@ -35,6 +36,8 @@ export const UserCard: React.FC<Props> = ({ selectedUser, favorites, curatorServ
     const [relationName, setRelationName] = useState<string>('');
     const [role, setRole] = useState<string>('USER');
     const [dialog, openDialog] = useState<boolean>(false);
+    const [notify, openNotify] = useState<boolean>(false);
+    const [notifyText, setNotifyText] = useState<string>('');
     const classes = useStyles();
 
     useEffect(() => {
@@ -83,7 +86,14 @@ export const UserCard: React.FC<Props> = ({ selectedUser, favorites, curatorServ
     const DeleteUserButtonHandle = () => {
         if (selectedUser.role !== "ADMIN") {
             const auth = new AuthStateService().getInstance();
-            auth.DeleteRegistrationData(selectedUser.uuid);
+            auth.DeleteRegistrationData(selectedUser.uuid).then(response=>{
+                if(response.status === 200) {
+                    setNotifyText("Успешно выполнено");
+                } else {
+                    setNotifyText(`Ошибка выполнения ${response.status}:${response.statusText}`);
+                }
+                openNotify(true)
+            });
         }
         openDialog(false);
     };
@@ -134,6 +144,7 @@ export const UserCard: React.FC<Props> = ({ selectedUser, favorites, curatorServ
 
             <Grid item xs={12} sm={12}>
                 <ConfirmDialog setActive={openDialog} active={dialog} title={"Удалить аккаунт?"} message={"Это действие впоследствии отменить невозможно!"} handleOK={DeleteUserButtonHandle} ></ConfirmDialog>
+               <NotifyDialog message={notifyText} active={notify} setActive={openNotify}></NotifyDialog>
                 <Button
                     fullWidth
                     hidden={authService.getRole() !== 'ADMIN'}

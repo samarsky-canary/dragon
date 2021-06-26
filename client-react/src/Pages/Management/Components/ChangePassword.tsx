@@ -53,14 +53,16 @@ export const ChangePassword: React.FC<Props> = ({ authService }) => {
             setNotifyMessage("Текущий пароль введен неверно");
             openNotifyDialog(true);
             return
-        }
+        } else
         if (response.status === 200) {
             setNotifyMessage("Пароль успешно изменен");
             openNotifyDialog(true);
             return
+        } else {
+            setNotifyMessage("Слабый пароль. Пароль должен состоять из букв латинского алфавита, содержать хотя бы 1 заглавную и 1 прописную букву или цифру. Длина не менее 6 символов");
+            openNotifyDialog(true);
         }
-        setNotifyMessage("Слабый пароль. Пароль должен состоять из букв латинского алфавита, содержать хотя бы 1 заглавную и 1 прописную букву или цифру. Длина не менее 6 символов");
-        openNotifyDialog(true);
+        
     }
 
     const handleClickShowPassword = () => {

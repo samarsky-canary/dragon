@@ -155,7 +155,7 @@ export class AuthStateService {
 
     public async DeleteRegistrationData(uuid: string) {
         try {
-            return await axios.delete(AuthStateService.BASE_API_PREFIX + "/delete", {
+            return await axios.delete(AuthStateService.BASE_API_PREFIX + "delete", {
                 headers: {
                     "Authorization": `Bearer ${AuthStateService._instance.getToken()}`,
                     "uuid": uuid
@@ -177,7 +177,7 @@ export class AuthStateService {
             newPassword: newPassword
         }
         try {
-            return await axios.patch(AuthStateService.BASE_API_PREFIX + "/changePassword", body );
+            return await axios.patch(AuthStateService.BASE_API_PREFIX + "changePassword", body );
         } catch (err) {
             const responseData: ResponsePayload = { status: err.status, statusText: err.message };
             if (err.response) {
