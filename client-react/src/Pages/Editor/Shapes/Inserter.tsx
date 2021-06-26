@@ -109,3 +109,17 @@ export const BranchDing: FC<IconProps> = (props) => {
             />
     );
 }
+
+export const Limiter: FC<IconProps> = (props) => {
+
+    return (
+            <Circle 
+            draggable={true}
+            width={WIDTH}
+            height={HEIGHT}
+            x={props.x} y={props.y}
+            offsetY={-20}
+            offsetX={-80}
+            />
+    );
+}
