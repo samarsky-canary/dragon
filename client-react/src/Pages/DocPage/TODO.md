@@ -156,3 +156,6 @@
 Икона таймера, отправляет программу в ожидание на заданное количество миллисекунд.
 
     await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 100));
