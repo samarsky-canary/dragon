@@ -1,7 +1,7 @@
 # node version/ alpine - lightweight
-FROM node:12.18.3-alpine as development
+FROM node:14.17 as development
 
-WORKDIR /src
+WORKDIR /backend/
 
 COPY package*.json .
 COPY yarn.lock .

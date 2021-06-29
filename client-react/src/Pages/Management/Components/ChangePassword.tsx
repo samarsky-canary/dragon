@@ -90,7 +90,7 @@ export const ChangePassword: React.FC<Props> = ({ authService }) => {
                 <TextField
                     fullWidth
                     error={false}
-                    id="outlined-basic"
+                    className="outlined-basic"
                     label="Старый пароль"
                     variant="outlined"
                     value={values.oldPassword}
@@ -110,7 +110,7 @@ export const ChangePassword: React.FC<Props> = ({ authService }) => {
             </Grid>
             <Grid hidden={visible} item xs={12} sm={6}>
                 <TextField
-                    id="outlined-basic"
+                    className="outlined-basic"
                     label="Новый пароль"
                     variant="outlined"
                     value={values.newPassword}
@@ -120,7 +120,7 @@ export const ChangePassword: React.FC<Props> = ({ authService }) => {
             </Grid>
             <Grid hidden={visible} item xs={12} sm={6}>
                 <TextField
-                    id="outlined-basic"
+                    className="outlined-basic"
                     label="Повторите пароль"
                     variant="outlined"
                     value={values.Repeatpassword}

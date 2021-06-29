@@ -233,7 +233,7 @@ export class DragonModel {
     }
 
 
-    
+
 
     public Delete(parent: string, uuid: string) {
         this.containers.get(parent)?.Remove(uuid);
@@ -241,18 +241,18 @@ export class DragonModel {
     }
 
 
-    private RecursiveDelete(parent: DragonInstruction){
-        parent.children.forEach(child=>{
+    private RecursiveDelete(parent: DragonInstruction) {
+        parent.children.forEach(child => {
             this.RecursiveDelete(child);
             parent.Remove(child.id);
             this.containers.delete(child.id);
         })
     }
 
-    private validate(){
-        this.containers.forEach(instruction=>{
-            const p  = this.containers.get(instruction.parent);
-            if(!p && instruction.type !== 'schema') {
+    private validate() {
+        this.containers.forEach(instruction => {
+            const p = this.containers.get(instruction.parent);
+            if (!p && instruction.type !== 'schema') {
                 this.containers.delete(instruction.id);
             }
         })
@@ -276,22 +276,22 @@ export class DragonModel {
 
 
     public getInstruction(uuid: string) {
-        if (this.containers.get(uuid)){
+        if (this.containers.get(uuid)) {
             return this.containers.get(uuid)!;
         } else {
             return undefined;
         }
     }
 
-    public getDeepestLeftChild(uuid: string){
+    public getDeepestLeftChild(uuid: string) {
         const icon = this.getInstruction(uuid);
         let deepest = icon;
 
-        function deeper(icon: DragonInstruction){
+        function deeper(icon: DragonInstruction) {
             deepest = icon;
-            if (icon.children.length > 0){
+            if (icon.children.length > 0) {
                 if (icon.type !== InstructionType.CONDITION && icon.type !== InstructionType.LOOP) {
-                    deeper(icon.children[icon.children.length -1])
+                    deeper(icon.children[icon.children.length - 1])
                 } else {
                     deeper(icon.children[0])
                 }
@@ -300,8 +300,8 @@ export class DragonModel {
         if (icon) {
             deeper(icon)
             return deepest;
-        } else 
-        return undefined;
+        } else
+            return undefined;
     }
 
     public Update(uuid: string, text: string) {
@@ -434,8 +434,13 @@ export class DragonModel {
                 break;
 
             case InstructionType.OUTPUT:
-                if (instruction.text !== "")
-                    code = code.replace(`[${instruction.id}]`, `console.log(${instruction.text});`);
+                if (instruction.text !== "") {
+                    if (instruction.text.split(' ')[0] === "return")
+                        code = code.replace(`[${instruction.id}]`, `${instruction.text};`);
+                    else
+                        code = code.replace(`[${instruction.id}]`, `console.log(${instruction.text});`);
+
+                }
                 break;
 
             case InstructionType.INPUT:
@@ -445,9 +450,9 @@ export class DragonModel {
 
             case InstructionType.SLEEP:
                 if (instruction.text !== "") {
-                    code = code.replace(`[${instruction.id}]`,  `await new Promise(resolve => setTimeout(resolve, ${instruction.text}));`);
+                    code = code.replace(`[${instruction.id}]`, `await new Promise(resolve => setTimeout(resolve, ${instruction.text}));`);
                     if (code.startsWith('function', 0))
-                        code = code.replace(`function`,  `async function`);
+                        code = code.replace(`function`, `async function`);
                 }
                 break;
             // Condition SCOPES if {inner} else {inner2}

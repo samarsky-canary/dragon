@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Circle } from 'react-konva';
 import { Circle as _circle } from 'konva/lib/shapes/Circle';
-import { DragonActionInstruction, DragonCommentInstruction, DragonConditionInstruction, DragonModel, DragonOutputInstruction, DragonSleepInstruction } from '../../../dragon/dragon.model/dragon.model';
+import { DragonActionInstruction, DragonCommentInstruction, DragonConditionInstruction, DragonInputInstruction, DragonModel, DragonOutputInstruction, DragonSleepInstruction } from '../../../dragon/dragon.model/dragon.model';
 const WIDTH = 15;
 const HEIGHT = 15;
 
@@ -17,9 +17,10 @@ type IconProps = {
 }
 
 
-const Insert={
+const Insert = {
     action: 1,
     comment: 2,
+    input: 3,
     output: 4,
     if: 5,
     sleep: 8,
@@ -31,63 +32,71 @@ export const Inserter: FC<IconProps> = (props) => {
     const circleRef = useRef<_circle>(null);
 
 
-    useEffect(()=>{
-    setActive(props.actionMenuOption !== 0 && props.actionMenuOption !== 9)
-    },[props.actionMenuOption])
+    useEffect(() => {
+        setActive(props.actionMenuOption !== 0 && props.actionMenuOption !== 9)
+    }, [props.actionMenuOption])
 
-    function InsertInstruction(){
+    function InsertInstruction() {
         const m = DragonModel.restoreFromJSON(props.model.toJSON());
-        switch(props.actionMenuOption){
+        switch (props.actionMenuOption) {
             case Insert.action:
-            {
-                const action = new DragonActionInstruction(props.parent);
-                action.text = "action text";
-                m.Insert(action, props.next);
-                props.setModel(m);
-            }
-            break;
+                {
+                    const action = new DragonActionInstruction(props.parent);
+                    action.text = "action text";
+                    m.Insert(action, props.next);
+                    props.setModel(m);
+                }
+                break;
             case Insert.comment:
-            {
-                const comment = new DragonCommentInstruction(props.parent);
-                comment.text = "comment text";
-                m.Insert(comment, props.next);
-                props.setModel(m);
-            }
-            break;
+                {
+                    const comment = new DragonCommentInstruction(props.parent);
+                    comment.text = "comment text";
+                    m.Insert(comment, props.next);
+                    props.setModel(m);
+                }
+                break;
+            case Insert.input:
+                {
+                    const comment = new DragonInputInstruction(props.parent);
+                    comment.text = "input";
+                    m.Insert(comment, props.next);
+                    props.setModel(m);
+                }
+                break;
             case Insert.output:
-            {
-                const comment = new DragonOutputInstruction(props.parent);
-                comment.text = "output text";
-                m.Insert(comment, props.next);
-                props.setModel(m);
-            }
-            break;
+                {
+                    const comment = new DragonOutputInstruction(props.parent);
+                    comment.text = "output text";
+                    m.Insert(comment, props.next);
+                    props.setModel(m);
+                }
+                break;
             case Insert.if:
-            {
-                const condition = new DragonConditionInstruction(props.parent);
-                condition.text = "condition";
-                m.Insert(condition, props.next);
-                props.setModel(m);
-            }
-            break;
+                {
+                    const condition = new DragonConditionInstruction(props.parent);
+                    condition.text = "condition";
+                    m.Insert(condition, props.next);
+                    props.setModel(m);
+                }
+                break;
             case Insert.sleep:
-            {
-                const sleep = new DragonSleepInstruction(props.parent);
-                sleep.text = "100";
-                m.Insert(sleep, props.next);
-                props.setModel(m);
-            }
-            break;
+                {
+                    const sleep = new DragonSleepInstruction(props.parent);
+                    sleep.text = "100";
+                    m.Insert(sleep, props.next);
+                    props.setModel(m);
+                }
+                break;
         }
 
     }
 
     return (
-            <Circle ref={circleRef} 
+        <Circle ref={circleRef}
             draggable={true}
-            visible = {active}
+            visible={active}
             width={WIDTH}
-            onClick={()=>(InsertInstruction())}
+            onClick={() => (InsertInstruction())}
             height={HEIGHT}
             x={props.x} y={props.y}
             stroke="black" strokeWidth={1} fill="lightgreen" />
@@ -99,27 +108,27 @@ export const Inserter: FC<IconProps> = (props) => {
 export const BranchDing: FC<IconProps> = (props) => {
 
     return (
-            <Circle 
+        <Circle
             draggable={true}
             width={WIDTH}
             height={HEIGHT}
             x={props.x} y={props.y}
             offsetY={-20}
             offsetX={-80}
-            />
+        />
     );
 }
 
 export const Limiter: FC<IconProps> = (props) => {
 
     return (
-            <Circle 
+        <Circle
             draggable={true}
             width={WIDTH}
             height={HEIGHT}
             x={props.x} y={props.y}
             offsetY={-20}
             offsetX={-80}
-            />
+        />
     );
 }

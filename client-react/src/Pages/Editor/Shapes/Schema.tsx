@@ -144,6 +144,11 @@ export const Schema: FC<IconProps> = ({ model, setModel, layerRef, actionMenuOpt
                 temp_nodes.push(genSimpleInstruction(icon, prev, Shape.OUTPUT));
                 break;
 
+            case InstructionType.INPUT:
+                temp_nodes.push(genSelector(icon, prev));
+                temp_nodes.push(genSimpleInstruction(icon, prev, Shape.INPUT));
+                break;
+
             case InstructionType.COMMENT:
                 temp_nodes.push(genSelector(icon, prev));
                 temp_nodes.push(genSimpleInstruction(icon, prev, Shape.COMMENT));
@@ -205,7 +210,7 @@ export const Schema: FC<IconProps> = ({ model, setModel, layerRef, actionMenuOpt
                             text: '',
                             shape: Shape.BRANCH,
                             x: x,
-                            y: y + HeightOffset/2
+                            y: y + HeightOffset / 2
                         }
                     );
                     temp_nodes.push(
@@ -216,7 +221,7 @@ export const Schema: FC<IconProps> = ({ model, setModel, layerRef, actionMenuOpt
                             text: '',
                             shape: Shape.BRANCH,
                             x: x,
-                            y: y + HeightOffset/2
+                            y: y + HeightOffset / 2
                         }
                     );
                 }
@@ -268,6 +273,7 @@ export const Schema: FC<IconProps> = ({ model, setModel, layerRef, actionMenuOpt
                     switch (value.shape) {
                         case Shape.ACTION:
                         case Shape.OUTPUT:
+                        case Shape.INPUT:
                         case Shape.COMMENT:
                         case Shape.END:
                         case Shape.LIMITER:
@@ -317,6 +323,7 @@ export const Schema: FC<IconProps> = ({ model, setModel, layerRef, actionMenuOpt
                         case Shape.COMMENT:
                         case Shape.ACTION:
                         case Shape.OUTPUT:
+                        case Shape.INPUT:
                         case Shape.SLEEP:
                         case Shape.CONDITION:
                             return <Action type={value.shape} setModel={setModel} model={model} key={key} id={value.id} parent={value.parent} x={value.x} y={value.y} text={value.text} actionMenuOption={actionMenuOption} />

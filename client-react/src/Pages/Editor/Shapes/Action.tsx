@@ -120,6 +120,32 @@ export const Action: FC<IconProps> = ({ text, id, parent, x ,y, model, setModel,
             </Group>
             break;
 
+            case ShapeType.INPUT:
+                element = <Group>
+                <Rect ref={rectRef} 
+                width={WIDTH} 
+                height={HEIGHT}
+                x={x} y={y}
+                />
+                <Shape
+                    sceneFunc={(context, shape) => {
+                    context.beginPath();
+                    context.moveTo(x, y);
+                    context.lineTo(x + WIDTH, y);
+                    context.lineTo(x + WIDTH, y + HEIGHT);
+                    context.lineTo(x, y + HEIGHT);
+                    context.lineTo(x+30, y+HEIGHT/2);
+                    context.closePath();
+                    // (!) Konva specific method, it is very important
+                    context.fillStrokeShape(shape);
+                    }}
+                    fill="white"
+                    stroke={actionMenuOption === 9? "red" : 'black'}
+                    strokeWidth={actionMenuOption === 9? 4 : 2}
+                />
+            </Group>
+            break;
+
             case ShapeType.SLEEP:
                 element = <Group>
                 <Rect ref={rectRef} 
