@@ -3,6 +3,9 @@
 /node_modules
 **/node_modules
 **/dist
+build
+dizdocs
+docs
 # Logs
 logs
 *.log
