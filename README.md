@@ -16,3 +16,7 @@ Graphic library for drawing diagrams = `Konva`
 User = simple user of system. Creates DRAKON-diagrams and converts them to JavaScript  
 Curator = view users diagrams and modify them to fix errors  
 Administrator = user account's manager (deleting and changing roles)  
+
+## Screenshoots  
+
+![main field](/pics/main_field.png)
